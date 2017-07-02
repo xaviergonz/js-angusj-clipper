@@ -1,0 +1,40 @@
+{
+  "name": "js-angusj-clipper",
+  "version": "0.0.1",
+  "description": "Polygon and line clipping and offsetting library (Javascript) - a port of Angus Johnson's clipper",
+  "main": "dist/lib/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rimraf ./dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xaviergonz/js-angusj-clipper.git"
+  },
+  "keywords": [
+    "polygon",
+    "clipping",
+    "offseting",
+    "boolean",
+    "geometry"
+  ],
+  "author": "Javier Gonzalez Garces <xaviergonz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xaviergonz/js-angusj-clipper/issues"
+  },
+  "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
+  "devDependencies": {
+    "@types/node": "^8.0.7",
+    "rimraf": "^2.6.1",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.1"
+  },
+  "dependencies": {
+    "js-big-integer": "^1.0.2"
+  }
+}
