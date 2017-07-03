@@ -9,7 +9,7 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "files": [
-    "dist"
+    "dist/lib"
   ],
   "repository": {
     "type": "git",
@@ -35,7 +35,5 @@
     "tslint": "^5.4.3",
     "typescript": "^2.4.1"
   },
-  "dependencies": {
-    "js-big-integer": "^1.0.2"
-  }
+  "dependencies": {}
 }

@@ -1,21 +1,19 @@
 import * as clipper from '../lib/index';
 
-const scale2 = 100;
+const scale2 = 10000000;
 const subj_paths = clipper.scalePaths([[{x: 10, y: 10}, {x: 110, y: 10}, {x: 110, y: 110}, {x: 10, y: 110}],
   [{x: 20, y: 20}, {x: 20, y: 100}, {x: 100, y: 100}, {x: 100, y: 20}]], scale2);
 const clip_paths = clipper.scalePaths([[{x: 50, y: 50}, {x: 150, y: 50}, {x: 150, y: 150}, {x: 50, y: 150}],
   [{x: 60, y: 60}, {x: 60, y: 140}, {x: 140, y: 140}, {x: 140, y: 60}]], scale2);
 
-let solution_paths: clipper.Paths | undefined;
-for (let i = 0; i < 100; i++) {
-  console!.time('start');
-  const cpr = new clipper.Clipper();
-  cpr.addPaths(subj_paths, clipper.PolyType.Subject, true);  // true means closed path
-  cpr.addPaths(clip_paths, clipper.PolyType.Clip, true);
 
-  solution_paths = cpr.executePaths(clipper.ClipType.Union, clipper.PolyFillType.NonZero, clipper.PolyFillType.NonZero);
-  console!.timeEnd('start');
-}
+let solution_paths: clipper.Paths | undefined;
+const cpr = new clipper.Clipper();
+cpr.addPaths(subj_paths, clipper.PolyType.Subject, true);  // true means closed path
+cpr.addPaths(clip_paths, clipper.PolyType.Clip, true);
+
+solution_paths = cpr.executePaths(clipper.ClipType.Union, clipper.PolyFillType.NonZero, clipper.PolyFillType.NonZero);
+console.log((cpr as any).m_UseFullRange);
 
 // console.log(JSON.stringify(solution_paths));
 
@@ -44,3 +42,15 @@ const paths = [[{x: 10, y: 10}, {x: 110, y: 10}, {x: 110, y: 110}, {x: 10, y: 11
 console.log(JSON.stringify(paths));
 clipper.reversePaths(paths);
 console.log(JSON.stringify(paths));
+
+(window as any).test = () => {
+  for (let i = 0; i < 100; i++) {
+    console!.time('start');
+    const cpr2 = new clipper.Clipper();
+    cpr2.addPaths(subj_paths, clipper.PolyType.Subject, true);  // true means closed path
+    cpr2.addPaths(clip_paths, clipper.PolyType.Clip, true);
+
+    solution_paths = cpr2.executePaths(clipper.ClipType.Union, clipper.PolyFillType.NonZero, clipper.PolyFillType.NonZero);
+    console!.timeEnd('start');
+  }
+};
