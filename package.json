@@ -30,6 +30,7 @@
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
     "@types/node": "^8.0.7",
+    "browserify": "^14.4.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.4.3",
     "typescript": "^2.4.1"

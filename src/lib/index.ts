@@ -4853,3 +4853,25 @@ export class ClipperOffset {
     ));
   }
 }
+
+// extras
+
+export function scalePath(path: Path, scale: number): Path {
+  const sol: Path = [];
+  let i = path.length;
+  while (i--) {
+    const p = path[i];
+    sol.push(newIntPoint(Math.round(p.x * scale), Math.round(p.y * scale)));
+  }
+  return sol;
+}
+
+export function scalePaths(paths: Paths, scale: number): Paths {
+  const sol: Paths = [];
+  let i = paths.length;
+  while (i--) {
+    const p = paths[i];
+    sol.push(scalePath(p, scale));
+  }
+  return sol;
+}
