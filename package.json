@@ -4,7 +4,7 @@
   "description": "Polygon and line clipping and offsetting library (Javascript) - a port of Angus Johnson's clipper",
   "main": "dist/lib/index.js",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc -p . && ncp ./resources ./dist && browserify ./dist/demos/starter-boolean.js > ./dist/demos/starter-boolean.bundle.js",
     "clean": "rimraf ./dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
@@ -29,8 +29,10 @@
   },
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
+    "@types/geojson": "^1.0.2",
     "@types/node": "^8.0.7",
     "browserify": "^14.4.0",
+    "ncp": "^2.0.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.4.3",
     "typescript": "^2.4.1"

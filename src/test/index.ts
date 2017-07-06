@@ -25,4 +25,22 @@ const test1 = () => {
   console.log(result);
 };
 
-test1();
+const test2 = () => {
+  const cb = new clipper.ClipperOffset();
+  cb.addPath([
+    {x: 0, y: 0},
+    {x: 10, y: 0},
+    {x: 10, y: 10},
+    {x: 0, y: 10},
+    {x: 0, y: 0},
+  ], clipper.JoinType.Miter, clipper.EndType.ClosedPolygon);
+
+
+  console.log('start');
+  const result = cb.executePaths(5);
+  console.log('end');
+  console.log(result);
+};
+
+//test1();
+test2();

@@ -115,9 +115,17 @@ export function minkowski(pattern: Path, path: Path, IsSum: boolean, IsClosed: b
       const p: Path = [];
       p.length = polyCnt;
       let pLength = 0;
-      for (let ii = 0, max = pattern.length; ii < max; ii++) {
-        const ip = pattern[ii];
-        p[pLength++] = newIntPointXYZ(path[i].x - ip.x, path[i].y - ip.y, path[i].z);
+      if (useXyz) {
+        for (let ii = 0, max = pattern.length; ii < max; ii++) {
+          const ip = pattern[ii];
+          p[pLength++] = newIntPointXYZ(path[i].x - ip.x, path[i].y - ip.y, path[i].z! - ip.z!);
+        }
+      }
+      else {
+        for (let ii = 0, max = pattern.length; ii < max; ii++) {
+          const ip = pattern[ii];
+          p[pLength++] = newIntPointXY(path[i].x - ip.x, path[i].y - ip.y);
+        }
       }
       //p.length = pLength; // not needed
       result[i] = p;

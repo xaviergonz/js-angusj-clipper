@@ -60,7 +60,7 @@ export class Clipper extends ClipperBase {
     this.preserveCollinear = !!initOptions.preserveCollinear;
 
     this.useLines = initOptions.useLines === undefined ? true : initOptions.useLines;
-    this.useXyz = initOptions.useXyz === undefined ? true : initOptions.useXyz;
+    this.useXyz = initOptions.useXyz === undefined ? false : initOptions.useXyz;
 
     this.zFillFunctionImmutable = undefined;
   }

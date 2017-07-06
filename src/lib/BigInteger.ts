@@ -1,4 +1,5 @@
-// node port of Yaffle/BigInteger
+// node/s port of Yaffle/BigInteger
+// last updated 03072017
 
 // BigInteger.js
 // Available under Public Domain

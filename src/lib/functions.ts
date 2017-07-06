@@ -224,6 +224,8 @@ export function simplifyPolygons(polys: Paths, fillType: PolyFillType = PolyFill
 // extras
 
 export function scalePath(path: Path, scale: number, useXyz: boolean = false): Path {
+  if (scale === 0) return [];
+
   const sol: Path = [];
   let i = path.length;
   if (useXyz) {
@@ -242,6 +244,8 @@ export function scalePath(path: Path, scale: number, useXyz: boolean = false): P
 }
 
 export function scalePaths(paths: Paths, scale: number, useXyz: boolean = false): Paths {
+  if (scale === 0) return [];
+
   const sol: Paths = [];
   let i = paths.length;
   while (i--) {
