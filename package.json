@@ -4,9 +4,12 @@
   "description": "Polygon and line clipping and offsetting library (Javascript) - a port of Angus Johnson's clipper",
   "main": "dist/lib/index.js",
   "scripts": {
-    "build": "tsc -p . && ncp ./resources ./dist && browserify ./dist/demos/starter-boolean.js > ./dist/demos/starter-boolean.bundle.js",
+    "build": "tsc -p . && npm run nobuild:wasm && ncp ./resources ./dist && browserify ./dist/test/index.js > ./dist/test/index.bundle.js && npm run build:old",
     "clean": "rimraf ./dist",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "build:wasm": "cd src/wasm && cmd /C compile.bat && cmd /C compile-wasm.bat && cd .. && cd .. && mkdirp dist/wasm && ncp src/wasm/clipper.js dist/wasm/clipper.js && ncp src/wasm/clipper-wasm.js dist/wasm/clipper-wasm.js && ncp src/wasm/clipper-wasm.wasm dist/wasm/clipper-wasm.wasm",
+    "nobuild:wasm": "echo NOT BUILDING WASM!!!",
+    "build:old": "browserify ./dist/demos/starter-boolean.js > ./dist/demos/starter-boolean.bundle.js"
   },
   "files": [
     "dist/lib"
@@ -32,6 +35,7 @@
     "@types/geojson": "^1.0.2",
     "@types/node": "^8.0.7",
     "browserify": "^14.4.0",
+    "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.4.3",
