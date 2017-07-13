@@ -1,7 +1,8 @@
-import * as clipper from '../lib2/index';
+import * as clipperLib from '../lib2/index';
 import * as geo from 'geojson';
-import { Clipper, ClipperOffset, ClipType, EndType, JoinType, NativeClipperLibInstance, Path, Paths, PolyFillType, PolyType } from '../lib2';
+import { ClipperLibWrapper, ClipType, EndType, JoinType, OffsetData, Path, Paths, PolyFillType, ClipData } from '../lib2';
 import { doubleArrayToNativePaths, doubleArrayToPaths, nativePathsToDoubleArray, pathsToDoubleArray } from '../lib2/native/PathsToNativePaths';
+import { NativeClipperLibInstance } from '../lib2/native/NativeClipperLibInstance';
 
 const scale2 = 10000;
 
@@ -39,35 +40,58 @@ const cp = polygonToPaths([
   [[94.2626953125, 23.9501953125], [142.9443359375, -13.7548828125], [142.998046875, -13.2275390625],
     [138.955078125, 23.2470703125], [94.2626953125, 23.9501953125]]]);
 
-export function testOffset(clipper: NativeClipperLibInstance, polytree: boolean) {
+export function testOffset(clipper: ClipperLibWrapper, polytree: boolean) {
   console.time('offset');
-  const off = new ClipperOffset(clipper, 2, 0.25);
-  off.addPaths(mp, JoinType.Miter, EndType.ClosedPolygon);
+
+  const data: OffsetData = {
+    offsetInputs: [
+      {
+        data: mp,
+        joinType: JoinType.Miter,
+        endType: EndType.ClosedPolygon
+      }
+    ],
+    delta: 10000
+  };
+
   let result;
   if (!polytree) {
-    result = off.executeToPaths(10000);
+    result = clipper.offsetToPaths(data);
   }
   else {
-    result = off.executeToPolyTree(10000);
+    result = clipper.offsetToPolyTree(data);
   }
-  off.dispose();
   console.timeEnd('offset');
   //console.log(result.length);
 }
 
-export function testClip(clipper: NativeClipperLibInstance, polytree: boolean) {
+export function testClip(clipper: ClipperLibWrapper, polytree: boolean) {
   console.time('clip');
-  const c = new Clipper(clipper);
-  c.addPaths(mp, PolyType.Subject, true);  // true means closed path
-  c.addPaths(cp, PolyType.Clip, true);  // true means closed path
+
+  const data: ClipData = {
+    subjectInputs: [
+      {
+        data: mp,
+        closed: true
+      }
+    ],
+    clipInputs: [
+      {
+        data: cp
+      }
+    ],
+    clipType: ClipType.Intersection,
+    subjectFillType: PolyFillType.EvenOdd,
+    clipFillType: PolyFillType.EvenOdd
+  };
+
   let result;
   if (!polytree) {
-    result = c.executeToPaths(ClipType.Intersection, PolyFillType.EvenOdd, PolyFillType.EvenOdd);
+    result = clipper.clipToPaths(data);
   }
   else {
-    result = c.executeToPolyTee(ClipType.Intersection, PolyFillType.EvenOdd, PolyFillType.EvenOdd);
+    result = clipper.clipToPolyTree(data);
   }
-  c.dispose();
   console.timeEnd('clip');
 }
 
@@ -115,22 +139,27 @@ function testPathsConversion(clipper: NativeClipperLibInstance, myPathLen: numbe
 
 const main = async () => {
   console.time('init time');
-  const instance = (await clipper.loadNativeClipperLibInstanceAsync(clipper.NativeClipperLibFormat.WasmWithAsmJsFallback, '../wasm/')).instance;
+  const wrapper = (await clipperLib.loadNativeClipperLibInstanceAsync(clipperLib.NativeClipperLibRequestedFormat.AsmJsOnly, '../wasm/'));
   console.timeEnd('init time');
 
-  /*testOffset(instance, false);
-  testOffset(instance, false);*/
+  const test = (polyTree: boolean) => {
+    console.log(polyTree ? 'polytree' : 'paths');
+    testOffset(wrapper, polyTree);
+    testOffset(wrapper, polyTree);
 
-  const polyTree = true;
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
-  testClip(instance, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+    testClip(wrapper, polyTree);
+  };
+
+  test(true);
+  test(false);
 };
 main().catch((err) => {
   if (!err.ignore) {

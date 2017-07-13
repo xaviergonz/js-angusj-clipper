@@ -33,12 +33,12 @@
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
     "@types/geojson": "^1.0.2",
-    "@types/node": "^8.0.7",
+    "@types/node": "^8.0.10",
     "browserify": "^14.4.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "rimraf": "^2.6.1",
-    "tslint": "^5.4.3",
+    "tslint": "^5.5.0",
     "typescript": "^2.4.1"
   },
   "dependencies": {}

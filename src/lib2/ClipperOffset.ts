@@ -6,6 +6,7 @@ import { pathToNativePath } from './native/PathToNativePath';
 import { Path } from './Path';
 import { Paths } from './Paths';
 import { PolyTree } from './PolyTree';
+import { NativeClipperOffset } from './native/NativeClipperOffset';
 
 /**
  * The ClipperOffset class encapsulates the process of offsetting (inflating/deflating) both open and closed paths using a number of different join types
@@ -20,10 +21,10 @@ import { PolyTree } from './PolyTree';
  * When offsetting, small artefacts may appear where polygons overlap. To avoid these artefacts, offset overlapping polygons separately.
  */
 export class ClipperOffset {
-  private _clipperOffset: any;
+  private _clipperOffset?: NativeClipperOffset;
 
   /**
-   * Firstly, this field/property is only relevant when JoinType = jtRound and/or EndType = etRound.
+   * Firstly, this field/property is only relevant when JoinType = Round and/or EndType = Round.
    *
    * Since flattened paths can never perfectly represent arcs, this field/property specifies a maximum acceptable imprecision ('tolerance') when arcs are
    * approximated in an offsetting operation. Smaller values will increase 'smoothness' up to a point though at a cost of performance and in creating more
@@ -53,11 +54,11 @@ export class ClipperOffset {
    * @return {number} - Current arc tolerance
    */
   get arcTolerance(): number {
-    return this._clipperOffset.arcTolerance;
+    return this._clipperOffset!.arcTolerance;
   }
 
   /**
-   * Firstly, this field/property is only relevant when JoinType = jtRound and/or EndType = etRound.
+   * Firstly, this field/property is only relevant when JoinType = Round and/or EndType = Round.
    *
    * Since flattened paths can never perfectly represent arcs, this field/property specifies a maximum acceptable imprecision ('tolerance') when arcs are
    * approximated in an offsetting operation. Smaller values will increase 'smoothness' up to a point though at a cost of performance and in creating more
@@ -87,7 +88,7 @@ export class ClipperOffset {
    * @param value - Arc tolerance to set.
    */
   set arcTolerance(value: number) {
-    this._clipperOffset.arcTolerance = value;
+    this._clipperOffset!.arcTolerance = value;
   }
 
   /**
@@ -100,7 +101,7 @@ export class ClipperOffset {
    * @return {number} - Current miter limit
    */
   get miterLimit(): number {
-    return this._clipperOffset.miterLimit;
+    return this._clipperOffset!.miterLimit;
   }
 
   /**
@@ -109,12 +110,12 @@ export class ClipperOffset {
    * @param value - Mit limit to set.
    */
   set miterLimit(value: number) {
-    this._clipperOffset.miterLimit = value;
+    this._clipperOffset!.miterLimit = value;
   }
 
   /**
    * The ClipperOffset constructor takes 2 optional parameters: MiterLimit and ArcTolerance. The two parameters corresponds to properties of the same name.
-   * MiterLimit is only relevant when JoinType is jtMiter, and ArcTolerance is only relevant when JoinType is jtRound or when EndType is etOpenRound.
+   * MiterLimit is only relevant when JoinType is Miter, and ArcTolerance is only relevant when JoinType is Round or when EndType is OpenRound.
    *
    * @param _nativeLib - Native clipper lib instance to use
    * @param miterLimit - Miter limit
@@ -138,7 +139,7 @@ export class ClipperOffset {
   addPath(path: Path, joinType: JoinType, endType: EndType) {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
-      this._clipperOffset.addPath(nativePath, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
+      this._clipperOffset!.addPath(nativePath, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
     }
     finally {
       nativePath.delete();
@@ -159,7 +160,7 @@ export class ClipperOffset {
   addPaths(paths: Paths, joinType: JoinType, endType: EndType) {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
-      this._clipperOffset.addPaths(nativePaths, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
+      this._clipperOffset!.addPaths(nativePaths, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
     }
     finally {
       nativePaths.delete();
@@ -167,8 +168,7 @@ export class ClipperOffset {
   }
 
   /**
-   * This method takes two parameters. The first is the structure that receives the result of the offset operation (a Paths structure). The second parameter
-   * is the amount to which the supplied paths will be offset. Negative delta values shrink polygons and positive delta expand them.
+   * Negative delta values shrink polygons and positive delta expand them.
    *
    * This method can be called multiple times, offsetting the same paths by different amounts (ie using different deltas).
    *
@@ -178,7 +178,7 @@ export class ClipperOffset {
   executeToPaths(delta: number): Paths {
     const outNativePaths = new this._nativeLib.Paths();
     try {
-      this._clipperOffset.executePaths(outNativePaths, delta);
+      this._clipperOffset!.executePaths(outNativePaths, delta);
       return nativePathsToPaths(this._nativeLib, outNativePaths); // frees outNativePaths
     }
     finally {
@@ -200,7 +200,7 @@ export class ClipperOffset {
   executeToPolyTree(delta: number): PolyTree {
     const outNativePolyTree = new this._nativeLib.PolyTree();
     try {
-      this._clipperOffset.executePaths(outNativePolyTree, delta);
+      this._clipperOffset!.executePolyTree(outNativePolyTree, delta);
       return PolyTree.fromNativePolyTree(this._nativeLib, outNativePolyTree, true); // frees outNativePolyTree
     }
     finally {
@@ -214,7 +214,7 @@ export class ClipperOffset {
    * This method clears all paths from the ClipperOffset object, allowing new paths to be assigned.
    */
   clear(): void {
-    this._clipperOffset.clear();
+    this._clipperOffset!.clear();
   }
 
   /**

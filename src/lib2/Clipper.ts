@@ -7,34 +7,49 @@ import { pathToNativePath } from './native/PathToNativePath';
 import { Path } from './Path';
 import { Paths } from './Paths';
 import { PolyTree } from './PolyTree';
+import { NativeClipper } from './native/NativeClipper';
 
 export interface ClipperInitOptions {
+  /**
+   * When this property is set to true, polygons returned in the solution parameter of the execute() method will have orientations opposite to their normal
+   * orientations.
+   */
   reverseSolution?: boolean;
+
+  /**
+   * When this property is set to true, polygons returned in the solution parameter of the execute() method will have orientations opposite to their normal
+   * orientations.
+   */
   strictlySimple?: boolean;
+
+  /**
+   * By default, when three or more vertices are collinear in input polygons (subject or clip), the Clipper object removes the 'inner' vertices before
+   * clipping. When enabled the preserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
+   */
   preserveCollinear?: boolean;
 }
 
 export class Clipper {
-  private _clipper: any;
+  private _clipper?: NativeClipper;
 
   /**
    * By default, when three or more vertices are collinear in input polygons (subject or clip), the Clipper object removes the 'inner' vertices before
-   * clipping. When enabled the PreserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
+   * clipping. When enabled the preserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
    *
    * @return {boolean} - true if set, false otherwise
    */
   get preserveCollinear(): boolean {
-    return this._clipper.preserveCollinear;
+    return this._clipper!.preserveCollinear;
   }
 
   /**
    * By default, when three or more vertices are collinear in input polygons (subject or clip), the Clipper object removes the 'inner' vertices before
-   * clipping. When enabled the PreserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
+   * clipping. When enabled the preserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
    *
    * @param value - value to set
    */
   set preserveCollinear(value: boolean) {
-    this._clipper.preserveCollinear = value;
+    this._clipper!.preserveCollinear = value;
   }
 
   /**
@@ -44,7 +59,7 @@ export class Clipper {
    * @return {boolean} - true if set, false otherwise
    */
   get reverseSolution(): boolean {
-    return this._clipper.reverseSolution;
+    return this._clipper!.reverseSolution;
   }
 
   /**
@@ -54,7 +69,7 @@ export class Clipper {
    * @param value - value to set
    */
   set reverseSolution(value: boolean) {
-    this._clipper.reverseSolution = value;
+    this._clipper!.reverseSolution = value;
   }
 
   /**
@@ -75,7 +90,7 @@ export class Clipper {
    * @return {boolean} - true if set, false otherwise
    */
   get strictlySimple(): boolean {
-    return this._clipper.strictlySimple;
+    return this._clipper!.strictlySimple;
   }
 
   /**
@@ -96,7 +111,7 @@ export class Clipper {
    * @param value - value to set
    */
   set strictlySimple(value: boolean) {
-    this._clipper.strictlySimple = value;
+    this._clipper!.strictlySimple = value;
   }
 
   /**
@@ -135,7 +150,7 @@ export class Clipper {
    * 'Subject' paths may be either open (lines) or closed (polygons) or even a mixture of both, but 'clipping' paths must always be closed. Clipper allows
    * polygons to clip both lines and other polygons, but doesn't allow lines to clip either lines or polygons.
    *
-   * With closed paths, orientation should conform with the filling rule that will be passed via Clippper's execute method.
+   * With closed paths, orientation should conform with the filling rule that will be passed via Clipper's execute method.
    *
    * Path Coordinate range:
    * Path coordinates must be between ± 9007199254740992, otherwise a range error will be thrown when attempting to add the path to the Clipper object.
@@ -155,7 +170,7 @@ export class Clipper {
   addPath(path: Path, polyType: PolyType, closed: boolean): boolean {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
-      return this._clipper.addPath(nativePath, polyTypeToNative(this._nativeLib, polyType), closed);
+      return this._clipper!.addPath(nativePath, polyTypeToNative(this._nativeLib, polyType), closed);
     }
     finally {
       nativePath.delete();
@@ -169,7 +184,7 @@ export class Clipper {
    * 'Subject' paths may be either open (lines) or closed (polygons) or even a mixture of both, but 'clipping' paths must always be closed. Clipper allows
    * polygons to clip both lines and other polygons, but doesn't allow lines to clip either lines or polygons.
    *
-   * With closed paths, orientation should conform with the filling rule that will be passed via Clippper's execute method.
+   * With closed paths, orientation should conform with the filling rule that will be passed via Clipper's execute method.
    *
    * Path Coordinate range:
    * Path coordinates must be between ± 9007199254740992, otherwise a range error will be thrown when attempting to add the path to the Clipper object.
@@ -189,7 +204,7 @@ export class Clipper {
   addPaths(paths: Paths, polyType: PolyType, closed: boolean): boolean {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
-      return this._clipper.addPaths(nativePaths, polyTypeToNative(this._nativeLib, polyType), closed);
+      return this._clipper!.addPaths(nativePaths, polyTypeToNative(this._nativeLib, polyType), closed);
     }
     finally {
       nativePaths.delete();
@@ -200,7 +215,7 @@ export class Clipper {
    * The Clear method removes any existing subject and clip polygons allowing the Clipper object to be reused for clipping operations on different polygon sets.
    */
   clear(): void {
-    this._clipper.clear();
+    this._clipper!.clear();
   }
 
   /**
@@ -209,7 +224,7 @@ export class Clipper {
    * @return {{left: number, right: number, top: number, bottom: number}} - Bounds
    */
   getBounds(): IntRect {
-    const nativeBounds = this._clipper.getBounds();
+    const nativeBounds = this._clipper!.getBounds();
     const rect = {
       left: nativeBounds.left,
       right: nativeBounds.right,
@@ -224,7 +239,7 @@ export class Clipper {
    * Once subject and clip paths have been assigned (via addPath and/or addPaths), execute can then perform the clipping operation (intersection, union,
    * difference or XOR) specified by the clipType parameter.
    *
-   * The solution parameter in this case is a Paths or PolyTree structure. The Paths structure is simpler than the PolyTree stucture. Because of this it is
+   * The solution parameter in this case is a Paths or PolyTree structure. The Paths structure is simpler than the PolyTree structure. Because of this it is
    * quicker to populate and hence clipping performance is a little better (it's roughly 10% faster). However, the PolyTree data structure provides more
    * information about the returned paths which may be important to users. Firstly, the PolyTree structure preserves nested parent-child polygon relationships
    * (ie outer polygons owning/containing holes and holes owning/containing other outer polygons etc). Also, only the PolyTree structure can differentiate
@@ -257,7 +272,7 @@ export class Clipper {
   executeToPaths(clipType: ClipType, subjFillType: PolyFillType, clipFillType: PolyFillType): Paths | undefined {
     const outNativePaths = new this._nativeLib.Paths();
     try {
-      const success = this._clipper.executePathsWithFillTypes(
+      const success = this._clipper!.executePathsWithFillTypes(
         clipTypeToNative(this._nativeLib, clipType),
         outNativePaths,
         polyFillTypeToNative(this._nativeLib, subjFillType),
@@ -281,7 +296,7 @@ export class Clipper {
    * Once subject and clip paths have been assigned (via addPath and/or addPaths), execute can then perform the clipping operation (intersection, union,
    * difference or XOR) specified by the clipType parameter.
    *
-   * The solution parameter can be either a Paths or PolyTree structure. The Paths structure is simpler than the PolyTree stucture. Because of this it is
+   * The solution parameter can be either a Paths or PolyTree structure. The Paths structure is simpler than the PolyTree structure. Because of this it is
    * quicker to populate and hence clipping performance is a little better (it's roughly 10% faster). However, the PolyTree data structure provides more
    * information about the returned paths which may be important to users. Firstly, the PolyTree structure preserves nested parent-child polygon relationships
    * (ie outer polygons owning/containing holes and holes owning/containing other outer polygons etc). Also, only the PolyTree structure can differentiate
@@ -314,7 +329,7 @@ export class Clipper {
   executeToPolyTee(clipType: ClipType, subjFillType: PolyFillType, clipFillType: PolyFillType): PolyTree | undefined {
     const outNativePolyTree = new this._nativeLib.PolyTree();
     try {
-      const success = this._clipper.executePolyTreeWithFillTypes(
+      const success = this._clipper!.executePolyTreeWithFillTypes(
         clipTypeToNative(this._nativeLib, clipType),
         outNativePolyTree,
         polyFillTypeToNative(this._nativeLib, subjFillType),

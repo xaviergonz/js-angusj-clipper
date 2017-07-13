@@ -1,9 +1,9 @@
 import { islesMultipolygon } from './isles';
-import { ClipperOffset, EndType, JoinType, loadNativeClipperLibInstanceAsync, NativeClipperLibFormat, Path, Paths } from '../lib2';
+import { EndType, JoinType, loadNativeClipperLibInstanceAsync, NativeClipperLibRequestedFormat, Path, Paths } from '../lib2';
 import * as geo from 'geojson';
 
 const main = async () => {
-  const instance = (await loadNativeClipperLibInstanceAsync(NativeClipperLibFormat.WasmWithAsmJsFallback, '../wasm/')).instance;
+  const wrapper = (await loadNativeClipperLibInstanceAsync(NativeClipperLibRequestedFormat.WasmWithAsmJsFallback, '../wasm/'));
 
   /*const scale2 = 100;
    const subj_paths = clipper.scalePaths([[{x: 10, y: 10}, {x: 110, y: 10}, {x: 110, y: 110}, {x: 10, y: 110}],
@@ -43,7 +43,9 @@ const main = async () => {
   };
 
   const subj_paths = multiPolygonToPaths(islesMultipolygon);
-  const clip_paths = polygonToPaths([[[94.2626953125, 23.9501953125],[142.9443359375, -13.7548828125],[142.998046875,-13.2275390625],[138.955078125,23.2470703125],[94.2626953125,23.9501953125]]]);
+  const clip_paths = polygonToPaths(
+    [[[94.2626953125, 23.9501953125], [142.9443359375, -13.7548828125],
+      [142.998046875, -13.2275390625], [138.955078125, 23.2470703125], [94.2626953125, 23.9501953125]]]);
 
   //console.log('sub', subj_paths);
   //console.log('clip', clip_paths);
@@ -51,10 +53,15 @@ const main = async () => {
 
 
   console.time('offset');
-  const off = new ClipperOffset(instance);
-  off.addPaths(subj_paths, JoinType.Miter, EndType.ClosedPolygon);  // true means closed path
-  solution_paths = off.executeToPaths(1 * scale2);
-  off.dispose();
+  solution_paths = wrapper.offsetToPaths({
+    offsetInputs: [
+      {
+        data: subj_paths,
+        endType: EndType.ClosedPolygon,
+        joinType: JoinType.Miter
+      }],
+    delta: scale2
+  });
   console.timeEnd('offset');
 
 
@@ -101,10 +108,15 @@ const main = async () => {
      solution_paths = cpr2.executePaths(clipper.ClipType.Intersection, clipper.PolyFillType.NonZero, clipper.PolyFillType.NonZero);
      }*/
 
-    const off = new ClipperOffset(instance);
-    off.addPaths(subj_paths, JoinType.Miter, EndType.ClosedPolygon);  // true means closed path
-    solution_paths = off.executeToPaths(1 * scale2);
-    off.dispose();
+    solution_paths = wrapper.offsetToPaths({
+      offsetInputs: [
+        {
+          data: subj_paths,
+          endType: EndType.ClosedPolygon,
+          joinType: JoinType.Miter
+        }],
+      delta: scale2
+    });
     console!.timeEnd('start');
   };
 };
