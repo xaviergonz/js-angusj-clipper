@@ -1,4 +1,4 @@
-##### interface SubjectInput
+#### interface SubjectInput
 
 A single subject input (of multiple possible inputs) for the clipToPaths / clipToPolyTree operations
 
