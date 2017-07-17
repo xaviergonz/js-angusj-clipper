@@ -1,5 +1,5 @@
-##### clipToPaths(params: [ClipParams](./ClipParams.md)): [Paths](../shared/Paths.md) | undefined
-##### clipToPolyTree(params: [ClipParams](./ClipParams.md)): [PolyTree](../shared/PolyTree.md) | undefined
+#### clipToPaths(params: [ClipParams](./ClipParams.md)): [Paths](../shared/Paths.md) | undefined
+#### clipToPolyTree(params: [ClipParams](./ClipParams.md)): [PolyTree](../shared/PolyTree.md) | undefined
 
 Performs a polygon clipping (boolean) operation, returning the resulting Paths / PolyTree or throwing an error if failed.
 
@@ -22,4 +22,4 @@ There are several things to note about the solution paths returned:
 - the solution fill type can be considered either EvenOdd or NonZero since it will comply with either filling rule
 - polygons may rarely share a common edge (though this is now very rare as of version 6)
 
-**TODO: insert image from Clipper.Execute**
+![image](https://user-images.githubusercontent.com/6306796/28289968-efa9dfac-6b44-11e7-85b4-826a29c6015f.png)
