@@ -1,4 +1,4 @@
-##### enum PolyFillType
+#### enum PolyFillType
 
 Filling indicates those regions that are inside a closed path (ie 'filled' with a brush color or pattern in a graphical display) and those regions that are outside. The Clipper Library supports 4 filling rules: Even-Odd, Non-Zero, Positive and Negative.
 
@@ -13,7 +13,7 @@ The winding number for each polygon sub-region can be derived by:
 3. while traversing the line from P1 to P2, for each path that crosses the imaginary line from right to left increment the winding number, and for each path that crosses the line from left to right decrement the winding number. 
 4. Once you arrive at the given sub-region you have its winding number. 
 
-**TODO: insert image**
+![image](https://user-images.githubusercontent.com/6306796/28290194-ba109ac4-6b45-11e7-963e-fc80681cfa00.png)
 
 ###### Values
 * **EvenOdd**
@@ -34,7 +34,11 @@ The winding number for each polygon sub-region can be derived by:
 
 Polygon regions are defined by one or more closed paths which may or may not intersect. A single polygon region can be defined by a single non-intersecting path or by multiple non-intersecting paths where there's typically an 'outer' path and one or more inner 'hole' paths. Looking at the three shapes in the image above, the middle shape consists of two concentric rectangles sharing the same clockwise orientation. With even-odd filling, where orientation can be disregarded, the inner rectangle would create a hole in the outer rectangular polygon. There would be no hole with non-zero filling. In the concentric rectangles on the right, where the inner rectangle is orientated opposite to the outer, a hole will be rendered with either even-odd or non-zero filling. A single path can also define multiple subregions if it self-intersects as in the example of the 5 pointed star shape below.
 
-**TODO: insert image**
+![image](https://user-images.githubusercontent.com/6306796/28290200-c49146ec-6b45-11e7-947a-59248b510388.png)
+![image](https://user-images.githubusercontent.com/6306796/28290209-d1cefc82-6b45-11e7-8ca0-6ce51a24e884.png)
+![image](https://user-images.githubusercontent.com/6306796/28290211-d34cca12-6b45-11e7-80e6-5ea5f1d7ccc6.png)
+![image](https://user-images.githubusercontent.com/6306796/28290213-d51a5602-6b45-11e7-8c26-0925e2fb1f42.png)
+![image](https://user-images.githubusercontent.com/6306796/28290216-d6966084-6b45-11e7-82ff-aeb032de7c0c.png)
 
 By far the most widely used fill rules are Even-Odd (aka Alternate) and Non-Zero (aka Winding). Most graphics rendering libraries (AGG, Android Graphics, Cairo, GDI+, OpenGL, Quartz 2D etc) and vector graphics storage formats (SVG, Postscript, Photoshop etc) support both these rules. However some libraries (eg Java's Graphics2D) only support one fill rule. Android Graphics and OpenGL are the only libraries (that I'm aware of) that support multiple filling rules.
 
