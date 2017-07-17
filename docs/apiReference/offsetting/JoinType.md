@@ -1,8 +1,8 @@
-##### enum JoinType
+#### enum JoinType
 
 When adding paths to a offset operation, the joinType parameter may be one of three types - Miter, Square or Round.
 
-**TODO: insert image**
+![image](https://user-images.githubusercontent.com/6306796/28290053-31d7b0b6-6b45-11e7-8b81-d47241617f90.png)
 
 ###### Values
 * **Miter**
