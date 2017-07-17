@@ -1,4 +1,4 @@
-##### async loadNativeClipperLibInstanceAsync(format: [NativeClipperLibRequestedFormat](./NativeClipperLibRequestedFormat.md), resourceFilePrefixUrl: string = ''): Promise<[ClipperLibWrapper](../shared/ClipperLibWrapper.md)>
+#### async loadNativeClipperLibInstanceAsync(format: [NativeClipperLibRequestedFormat](./NativeClipperLibRequestedFormat.md), resourceFilePrefixUrl: string = ''): Promise<[ClipperLibWrapper](../shared/ClipperLibWrapper.md)>
 
 Asynchronously tries to load a new native instance of the clipper library to be shared across all method invocations.
 
