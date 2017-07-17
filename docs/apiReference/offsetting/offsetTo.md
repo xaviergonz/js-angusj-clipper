@@ -1,5 +1,5 @@
-##### offsetToPaths(params: [OffsetParams](./OffsetParams.md)): [Paths](../shared/Paths.md) | undefined
-##### offsetToPolyTree(params: [OffsetParams](./OffsetParams.md)): [PolyTree](../shared/PolyTree.md) | undefined
+#### offsetToPaths(params: [OffsetParams](./OffsetParams.md)): [Paths](../shared/Paths.md) | undefined
+#### offsetToPolyTree(params: [OffsetParams](./OffsetParams.md)): [PolyTree](../shared/PolyTree.md) | undefined
 
 Performs a polygon offset operation, returning the resulting PolyTree or undefined if failed.
 
@@ -16,4 +16,4 @@ and end types.
 
 When offsetting, small artefacts may appear where polygons overlap. To avoid these artefacts, offset overlapping polygons separately.
 
-**TODO: insert image from ClipperOffset.execute**
+![image](https://user-images.githubusercontent.com/6306796/28290136-77a0f8a0-6b45-11e7-8fdd-a5a5570b96a7.png)
