@@ -3,7 +3,7 @@
     "src/**/*"
   ],
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./dist/lib",
 
     "declaration": true,
     "sourceMap": false,
