@@ -1,4 +1,4 @@
-##### enum NativeClipperLibRequestedFormat
+#### enum NativeClipperLibRequestedFormat
 
 Format to use when loading the native library instance.
 
