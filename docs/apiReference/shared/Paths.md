@@ -1,4 +1,4 @@
-##### type Paths = [Path](./Path.md)[]
+#### type Paths = [Path](./Path.md)[]
 
 This structure is fundamental to the Clipper Library. It's a list or array of one or more Path structures. (The Path structure contains an ordered list of vertices that make a single contour.)
 
