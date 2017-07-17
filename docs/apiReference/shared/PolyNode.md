@@ -1,4 +1,4 @@
-##### class PolyNode
+#### class PolyNode
 _extended by [PolyTree](./PolyTree.md)_
 
 PolyNodes are encapsulated within a PolyTree container, and together provide a data structure representing the parent-child relationships of polygon
