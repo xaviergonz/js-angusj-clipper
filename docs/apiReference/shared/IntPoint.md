@@ -1,4 +1,4 @@
-##### interface IntPoint
+#### interface IntPoint
 ```{ x: number; y: number; }```
 
 The IntPoint structure is used to represent all vertices in the Clipper Library. An integer storage type has been deliberately chosen to preserve numerical robustness. (Early versions of the library used floating point coordinates, but it became apparent that floating point imprecision would always cause occasional errors.)
