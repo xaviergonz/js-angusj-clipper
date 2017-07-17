@@ -1,4 +1,4 @@
-##### interface OffsetInput
+#### interface OffsetInput
 
 A single input (of multiple possible inputs) for the offsetToPaths / offsetToPolyTree operation.
 
