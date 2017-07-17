@@ -1,4 +1,4 @@
-##### enum PointInPolygonResult
+#### enum PointInPolygonResult
 
 The PointInPolygonResult enumerator has 3 values: 
 
