@@ -1,5 +1,5 @@
 # js-angusj-clipper
-####*Polygon and line clipping and offsetting library for Javascript/Typescript*
+#### *Polygon and line clipping and offsetting library for Javascript/Typescript*
 
 *a port of Angus Johnson's clipper to WebAssembly / Asm.js*
 
