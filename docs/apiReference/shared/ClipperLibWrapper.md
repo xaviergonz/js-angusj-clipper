@@ -1,4 +1,4 @@
-##### class ClipperLibWrapper
+#### class ClipperLibWrapper
 
 A wrapper for the Native Clipper Library instance with all the operations available.
 
@@ -43,19 +43,6 @@ A wrapper for the Native Clipper Library instance with all the operations availa
        * area will be negative.
        
 * **cleanPolygon(path: [Path](../shared/Path.md), distance = 1.1415): [Path](../shared/Path.md)**
-
-    Removes vertices: 
-    
-    * that join co-linear edges, or join edges that are almost co-linear (such that if the vertex was moved no more than the specified distance the edges would be co-linear) 
-    * that are within the specified distance of an adjacent vertex 
-    * that are within the specified distance of a semi-adjacent vertex together with their out-lying vertices 
-    
-    Vertices are semi-adjacent when they are separated by a single (out-lying) vertex.
-    
-    The distance parameter's default value is approximately √2 so that a vertex will be removed when adjacent or semi-adjacent vertices having their corresponding X and Y coordinates differing by no more than 1 unit. (If the egdes are semi-adjacent the out-lying vertex will be removed too.)
-
-    **TODO: insert image from CleanPolygon**
-    
 * **cleanPolygons(paths: [Paths](../shared/Paths.md), distance = 1.1415): [Paths](../shared/Paths.md)**
 
     Removes vertices: 
@@ -68,7 +55,8 @@ A wrapper for the Native Clipper Library instance with all the operations availa
     
     The distance parameter's default value is approximately √2 so that a vertex will be removed when adjacent or semi-adjacent vertices having their corresponding X and Y coordinates differing by no more than 1 unit. (If the egdes are semi-adjacent the out-lying vertex will be removed too.)
 
-    **TODO: insert image from CleanPolygons**
+    ![image](https://user-images.githubusercontent.com/6306796/28290343-5dc75e46-6b46-11e7-83aa-4a387823d1a9.png)
+    ![image](https://user-images.githubusercontent.com/6306796/28290361-69632726-6b46-11e7-880a-09b965dde079.png)    
 
 * **closedPathsFromPolyTree(polyTree: [PolyTree](../shared/PolyTree.md)): [Paths](../shared/Paths.md)**
 
@@ -78,7 +66,7 @@ A wrapper for the Native Clipper Library instance with all the operations availa
 
     Minkowski Difference is performed by subtracting each point in a polygon from the set of points in an open or closed path. A key feature of Minkowski Difference is that when it's applied to two polygons, the resulting polygon will contain the coordinate space origin whenever the two polygons touch or overlap. (This function is often used to determine when polygons collide.)
 
-    **TODO: insert image from MinkowskiDiff**
+    ![image](https://user-images.githubusercontent.com/6306796/28290392-8cd0af94-6b46-11e7-9bad-fd2e245cddc8.png)
     
     In the image above left the blue polygon is the 'minkowski difference' of the two red boxes. The black dot represents the coordinate space origin
 
@@ -87,7 +75,7 @@ A wrapper for the Native Clipper Library instance with all the operations availa
 
     Minkowski Addition is performed by adding each point in a polygon 'pattern' to the set of points in an open or closed path. The resulting polygon (or polygons) defines the region that the 'pattern' would pass over in moving from the beginning to the end of the 'path'.
 
-    **TODO: insert image from MinkowskiSum**
+    ![image](https://user-images.githubusercontent.com/6306796/28290405-9636f11a-6b46-11e7-95e6-2e5cddb20789.png)
 
 * **openPathsFromPolyTree(polyTree: [PolyTree](../shared/PolyTree.md)): [Paths](../shared/Paths.md)**
 
@@ -100,7 +88,7 @@ A wrapper for the Native Clipper Library instance with all the operations availa
     * On Y-axis positive upward displays, orientation will return true if the polygon's orientation is counter-clockwise. 
     * On Y-axis positive downward displays, orientation will return true if the polygon's orientation is clockwise. 
     
-    **TODO: insert image from Orientation**
+    ![image](https://user-images.githubusercontent.com/6306796/28290420-a1877378-6b46-11e7-9d29-37f6eebd7755.png)
 
     Notes:
     
@@ -128,22 +116,17 @@ A wrapper for the Native Clipper Library instance with all the operations availa
     Reverses the vertex order (and hence orientation) in each contained path.
     
 * **simplifyPolygon(path: [Path](../shared/Path.md), fillType: [PolyFillType](../shared/PolyFillType.md) = PolyFillType.EvenOdd): [Paths](../shared/Paths.md)**
+* **simplifyPolygons(paths: [Paths](../shared/Paths.md), fillType: [PolyFillType](../shared/PolyFillType.md) = PolyFillType.EvenOdd): [Paths](../shared/Paths.md)**
 
     Removes self-intersections from the supplied polygon (by performing a boolean union operation using the nominated PolyFillType).
     Polygons with non-contiguous duplicate vertices (ie 'touching') will be split into two polygons.
     
     Note: There's currently no guarantee that polygons will be strictly simple since 'simplifying' is still a work in progress.
     
-    **TODO: insert image from simplyfyPolygon**
-    
-* **simplifyPolygons(paths: [Paths](../shared/Paths.md), fillType: [PolyFillType](../shared/PolyFillType.md) = PolyFillType.EvenOdd): [Paths](../shared/Paths.md)**
+    ![image](https://user-images.githubusercontent.com/6306796/28290432-b2402dfe-6b46-11e7-8d1f-d9e7ad7c1770.png)
 
-    Removes self-intersections from the supplied polygons (by performing a boolean union operation using the nominated PolyFillType).
-    Polygons with non-contiguous duplicate vertices (ie 'vertices are touching') will be split into two polygons.
-
-    Note: There's currently no guarantee that polygons will be strictly simple since 'simplifying' is still a work in progress.
-        
-    **TODO: insert image from simplyfyPolygon**
+    ![image](https://user-images.githubusercontent.com/6306796/28290441-c55f97b2-6b46-11e7-8c14-ab667fb4003f.png)
+    ![image](https://user-images.githubusercontent.com/6306796/28290451-cca90fee-6b46-11e7-90e8-a7a0b98e7ae5.png)
 
 * **scalePath(path: [Path](../shared/Path.md), scale: number): [Path](../shared/Path.md)**
 
