@@ -1,4 +1,4 @@
-##### interface ClipParams
+#### interface ClipParams
 
 Params for the clipToPaths / clipToPolyTree operations.
 
@@ -53,7 +53,8 @@ meaningful solutions.
         
     *Note: There's currently no guarantee that polygons will be strictly simple since 'simplifying' is still a work in progress.*
        
-    **TODO: insert image**
+       
+    ![image](https://user-images.githubusercontent.com/6306796/28289784-4875cc82-6b44-11e7-9be7-20d5eb30f597.png)
         
     In the image above, the two examples show weakly simple polygons being broken into two strictly simple polygons. (The outlines with arrows are intended to aid visualizing vertex order.)
 
