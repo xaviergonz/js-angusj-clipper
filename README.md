@@ -22,7 +22,7 @@ Angus Johnson.
 ### Why?
 
 Because sometimes performance does matter and I could not find a javascript library
-as fast or as rock solid as the C++ version of Clipper.
+as fast or as rock solid as the C++ version of [Clipper](https://sourceforge.net/projects/polyclipping/).
 
 As an example, the (totally unscientific) benchmarks on my machine for offsetting a big polygon are:
 * Pure JS port of the Clipper library: **~11 seconds**
