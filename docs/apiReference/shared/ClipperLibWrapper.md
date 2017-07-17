@@ -17,23 +17,15 @@ A wrapper for the Native Clipper Library instance with all the operations availa
     Native library format.
     
 * **clipToPaths(params: [ClipParams](../clipping/ClipParams.md)): [Paths](../shared/Paths.md) | undefined**
-    
-    Performs a polygon clipping (boolean) operation, returning the resulting Paths or throwing an error if failed.
-    See the method detailed [documentation](../clipping/clipTo.md) for more details.
-    
 * **clipToPolyTree(params: [ClipParams](../clipping/ClipParams.md)): [PolyTree](../shared/PolyTree.md) | undefined**
 
-    Performs a polygon clipping (boolean) operation, returning the resulting PolyTree or throwing an error if failed.
+    Performs a polygon clipping (boolean) operation, returning the resulting Paths/PolyTree or throwing an error if failed.
     See the method detailed [documentation](../clipping/clipTo.md) for more details.
 
 * **offsetToPaths(params: [OffsetParams](../offsetting/OffsetParams.md)): [Paths](../shared/Paths.md) | undefined**
-
-    Performs a polygon offset operation, returning the resulting Paths or undefined if failed.
-    See the method detailed [documentation](../offsetting/offsetTo.md) for more details.
-
 * **offsetToPolyTree(params: [OffsetParams](../offsetting/OffsetParams.md)): [PolyTree](../shared/PolyTree.md) | undefined**
 
-    Performs a polygon offset operation, returning the resulting PolyTree or undefined if failed.
+    Performs a polygon offset operation, returning the resulting Paths/PolyTree or undefined if failed.
     See the method detailed [documentation](../offsetting/offsetTo.md) for more details.
 
 * **area(path: [Path](../shared/Path.md)): number**
