@@ -1,4 +1,4 @@
-##### interface OffsetParams
+#### interface OffsetParams
 
 Params for the polygon offset operation.
 
@@ -53,4 +53,4 @@ Params for the polygon offset operation.
     
     An example of an offsetting 'spike' at a narrow angle that's a consequence of using a large MiterLimit (25) ...
     
-    **TODO: insert image from ClipperOffset.MiterLimit**
+    ![image](https://user-images.githubusercontent.com/6306796/28290111-5b2f0afe-6b45-11e7-8607-af35ffc01cbf.png)
