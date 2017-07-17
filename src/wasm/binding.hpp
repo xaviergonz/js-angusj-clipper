@@ -17,9 +17,9 @@ size_t JS_DoublesForPath(Path &path) {
 }
 
 size_t JS_DoublesForPaths(Paths &paths) {
-  int nofPaths = paths.size();
+  size_t nofPaths = paths.size();
   int items = 1; // for path count
-  for (int i = 0; i < nofPaths; i++) {
+  for (size_t i = 0; i < nofPaths; i++) {
     items += JS_DoublesForPath(paths[i]);
   }
   return items;
@@ -28,12 +28,12 @@ size_t JS_DoublesForPaths(Paths &paths) {
 double* JS_ToPathHelper(Path &dest, double* coords) {
   // first double in array is nof coords
 
-  int nofCoords = coords[0];
+  double* pointer = coords;
+  size_t nofCoords = *pointer; pointer++;
   dest.clear();
   dest.resize(nofCoords);
-  double* pointer = &coords[1];
   IntPoint p;
-  for (int i = 0; i < nofCoords; ++i) {
+  for (size_t i = 0; i < nofCoords; ++i) {
     p.X = *pointer; pointer++;
     p.Y = *pointer; pointer++;
 #ifdef use_xyz
@@ -53,10 +53,10 @@ void JS_ToPathsHelper(Paths &dest, double* p) {
   // first double in array has nof paths
   // then each path
 
-  int nofPaths = *p; ++p;
+  size_t nofPaths = *p; ++p;
   dest.clear();
   dest.reserve(nofPaths);
-  for (int i = 0; i < nofPaths; ++i) {
+  for (size_t i = 0; i < nofPaths; ++i) {
     Path path;
     p = JS_ToPathHelper(path, p);
     dest.push_back(path);
@@ -74,7 +74,7 @@ double* JS_WriteFromPath(Path &path, double* p) {
   double* p2 = p;
 
   *p2 = size; p2++;
-  for (int i = 0; i < size; ++i) {
+  for (size_t i = 0; i < size; ++i) {
     IntPoint *point = &path[i];
     *p2 = point->X; p2++;
     *p2 = point->Y; p2++;
@@ -111,7 +111,7 @@ double* JS_FromPathsHelper(Paths &paths) {
 
   *p2 = size; p2++;
 
-  for (int i = 0; i < size; ++i) {
+  for (size_t i = 0; i < size; ++i) {
     p2 = JS_WriteFromPath(paths[i], p2);
   }
 

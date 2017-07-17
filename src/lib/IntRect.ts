@@ -1,8 +1,6 @@
-import { CInt } from './types';
-
-export interface IntRect { // struct
-  left: CInt;
-  top: CInt;
-  right: CInt;
-  bottom: CInt;
+export interface IntRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
 }

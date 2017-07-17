@@ -1,8 +1,8 @@
-import * as clipperLib from '../lib2/index';
+import * as clipperLib from '../lib';
 import * as geo from 'geojson';
-import { ClipperLibWrapper, ClipType, EndType, JoinType, OffsetData, Path, Paths, PolyFillType, ClipData } from '../lib2';
-import { doubleArrayToNativePaths, doubleArrayToPaths, nativePathsToDoubleArray, pathsToDoubleArray } from '../lib2/native/PathsToNativePaths';
-import { NativeClipperLibInstance } from '../lib2/native/NativeClipperLibInstance';
+import { ClipperLibWrapper, ClipType, EndType, JoinType, OffsetParams, Path, Paths, PolyFillType, ClipParams } from '../lib';
+import { doubleArrayToNativePaths, doubleArrayToPaths, nativePathsToDoubleArray, pathsToDoubleArray } from '../lib/native/PathsToNativePaths';
+import { NativeClipperLibInstance } from '../lib/native/NativeClipperLibInstance';
 
 const scale2 = 10000;
 
@@ -43,7 +43,7 @@ const cp = polygonToPaths([
 export function testOffset(clipper: ClipperLibWrapper, polytree: boolean) {
   console.time('offset');
 
-  const data: OffsetData = {
+  const data: OffsetParams = {
     offsetInputs: [
       {
         data: mp,
@@ -68,7 +68,7 @@ export function testOffset(clipper: ClipperLibWrapper, polytree: boolean) {
 export function testClip(clipper: ClipperLibWrapper, polytree: boolean) {
   console.time('clip');
 
-  const data: ClipData = {
+  const data: ClipParams = {
     subjectInputs: [
       {
         data: mp,
@@ -139,7 +139,7 @@ function testPathsConversion(clipper: NativeClipperLibInstance, myPathLen: numbe
 
 const main = async () => {
   console.time('init time');
-  const wrapper = (await clipperLib.loadNativeClipperLibInstanceAsync(clipperLib.NativeClipperLibRequestedFormat.AsmJsOnly, '../wasm/'));
+  const wrapper = (await clipperLib.loadNativeClipperLibInstanceAsync(clipperLib.NativeClipperLibRequestedFormat.WasmWithAsmJsFallback, '../wasm/'));
   console.timeEnd('init time');
 
   const test = (polyTree: boolean) => {
@@ -160,6 +160,37 @@ const main = async () => {
 
   test(true);
   test(false);
+
+  // create some polygons
+  const poly1 = [
+    {x: 0, y: 0},
+    {x: 10, y: 0},
+    {x: 10, y: 10},
+    {x: 0, y: 10},
+    {x: 0, y: 0}
+  ];
+
+  const poly2 = [
+    {x: 10, y: 0},
+    {x: 20, y: 0},
+    {x: 20, y: 10},
+    {x: 10, y: 10},
+    {x: 10, y: 0}
+  ];
+
+  // get their union
+  const polyResult = wrapper.clipToPaths({
+    clipType: clipperLib.ClipType.Union,
+
+    subjectInputs: [
+      { data: poly1, closed: true },
+      { data: poly2, closed: true }
+    ],
+
+    subjectFillType: clipperLib.PolyFillType.EvenOdd
+  });
+
+  console.log(polyResult);
 };
 main().catch((err) => {
   if (!err.ignore) {

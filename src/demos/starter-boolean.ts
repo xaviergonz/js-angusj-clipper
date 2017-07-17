@@ -1,5 +1,5 @@
 import { islesMultipolygon } from './isles';
-import { EndType, JoinType, loadNativeClipperLibInstanceAsync, NativeClipperLibRequestedFormat, Path, Paths } from '../lib2';
+import { EndType, JoinType, loadNativeClipperLibInstanceAsync, NativeClipperLibRequestedFormat, Path, Paths } from '../lib';
 import * as geo from 'geojson';
 
 const main = async () => {
