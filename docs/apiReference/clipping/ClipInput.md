@@ -1,4 +1,4 @@
-##### interface ClipInput
+#### interface ClipInput
 
 A single clip input (of multiple possible inputs) for the clipToPaths / clipToPolyTree operations.
 
