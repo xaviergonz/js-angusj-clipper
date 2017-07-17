@@ -1,4 +1,4 @@
-##### class PolyTree
+#### class PolyTree
 _extends [PolyNode](./PolyNode.md)_
 
 PolyTree is intended as a read-only data structure that should only be used to receive solutions from clipping and offsetting operations. It's an
@@ -15,7 +15,7 @@ contain children representing nested outer polygons etc. Children of outers will
 PolyTrees can also contain open paths. Open paths will always be represented by top level PolyNodes. Two functions are provided to quickly separate out
 open and closed paths from a polytree - openPathsFromPolyTree and closedPathsFromPolyTree.
 
-**TODO: insert image from PolyTree**
+![polytree](https://user-images.githubusercontent.com/6306796/28290312-41613a88-6b46-11e7-8098-e6f1585af71f.png)
 
 ###### Properties
 
