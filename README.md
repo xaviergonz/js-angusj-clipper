@@ -59,7 +59,7 @@ async function mainAsync() {
     
   );
   
-  // create some polygons
+  // create some polygons (note that they MUST be integer coordinates)
   const poly1 = [
     {x: 0, y: 0},
     {x: 10, y: 0},
