@@ -1,41 +1,26 @@
+import { ClipInput, ClipParams, clipToPaths, clipToPolyTree } from './clipFunctions';
+import { ClipperError } from './ClipperError';
 import { hiRange } from './constants';
-import { ClipType, EndType, JoinType, PolyFillType, PointInPolygonResult } from './enums';
-import {
-  area,
-  cleanPolygon,
-  cleanPolygons,
-  closedPathsFromPolyTree,
-  minkowskiDiff,
-  minkowskiSumPath,
-  minkowskiSumPaths,
-  openPathsFromPolyTree,
-  orientation,
-  pointInPolygon,
-  polyTreeToPaths,
-  reversePath,
-  reversePaths,
-  scalePath,
-  scalePaths,
-  simplifyPolygon,
-  simplifyPolygons
-} from './functions';
+import { ClipType, EndType, JoinType, NativeClipperLibLoadedFormat, NativeClipperLibRequestedFormat, PointInPolygonResult, PolyFillType } from './enums';
+import * as functions from './functions';
 import { IntPoint } from './IntPoint';
 import { IntRect } from './IntRect';
 import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
+import { OffsetInput, OffsetParams, offsetToPaths, offsetToPolyTree } from './offsetFunctions';
 import { Path } from './Path';
 import { Paths } from './Paths';
 import { PolyNode } from './PolyNode';
 import { PolyTree } from './PolyTree';
-import { ClipInput, ClipParams, clipToPaths, clipToPolyTree } from './clipFunctions';
-import { OffsetInput, OffsetParams, offsetToPaths, offsetToPolyTree } from './offsetFunctions';
-import { ClipperError } from './ClipperError';
 
+// export types
 export {
-  ClipType,
-  EndType, JoinType,
+  ClipType, EndType, JoinType, PolyFillType, NativeClipperLibLoadedFormat, NativeClipperLibRequestedFormat, PointInPolygonResult,
   PolyNode,
   PolyTree,
-  IntPoint, IntRect, Path, Paths, PolyFillType,
+  IntPoint,
+  IntRect,
+  Path,
+  Paths,
   ClipInput, ClipParams,
   OffsetInput, OffsetParams,
   ClipperError
@@ -44,37 +29,6 @@ export {
 let wasmModule: NativeClipperLibInstance | undefined | Error;
 let asmJsModule: NativeClipperLibInstance | undefined;
 
-/**
- * Format to use when loading the native library instance.
- */
-export enum NativeClipperLibRequestedFormat {
-  /**
-   * Try to load the WebAssembly version, if it fails try to load the Asm.js version.
-   */
-  WasmWithAsmJsFallback = 'wasmWithAsmJsFallback',
-  /**
-   * Load the WebAssembly version exclusively.
-   */
-  WasmOnly = 'wasmOnly',
-  /**
-   * Load the Asm.js version exclusively.
-   */
-  AsmJsOnly = 'asmJsOnly',
-}
-
-/**
- * The format the native library being used is in.
- */
-export enum NativeClipperLibLoadedFormat {
-  /**
-   * WebAssembly.
-   */
-  Wasm = 'wasm',
-  /**
-   * Asm.js.
-   */
-  AsmJs = 'asmJs'
-}
 
 /**
  * A wrapper for the Native Clipper Library instance with all the operations available.
@@ -216,7 +170,7 @@ export class ClipperLibWrapper {
    * @return {number} - Area
    */
   area(path: Path): number {
-    return area(path);
+    return functions.area(path);
   }
 
   /**
@@ -236,7 +190,7 @@ export class ClipperLibWrapper {
    * @return {Path} - The cleaned path
    */
   cleanPolygon(path: Path, distance = 1.1415): Path {
-    return cleanPolygon(this.instance, path, distance);
+    return functions.cleanPolygon(this.instance, path, distance);
   }
 
   /**
@@ -256,7 +210,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The cleaned paths
    */
   cleanPolygons(paths: Paths, distance = 1.1415): Paths {
-    return cleanPolygons(this.instance, paths, distance);
+    return functions.cleanPolygons(this.instance, paths, distance);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -267,7 +221,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   closedPathsFromPolyTree(polyTree: PolyTree): Paths {
-    return closedPathsFromPolyTree(polyTree);
+    return functions.closedPathsFromPolyTree(polyTree);
   }
 
 
@@ -281,7 +235,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   minkowskiDiff(poly1: Path, poly2: Path): Paths {
-    return minkowskiDiff(this.instance, poly1, poly2);
+    return functions.minkowskiDiff(this.instance, poly1, poly2);
   }
 
   /**
@@ -294,7 +248,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   minkowskiSumPath(pattern: Path, path: Path, pathIsClosed: boolean): Paths {
-    return minkowskiSumPath(this.instance, pattern, path, pathIsClosed);
+    return functions.minkowskiSumPath(this.instance, pattern, path, pathIsClosed);
   }
 
   /**
@@ -307,7 +261,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   minkowskiSumPaths(pattern: Path, paths: Paths, pathIsClosed: boolean): Paths {
-    return minkowskiSumPaths(this.instance, pattern, paths, pathIsClosed);
+    return functions.minkowskiSumPaths(this.instance, pattern, paths, pathIsClosed);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -318,7 +272,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   openPathsFromPolyTree(polyTree: PolyTree): Paths {
-    return openPathsFromPolyTree(polyTree);
+    return functions.openPathsFromPolyTree(polyTree);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -343,7 +297,7 @@ export class ClipperLibWrapper {
    * @return {boolean}
    */
   orientation(path: Path): boolean {
-    return orientation(path);
+    return functions.orientation(path);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -358,7 +312,7 @@ export class ClipperLibWrapper {
    * @return {PointInPolygonResult}
    */
   pointInPolygon(point: IntPoint, path: Path): PointInPolygonResult {
-    return pointInPolygon(point, path);
+    return functions.pointInPolygon(point, path);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -369,7 +323,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   polyTreeToPaths(polyTree: PolyTree): Paths {
-    return polyTreeToPaths(polyTree);
+    return functions.polyTreeToPaths(polyTree);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -379,7 +333,7 @@ export class ClipperLibWrapper {
    * @param path - Path to reverse, which gets overwritten rather than copied
    */
   reversePath(path: Path): void {
-    reversePath(path);
+    functions.reversePath(path);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -389,7 +343,7 @@ export class ClipperLibWrapper {
    * @param paths - Paths to reverse, which get overwritten rather than copied
    */
   reversePaths(paths: Paths): void {
-    reversePaths(paths);
+    functions.reversePaths(paths);
   }
 
   /**
@@ -403,7 +357,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The solution
    */
   simplifyPolygon(path: Path, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
-    return simplifyPolygon(this.instance, path, fillType);
+    return functions.simplifyPolygon(this.instance, path, fillType);
   }
 
   /**
@@ -417,7 +371,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The solution
    */
   simplifyPolygons(paths: Paths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
-    return simplifyPolygons(this.instance, paths, fillType);
+    return functions.simplifyPolygons(this.instance, paths, fillType);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -429,7 +383,7 @@ export class ClipperLibWrapper {
    * @return {Path} - The scaled path
    */
   scalePath(path: Path, scale: number): Path {
-    return scalePath(path, scale);
+    return functions.scalePath(path, scale);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -441,7 +395,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The scaled paths
    */
   scalePaths(paths: Paths, scale: number): Paths {
-    return scalePaths(paths, scale);
+    return functions.scalePaths(paths, scale);
   }
 
 }
