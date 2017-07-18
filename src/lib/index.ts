@@ -428,7 +428,7 @@ export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLib
       throw new ClipperError('unknown native clipper format');
   }
 
-  function getModuleAsync(initModule: any): Promise<NativeClipperLibInstance> {
+  function getModuleAsync(initModule: (overrides: object) => NativeClipperLibInstance | undefined): Promise<NativeClipperLibInstance> {
     return new Promise<NativeClipperLibInstance>((resolve, reject) => {
       let finalModule: NativeClipperLibInstance | undefined;
 
