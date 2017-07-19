@@ -3,6 +3,8 @@
 
 *a port of Angus Johnson's clipper to WebAssembly/Asm.js*
 
+[![npm version](https://badge.fury.io/js/js-angusj-clipper.svg)](https://badge.fury.io/js/js-angusj-clipper)
+
 ---
 
 Install it with ```npm install --save js-angusj-clipper```
