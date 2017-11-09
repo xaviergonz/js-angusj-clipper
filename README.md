@@ -55,7 +55,7 @@ async function mainAsync() {
     clipperLib.NativeClipperLibRequestedFormat.WasmWithAsmJsFallback,
     
     // path were the clipper-wasm.wasm resource file is located (should be copied from 
-    // node_modules/js-angusj-clipper/wasm/clipper-wasm.wasm - only required with
+    // node_modules/js-angusj-clipper/dist/wasm/clipper-wasm.wasm - only required with
     // the WASM version)
     '../wasm'
     
