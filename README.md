@@ -4,6 +4,7 @@
 *a port of Angus Johnson's clipper to WebAssembly/Asm.js*
 
 [![npm version](https://badge.fury.io/js/js-angusj-clipper.svg)](https://badge.fury.io/js/js-angusj-clipper)
+[![Build Status](https://travis-ci.org/xaviergonz/js-angusj-clipper.svg?branch=master)](https://travis-ci.org/xaviergonz/js-angusj-clipper)
 
 ---
 
