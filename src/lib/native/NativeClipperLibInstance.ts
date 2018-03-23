@@ -1,6 +1,13 @@
-import { NativeClipType, NativeEndType, NativeInitOptions, NativeJoinType, NativePolyFillType, NativePolyType } from './nativeEnums';
 import { NativeClipper } from './NativeClipper';
 import { NativeClipperOffset } from './NativeClipperOffset';
+import {
+  NativeClipType,
+  NativeEndType,
+  NativeInitOptions,
+  NativeJoinType,
+  NativePolyFillType,
+  NativePolyType,
+} from './nativeEnums';
 import { NativeIntPoint } from './NativeIntPoint';
 import { NativePath } from './NativePath';
 import { NativePaths } from './NativePaths';
@@ -20,7 +27,7 @@ export interface NativeClipperLibInstance {
     buffer: ArrayBuffer
   };
 
-  //types
+  // types
   Path: {
     new (): NativePath;
   };

@@ -1,5 +1,5 @@
-import { NativePolyType } from './nativeEnums';
 import { NativeDeletable } from './NativeDeletable';
+import { NativePolyType } from './nativeEnums';
 import { NativeIntRect } from './NativeIntRect';
 import { NativePath } from './NativePath';
 import { NativePaths } from './NativePaths';

@@ -1,12 +1,12 @@
 import { EndType, JoinType } from './enums';
 import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
+import { NativeClipperOffset } from './native/NativeClipperOffset';
 import { endTypeToNative, joinTypeToNative } from './native/nativeEnumConversion';
 import { nativePathsToPaths, pathsToNativePaths } from './native/PathsToNativePaths';
 import { pathToNativePath } from './native/PathToNativePath';
 import { Path } from './Path';
 import { Paths } from './Paths';
 import { PolyTree } from './PolyTree';
-import { NativeClipperOffset } from './native/NativeClipperOffset';
 
 /**
  * The ClipperOffset class encapsulates the process of offsetting (inflating/deflating) both open and closed paths using a number of different join types

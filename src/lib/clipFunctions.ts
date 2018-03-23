@@ -1,10 +1,10 @@
 import { Clipper } from './Clipper';
+import { ClipperError } from './ClipperError';
 import { ClipType, PolyFillType, PolyType } from './enums';
 import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
 import { Path } from './Path';
 import { Paths } from './Paths';
 import { PolyTree } from './PolyTree';
-import { ClipperError } from './ClipperError';
 
 /**
  * A single subject input (of multiple possible inputs) for the clipToPaths / clipToPolyTree operations

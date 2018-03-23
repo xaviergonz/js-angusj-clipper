@@ -1,6 +1,6 @@
 import { ClipType, EndType, JoinType, PolyFillType, PolyType } from '../enums';
-import { NativeClipType, NativeEndType, NativeJoinType, NativePolyFillType, NativePolyType } from './nativeEnums';
 import { NativeClipperLibInstance } from './NativeClipperLibInstance';
+import { NativeClipType, NativeEndType, NativeJoinType, NativePolyFillType, NativePolyType } from './nativeEnums';
 
 export function polyFillTypeToNative(nativeLib: NativeClipperLibInstance, polyFillType: PolyFillType): NativePolyFillType {
   switch (polyFillType) {

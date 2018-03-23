@@ -1,5 +1,5 @@
-import { NativeClipType, NativePolyFillType } from './nativeEnums';
 import { NativeClipperBase } from './NativeClipperBase';
+import { NativeClipType, NativePolyFillType } from './nativeEnums';
 import { NativePaths } from './NativePaths';
 import { NativePolyTree } from './NativePolyTree';
 

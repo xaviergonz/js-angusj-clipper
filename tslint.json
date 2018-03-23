@@ -1,13 +1,19 @@
 {
+  "extends": [
+    "tslint:latest"
+  ],
   "rules": {
+    "no-implicit-dependencies": false,
     "object-literal-sort-keys": false,
     "max-classes-per-file": false,
     "prefer-conditional-expression": false,
     "no-namespace": false,
-
+    "no-object-literal-type-assertion": false,
     "adjacent-overload-signatures": true,
     "member-access": false,
     "member-ordering": false,
+    "no-submodule-imports": false,
+    "no-duplicate-imports": false,
     "no-any": false,
     "no-reference": true,
     "no-var-requires": false,
@@ -43,6 +49,8 @@
       true,
       "debug",
       "info",
+      "time",
+      "timeEnd",
       "trace"
     ],
     "no-construct": true,
@@ -52,7 +60,7 @@
     "no-empty": true,
     "no-eval": true,
     "no-invalid-template-strings": true,
-    "no-invalid-this": true,
+    "no-invalid-this": false,
     "no-misused-new": true,
     "no-null-keyword": false,
     "no-shadowed-variable": true,
@@ -65,21 +73,15 @@
       true,
       "allow-fast-null-checks"
     ],
-    "no-unused-variable": [
-      true,
-      {
-        "ignore-pattern": "^__"
-      }
-    ],
-    "no-use-before-declare": true,
+    "no-unused-variable": false,
+    "no-use-before-declare": false,
     "no-var-keyword": true,
     "radix": true,
     "switch-default": true,
     "triple-equals": [
       true,
-      "allow-null-check"
+      "allow-undefined-check"
     ],
-    "typeof-compare": true,
     "use-isnan": true,
     "eofline": true,
     "indent": [
@@ -105,7 +107,10 @@
     "arrow-parens": true,
     "arrow-return-shorthand": false,
     "class-name": false,
-    "comment-format": false,
+    "comment-format": [
+      true,
+      "check-space"
+    ],
     "import-spacing": true,
     "interface-over-type-literal": true,
     "interface-name": false,
@@ -118,8 +123,17 @@
     ],
     "no-parameter-properties": false,
     "no-trailing-whitespace": false,
+    "no-this-assignment": [
+      true,
+      {
+        "allowed-names": [
+          "^self$"
+        ],
+        "allow-destructuring": true
+      }
+    ],
     "no-unnecessary-initializer": true,
-    "no-unnecessary-qualifier": true,
+    "no-unnecessary-qualifier": false,
     "object-literal-key-quotes": [
       true,
       "as-needed"

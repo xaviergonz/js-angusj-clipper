@@ -1,5 +1,6 @@
 import { ClipType, PolyFillType, PolyType } from './enums';
 import { IntRect } from './IntRect';
+import { NativeClipper } from './native/NativeClipper';
 import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
 import { clipTypeToNative, polyFillTypeToNative, polyTypeToNative } from './native/nativeEnumConversion';
 import { nativePathsToPaths, pathsToNativePaths } from './native/PathsToNativePaths';
@@ -7,7 +8,6 @@ import { pathToNativePath } from './native/PathToNativePath';
 import { Path } from './Path';
 import { Paths } from './Paths';
 import { PolyTree } from './PolyTree';
-import { NativeClipper } from './native/NativeClipper';
 
 export interface ClipperInitOptions {
   /**

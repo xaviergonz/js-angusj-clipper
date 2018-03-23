@@ -81,7 +81,7 @@ export function closedPathsFromPolyTree(polyTree: PolyTree): Paths {
   // we do this in JS since copying path is more expensive than just doing it
 
   const result: Paths = [];
-  //result.Capacity = polytree.Total;
+  // result.Capacity = polytree.Total;
   addPolyNodeToPaths(polyTree, NodeType.Closed, result);
   return result;
 }
@@ -155,9 +155,9 @@ export function orientation(path: Path): boolean {
 export function pointInPolygon(point: IntPoint, path: Path): PointInPolygonResult {
   // we do this in JS since copying path is more expensive than just doing it
 
-  //returns 0 if false, +1 if true, -1 if pt ON polygon boundary
-  //See "The Point in Polygon Problem for Arbitrary Polygons" by Hormann & Agathos
-  //http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.88.5498&rep=rep1&type=pdf
+  // returns 0 if false, +1 if true, -1 if pt ON polygon boundary
+  // See "The Point in Polygon Problem for Arbitrary Polygons" by Hormann & Agathos
+  // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.88.5498&rep=rep1&type=pdf
   let result = 0;
   const cnt = path.length;
   if (cnt < 3) {
@@ -210,7 +210,7 @@ export function polyTreeToPaths(polyTree: PolyTree): Paths {
   // we do this in JS since copying path is more expensive than just doing it
 
   const result: Paths = [];
-  //result.Capacity = polytree.total;
+  // result.Capacity = polytree.total;
   addPolyNodeToPaths(polyTree, NodeType.Any, result);
   return result;
 }

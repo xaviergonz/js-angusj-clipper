@@ -1,5 +1,5 @@
-import { NativeEndType, NativeJoinType } from './nativeEnums';
 import { NativeDeletable } from './NativeDeletable';
+import { NativeEndType, NativeJoinType } from './nativeEnums';
 import { NativePath } from './NativePath';
 import { NativePaths } from './NativePaths';
 import { NativePolyTree } from './NativePolyTree';
