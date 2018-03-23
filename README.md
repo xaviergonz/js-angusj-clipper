@@ -9,11 +9,6 @@
 
 Install it with ```npm install --save js-angusj-clipper```
 
-*Note:* If you want to use the WebAssembly version you will also need to copy the ```clipper-wasm.wasm``` file found in
-```node_modules/js-angusj-clipper/dist/wasm``` as a resource file and then reference the folder
-containing it inside the init function. Eventually (hopefully) this requirement will be dropped in the future once
-EMScripten supports embedding WASM file contents inside js files.
-
 __To support this project star it on [github](https://github.com/xaviergonz/js-angusj-clipper)!__
 
 ---

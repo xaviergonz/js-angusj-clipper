@@ -17,9 +17,6 @@ function build(wasmMode) {
 
     shelljs.mkdir('dist', 'dist/wasm');
     shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
-    if (wasmMode) {
-        shelljs.cp(`src/wasm/clipper-wasm.wasm`, `dist/wasm/clipper-wasm.wasm`);        
-    }
 }
 
 console.log('building asmjs version');
