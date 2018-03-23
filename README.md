@@ -55,7 +55,6 @@ async function mainAsync() {
     {x: 10, y: 0},
     {x: 10, y: 10},
     {x: 0, y: 10},
-    {x: 0, y: 0}
   ];
   
   const poly2 = [
@@ -63,19 +62,21 @@ async function mainAsync() {
     {x: 20, y: 0},
     {x: 20, y: 10},
     {x: 10, y: 10},
-    {x: 10, y: 0}
   ];
   
   // get their union
   const polyResult = clipper.clipToPaths({
     clipType: clipperLib.ClipType.Union,
 
-    subjectInputs: [ 
+    subjectInputs: [
       { data: poly1, closed: true },
-      { data: poly2, closed: true }
     ],
 
-    subjectFillType: clipperLib.PolyFillType.NonZero
+    clipInputs: [
+      { data: poly2 }
+    ],
+
+    subjectFillType: clipperLib.PolyFillType.EvenOdd
   });
   
   /* polyResult will be:
