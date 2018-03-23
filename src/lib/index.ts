@@ -404,10 +404,9 @@ export class ClipperLibWrapper {
  * Asynchronously tries to load a new native instance of the clipper library to be shared across all method invocations.
  *
  * @param format - Format to load, either WasmThenAsmJs, WasmOnly or AsmJsOnly.
- * @param resourceFilePrefixUrl - URL prefix to add when looking for the clipper-wasm.wasm file, defaults to ''.
  * @return {Promise<ClipperLibWrapper>} - Promise that resolves with the wrapper instance.
  */
-export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLibRequestedFormat, resourceFilePrefixUrl: string = ''): Promise<ClipperLibWrapper> => {
+export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLibRequestedFormat): Promise<ClipperLibWrapper> => {
   // TODO: in the future use these methods instead https://github.com/jedisct1/libsodium.js/issues/94
 
   let tryWasm, tryAsmJs;
@@ -435,9 +434,6 @@ export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLib
       //noinspection JSUnusedLocalSymbols
       const moduleOverrides = {
         noExitRuntime: true,
-        locateFile(file: string) {
-          return resourceFilePrefixUrl + file;
-        },
         preRun() {
           if (finalModule) {
             resolve(finalModule);

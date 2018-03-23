@@ -50,15 +50,8 @@ async function mainAsync() {
   
   // create an instance of the library (usually only do this once in your app)
   const clipper = await clipperLib.loadNativeClipperLibInstanceAsync(
-    
     // let it autodetect which one to use, but also available WasmOnly and AsmJsOnly
-    clipperLib.NativeClipperLibRequestedFormat.WasmWithAsmJsFallback,
-    
-    // path were the clipper-wasm.wasm resource file is located (should be copied from 
-    // node_modules/js-angusj-clipper/dist/wasm/clipper-wasm.wasm - only required with
-    // the WASM version)
-    '../wasm'
-    
+    clipperLib.NativeClipperLibRequestedFormat.WasmWithAsmJsFallback    
   );
   
   // create some polygons (note that they MUST be integer coordinates)
@@ -87,7 +80,7 @@ async function mainAsync() {
       { data: poly2, closed: true }
     ],
 
-    subjectFillType: clipperLib.PolyFillType.EvenOdd
+    subjectFillType: clipperLib.PolyFillType.NonZero
   });
   
   /* polyResult will be:

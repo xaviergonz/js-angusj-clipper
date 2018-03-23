@@ -1,0 +1,193 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`operations over simple polygons clipType: difference, subjectFillType: evenOdd 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+  ],
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`operations over simple polygons clipType: intersection, subjectFillType: evenOdd 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`operations over simple polygons clipType: union, subjectFillType: evenOdd 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 0,
+    },
+    Object {
+      "x": 20,
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`operations over simple polygons clipType: xor, subjectFillType: evenOdd 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+  Array [
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 0,
+    },
+    Object {
+      "x": 20,
+      "y": 0,
+    },
+  ],
+]
+`;
