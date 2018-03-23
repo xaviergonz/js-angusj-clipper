@@ -1,11 +1,19 @@
 import * as clipperLib from '../src/lib';
 
-let clipper: clipperLib.ClipperLibWrapper;
+let clipperWasm: clipperLib.ClipperLibWrapper;
+let clipperAsmJs: clipperLib.ClipperLibWrapper;
 
 beforeAll(async () => {
-    clipper = await clipperLib.loadNativeClipperLibInstanceAsync(
+    clipperWasm = await clipperLib.loadNativeClipperLibInstanceAsync(
         clipperLib.NativeClipperLibRequestedFormat.WasmOnly
     );
+    clipperAsmJs = await clipperLib.loadNativeClipperLibInstanceAsync(
+        clipperLib.NativeClipperLibRequestedFormat.AsmJsOnly
+    );
+});
+
+test('wasm and asmjs instances must be different', () => {
+    expect(clipperWasm).not.toBe(clipperAsmJs);
 });
 
 describe('operations over simple polygons', () => {
@@ -27,7 +35,7 @@ describe('operations over simple polygons', () => {
     for (const clipType of Object.values(clipperLib.ClipType)) {
         for (const polyFillType of [clipperLib.PolyFillType.EvenOdd]) {
             test(`clipType: ${clipType}, subjectFillType: ${polyFillType}`, () => {
-                const polyResult = clipper.clipToPaths({
+                const data = {
                     clipType: clipType,
             
                     subjectInputs: [
@@ -39,9 +47,13 @@ describe('operations over simple polygons', () => {
                     ],
             
                     subjectFillType: polyFillType
-                });
-            
-                expect(polyResult).toMatchSnapshot();
+                };
+                
+                const polyResultWasm = clipperWasm.clipToPaths(data);
+                const polyResultAsm = clipperAsmJs.clipToPaths(data);
+
+                expect(polyResultWasm).toEqual(polyResultAsm);
+                expect(polyResultWasm).toMatchSnapshot();
             });
         }
     }
