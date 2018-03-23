@@ -16,7 +16,7 @@ function build(wasmMode) {
     }
 
     shelljs.mkdir('dist', 'dist/wasm');
-    shelljs.mv(`src/wasm/${output}`, `dist/wasm/${output}`);
+    shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
 }
 
 console.log('building asmjs version');
