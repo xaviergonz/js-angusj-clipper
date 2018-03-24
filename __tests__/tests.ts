@@ -36,8 +36,15 @@ describe('operations over simple polygons', () => {
     { x: 10, y: 30 },
   ];
 
-  for (const clipType of Object.values(clipperLib.ClipType)) {
-    for (const polyFillType of [clipperLib.PolyFillType.EvenOdd]) {
+  for (const clipType of [
+    clipperLib.ClipType.Intersection,
+    clipperLib.ClipType.Union,
+    clipperLib.ClipType.Difference,
+    clipperLib.ClipType.Xor,
+  ]) {
+    for (const polyFillType of [
+      clipperLib.PolyFillType.EvenOdd
+    ]) {
       test(`clipType: ${clipType}, subjectFillType: ${polyFillType}`, () => {
         const data = {
           clipType: clipType,
