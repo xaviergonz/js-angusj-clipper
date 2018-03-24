@@ -56,7 +56,7 @@
       "/node_modules/",
       "/dist/"
     ],
-    "testRegex": "/test/.+\\.tsx?$",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
