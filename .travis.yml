@@ -7,3 +7,4 @@ cache:
 sudo: required
 services:
   - docker
+script: npm run travis
