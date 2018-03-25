@@ -324,7 +324,7 @@ export class Clipper {
    * @param clipType - Clip operation type
    * @param subjFillType - Fill type of the subject polygons
    * @param clipFillType - Fill type of the clip polygons
-   * @return {PolyTree | undefined - The solution or undefined if there was an error
+   * @return {PolyTree | undefined} - The solution or undefined if there was an error
    */
   executeToPolyTee(clipType: ClipType, subjFillType: PolyFillType, clipFillType: PolyFillType): PolyTree | undefined {
     const outNativePolyTree = new this._nativeLib.PolyTree();
