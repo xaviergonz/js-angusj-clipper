@@ -13,10 +13,14 @@ beforeAll(async () => {
 }, 60000);
 
 test('wasm instance must be loaded', () => {
+  expect(clipperWasm).toBeDefined();
+  expect(clipperWasm.instance).toBeDefined();
   expect(clipperWasm.format).toEqual(clipperLib.NativeClipperLibLoadedFormat.Wasm);
 });
 
 test('asmjs instance must be loaded', () => {
+  expect(clipperAsmJs).toBeDefined();
+  expect(clipperAsmJs.instance).toBeDefined();
   expect(clipperAsmJs.format).toEqual(clipperLib.NativeClipperLibLoadedFormat.AsmJs);
 });
 
