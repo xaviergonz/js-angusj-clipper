@@ -40,6 +40,7 @@
     "@types/jest": "^22.2.2",
     "@types/node": "^8.10.0",
     "jest": "^22.4.3",
+    "martinez-polygon-clipping": "^0.1.5",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "rimraf": "^2.6.2",
@@ -47,23 +48,5 @@
     "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
-  },
-  "jest": {
-    "transform": {
-      ".+\\.tsx?$": "ts-jest"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }

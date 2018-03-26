@@ -11,15 +11,12 @@ function build(wasmMode) {
     '-s ALLOW_MEMORY_GROWTH=1',
     '-s NO_EXIT_RUNTIME=1',
     '-s SINGLE_FILE=1',
+    '-O3',
     // '-s MODULARIZE=1',
   ];
 
   if (wasmMode) {
-    options.push('-O3');
     options.push('-s WASM=1');
-  }
-  else {
-    options.push('-O3');
   }
 
   const output = wasmMode ? `clipper-wasm.js` : `clipper.js`;
