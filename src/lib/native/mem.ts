@@ -1,4 +1,4 @@
-import { NativeClipperLibInstance } from './NativeClipperLibInstance';
+import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
 
 export function mallocDoubleArray(nativeClipperLib: NativeClipperLibInstance, len: number): Float64Array {
   const nofBytes = len * Float64Array.BYTES_PER_ELEMENT;

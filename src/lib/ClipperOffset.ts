@@ -1,12 +1,12 @@
-import { EndType, JoinType } from './enums';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { NativeClipperOffset } from './native/NativeClipperOffset';
-import { endTypeToNative, joinTypeToNative } from './native/nativeEnumConversion';
-import { nativePathsToPaths, pathsToNativePaths } from './native/PathsToNativePaths';
-import { pathToNativePath } from './native/PathToNativePath';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyTree } from './PolyTree';
+import { EndType, JoinType } from "./enums";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { NativeClipperOffset } from "./native/NativeClipperOffset";
+import { endTypeToNative, joinTypeToNative } from "./native/nativeEnumConversion";
+import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
+import { pathToNativePath } from "./native/PathToNativePath";
+import { Path } from "./Path";
+import { Paths } from "./Paths";
+import { PolyTree } from "./PolyTree";
 
 /**
  * The ClipperOffset class encapsulates the process of offsetting (inflating/deflating) both open and closed paths using a number of different join types
@@ -139,9 +139,12 @@ export class ClipperOffset {
   addPath(path: Path, joinType: JoinType, endType: EndType) {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
-      this._clipperOffset!.addPath(nativePath, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
-    }
-    finally {
+      this._clipperOffset!.addPath(
+        nativePath,
+        joinTypeToNative(this._nativeLib, joinType),
+        endTypeToNative(this._nativeLib, endType)
+      );
+    } finally {
       nativePath.delete();
     }
   }
@@ -160,9 +163,12 @@ export class ClipperOffset {
   addPaths(paths: Paths, joinType: JoinType, endType: EndType) {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
-      this._clipperOffset!.addPaths(nativePaths, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
-    }
-    finally {
+      this._clipperOffset!.addPaths(
+        nativePaths,
+        joinTypeToNative(this._nativeLib, joinType),
+        endTypeToNative(this._nativeLib, endType)
+      );
+    } finally {
       nativePaths.delete();
     }
   }
@@ -180,8 +186,7 @@ export class ClipperOffset {
     try {
       this._clipperOffset!.executePaths(outNativePaths, delta);
       return nativePathsToPaths(this._nativeLib, outNativePaths, true); // frees outNativePaths
-    }
-    finally {
+    } finally {
       if (!outNativePaths.isDeleted()) {
         outNativePaths.delete();
       }
@@ -202,8 +207,7 @@ export class ClipperOffset {
     try {
       this._clipperOffset!.executePolyTree(outNativePolyTree, delta);
       return PolyTree.fromNativePolyTree(this._nativeLib, outNativePolyTree, true); // frees outNativePolyTree
-    }
-    finally {
+    } finally {
       if (!outNativePolyTree.isDeleted()) {
         outNativePolyTree.delete();
       }

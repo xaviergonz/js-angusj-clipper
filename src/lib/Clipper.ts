@@ -1,13 +1,13 @@
-import { ClipType, PolyFillType, PolyType } from './enums';
-import { IntRect } from './IntRect';
-import { NativeClipper } from './native/NativeClipper';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { clipTypeToNative, polyFillTypeToNative, polyTypeToNative } from './native/nativeEnumConversion';
-import { nativePathsToPaths, pathsToNativePaths } from './native/PathsToNativePaths';
-import { pathToNativePath } from './native/PathToNativePath';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyTree } from './PolyTree';
+import { ClipType, PolyFillType, PolyType } from "./enums";
+import { IntRect } from "./IntRect";
+import { NativeClipper } from "./native/NativeClipper";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { clipTypeToNative, polyFillTypeToNative, polyTypeToNative } from "./native/nativeEnumConversion";
+import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
+import { pathToNativePath } from "./native/PathToNativePath";
+import { Path } from "./Path";
+import { Paths } from "./Paths";
+import { PolyTree } from "./PolyTree";
 
 export interface ClipperInitOptions {
   /**
@@ -171,8 +171,7 @@ export class Clipper {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
       return this._clipper!.addPath(nativePath, polyTypeToNative(this._nativeLib, polyType), closed);
-    }
-    finally {
+    } finally {
       nativePath.delete();
     }
   }
@@ -205,8 +204,7 @@ export class Clipper {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
       return this._clipper!.addPaths(nativePaths, polyTypeToNative(this._nativeLib, polyType), closed);
-    }
-    finally {
+    } finally {
       nativePaths.delete();
     }
   }
@@ -280,12 +278,10 @@ export class Clipper {
       );
       if (!success) {
         return undefined;
-      }
-      else {
+      } else {
         return nativePathsToPaths(this._nativeLib, outNativePaths, true); // frees outNativePaths
       }
-    }
-    finally {
+    } finally {
       if (!outNativePaths.isDeleted()) {
         outNativePaths.delete();
       }
@@ -337,12 +333,10 @@ export class Clipper {
       );
       if (!success) {
         return undefined;
-      }
-      else {
+      } else {
         return PolyTree.fromNativePolyTree(this._nativeLib, outNativePolyTree, true); // frees outNativePolyTree
       }
-    }
-    finally {
+    } finally {
       if (!outNativePolyTree.isDeleted()) {
         outNativePolyTree.delete();
       }
@@ -367,5 +361,4 @@ export class Clipper {
       this._clipper = undefined;
     }
   }
-
 }

@@ -1,14 +1,14 @@
-import { PointInPolygonResult, PolyFillType } from './enums';
-import { IntPoint } from './IntPoint';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { NativeDeletable } from './native/NativeDeletable';
-import { polyFillTypeToNative } from './native/nativeEnumConversion';
-import { nativePathsToPaths, pathsToNativePaths } from './native/PathsToNativePaths';
-import { nativePathToPath, pathToNativePath } from './native/PathToNativePath';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyNode } from './PolyNode';
-import { PolyTree } from './PolyTree';
+import { PointInPolygonResult, PolyFillType } from "./enums";
+import { IntPoint } from "./IntPoint";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { NativeDeletable } from "./native/NativeDeletable";
+import { polyFillTypeToNative } from "./native/nativeEnumConversion";
+import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
+import { nativePathToPath, pathToNativePath } from "./native/PathToNativePath";
+import { Path } from "./Path";
+import { Paths } from "./Paths";
+import { PolyNode } from "./PolyNode";
+import { PolyTree } from "./PolyTree";
 
 function tryDelete(...objs: NativeDeletable[]) {
   for (const obj of objs) {
@@ -37,8 +37,7 @@ export function cleanPolygon(nativeLib: NativeClipperLibInstance, path: Path, di
   try {
     nativeLib.cleanPolygon(nativePath, distance);
     return nativePathToPath(nativeLib, nativePath, true); // frees nativePath
-  }
-  finally {
+  } finally {
     tryDelete(nativePath);
   }
 }
@@ -48,13 +47,16 @@ export function cleanPolygons(nativeLib: NativeClipperLibInstance, paths: Paths,
   try {
     nativeLib.cleanPolygons(nativePaths, distance);
     return nativePathsToPaths(nativeLib, nativePaths, true); // frees nativePath
-  }
-  finally {
+  } finally {
     tryDelete(nativePaths);
   }
 }
 
-const enum NodeType { Any, Open, Closed }
+const enum NodeType {
+  Any,
+  Open,
+  Closed
+}
 
 function addPolyNodeToPaths(polynode: PolyNode, nt: NodeType, paths: Paths): void {
   let match = true;
@@ -95,13 +97,17 @@ export function minkowskiDiff(nativeLib: NativeClipperLibInstance, poly1: Path, 
     nativeLib.minkowskiDiff(nativePath1, nativePath2, outNativePaths);
     tryDelete(nativePath1, nativePath2);
     return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
-  }
-  finally {
+  } finally {
     tryDelete(nativePath1, nativePath2, outNativePaths);
   }
 }
 
-export function minkowskiSumPath(nativeLib: NativeClipperLibInstance, pattern: Path, path: Path, pathIsClosed: boolean): Paths {
+export function minkowskiSumPath(
+  nativeLib: NativeClipperLibInstance,
+  pattern: Path,
+  path: Path,
+  pathIsClosed: boolean
+): Paths {
   const patternNativePath = pathToNativePath(nativeLib, pattern);
   const nativePath = pathToNativePath(nativeLib, path);
   const outNativePaths = new nativeLib.Paths();
@@ -110,13 +116,17 @@ export function minkowskiSumPath(nativeLib: NativeClipperLibInstance, pattern: P
     nativeLib.minkowskiSumPath(patternNativePath, nativePath, outNativePaths, pathIsClosed);
     tryDelete(patternNativePath, nativePath);
     return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
-  }
-  finally {
+  } finally {
     tryDelete(patternNativePath, nativePath, outNativePaths);
   }
 }
 
-export function minkowskiSumPaths(nativeLib: NativeClipperLibInstance, pattern: Path, paths: Paths, pathIsClosed: boolean): Paths {
+export function minkowskiSumPaths(
+  nativeLib: NativeClipperLibInstance,
+  pattern: Path,
+  paths: Paths,
+  pathIsClosed: boolean
+): Paths {
   // TODO: im not sure if for this method we can reuse the input/output path
 
   const patternNativePath = pathToNativePath(nativeLib, pattern);
@@ -126,8 +136,7 @@ export function minkowskiSumPaths(nativeLib: NativeClipperLibInstance, pattern: 
     nativeLib.minkowskiSumPaths(patternNativePath, nativePaths, nativePaths, pathIsClosed);
     tryDelete(patternNativePath);
     return nativePathsToPaths(nativeLib, nativePaths, true); // frees nativePaths
-  }
-  finally {
+  } finally {
     tryDelete(patternNativePath, nativePaths);
   }
 }
@@ -137,9 +146,9 @@ export function openPathsFromPolyTree(polyTree: PolyTree): Paths {
 
   const result = [];
   const len = polyTree.childs.length;
-  result.length = len ;
+  result.length = len;
   let resultLength = 0;
-  for (let i = 0; i < len ; i++) {
+  for (let i = 0; i < len; i++) {
     if (polyTree.childs[i].isOpen) {
       result[resultLength++] = polyTree.childs[i].contour;
     }
@@ -167,8 +176,7 @@ export function pointInPolygon(point: IntPoint, path: Path): PointInPolygonResul
   for (let i = 1; i <= cnt; ++i) {
     const ipNext = i === cnt ? path[0] : path[i];
     if (ipNext.y === point.y) {
-      if (ipNext.x === point.x || ip.y === point.y &&
-        ipNext.x > point.x === ip.x < point.x) {
+      if (ipNext.x === point.x || (ip.y === point.y && ipNext.x > point.x === ip.x < point.x)) {
         return -1;
       }
     }
@@ -176,26 +184,20 @@ export function pointInPolygon(point: IntPoint, path: Path): PointInPolygonResul
       if (ip.x >= point.x) {
         if (ipNext.x > point.x) {
           result = 1 - result;
-        }
-        else {
-          const d = (ip.x - point.x) * (ipNext.y - point.y) -
-            (ipNext.x - point.x) * (ip.y - point.y);
+        } else {
+          const d = (ip.x - point.x) * (ipNext.y - point.y) - (ipNext.x - point.x) * (ip.y - point.y);
           if (d === 0) {
             return -1;
-          }
-          else if (d > 0 === ipNext.y > ip.y) {
+          } else if (d > 0 === ipNext.y > ip.y) {
             result = 1 - result;
           }
         }
-      }
-      else {
+      } else {
         if (ipNext.x > point.x) {
-          const d = (ip.x - point.x) * (ipNext.y - point.y) -
-            (ipNext.x - point.x) * (ip.y - point.y);
+          const d = (ip.x - point.x) * (ipNext.y - point.y) - (ipNext.x - point.x) * (ip.y - point.y);
           if (d === 0) {
             return -1;
-          }
-          else if (d > 0 === ipNext.y > ip.y) {
+          } else if (d > 0 === ipNext.y > ip.y) {
             result = 1 - result;
           }
         }
@@ -227,26 +229,32 @@ export function reversePaths(paths: Paths): void {
   }
 }
 
-export function simplifyPolygon(nativeLib: NativeClipperLibInstance, path: Path, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
+export function simplifyPolygon(
+  nativeLib: NativeClipperLibInstance,
+  path: Path,
+  fillType: PolyFillType = PolyFillType.EvenOdd
+): Paths {
   const nativePath = pathToNativePath(nativeLib, path);
   const outNativePaths = new nativeLib.Paths();
   try {
     nativeLib.simplifyPolygon(nativePath, outNativePaths, polyFillTypeToNative(nativeLib, fillType));
     tryDelete(nativePath);
     return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
-  }
-  finally {
+  } finally {
     tryDelete(nativePath, outNativePaths);
   }
 }
 
-export function simplifyPolygons(nativeLib: NativeClipperLibInstance, paths: Paths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
+export function simplifyPolygons(
+  nativeLib: NativeClipperLibInstance,
+  paths: Paths,
+  fillType: PolyFillType = PolyFillType.EvenOdd
+): Paths {
   const nativePaths = pathsToNativePaths(nativeLib, paths);
   try {
     nativeLib.simplifyPolygonsOverwrite(nativePaths, polyFillTypeToNative(nativeLib, fillType));
     return nativePathsToPaths(nativeLib, nativePaths, true); // frees nativePaths
-  }
-  finally {
+  } finally {
     tryDelete(nativePaths);
   }
 }
@@ -272,7 +280,9 @@ export function scalePath(path: Path, scale: number): Path {
  * @return {Paths} - The scaled paths
  */
 export function scalePaths(paths: Paths, scale: number): Paths {
-  if (scale === 0) return [];
+  if (scale === 0) {
+    return [];
+  }
 
   const sol: Paths = [];
   let i = paths.length;

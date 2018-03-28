@@ -3,6 +3,6 @@ export class ClipperError extends Error {
     super(message);
     Object.setPrototypeOf(this, ClipperError.prototype);
     this.name = this.constructor.name;
-    this.stack = (new Error()).stack;
+    this.stack = new Error().stack;
   }
 }

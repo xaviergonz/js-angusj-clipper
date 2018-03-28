@@ -1,8 +1,11 @@
-import { ClipType, EndType, JoinType, PolyFillType, PolyType } from '../enums';
-import { NativeClipperLibInstance } from './NativeClipperLibInstance';
-import { NativeClipType, NativeEndType, NativeJoinType, NativePolyFillType, NativePolyType } from './nativeEnums';
+import { ClipType, EndType, JoinType, PolyFillType, PolyType } from "../enums";
+import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
+import { NativeClipType, NativeEndType, NativeJoinType, NativePolyFillType, NativePolyType } from "./nativeEnums";
 
-export function polyFillTypeToNative(nativeLib: NativeClipperLibInstance, polyFillType: PolyFillType): NativePolyFillType {
+export function polyFillTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  polyFillType: PolyFillType
+): NativePolyFillType {
   switch (polyFillType) {
     case PolyFillType.EvenOdd:
       return nativeLib.PolyFillType.EvenOdd;
@@ -13,7 +16,7 @@ export function polyFillTypeToNative(nativeLib: NativeClipperLibInstance, polyFi
     case PolyFillType.Negative:
       return nativeLib.PolyFillType.Negative;
     default:
-      throw new Error('unknown poly fill type');
+      throw new Error("unknown poly fill type");
   }
 }
 
@@ -28,7 +31,7 @@ export function clipTypeToNative(nativeLib: NativeClipperLibInstance, clipType: 
     case ClipType.Xor:
       return nativeLib.ClipType.Xor;
     default:
-      throw new Error('unknown clip type');
+      throw new Error("unknown clip type");
   }
 }
 
@@ -39,7 +42,7 @@ export function polyTypeToNative(nativeLib: NativeClipperLibInstance, polyType: 
     case PolyType.Clip:
       return nativeLib.PolyType.Clip;
     default:
-      throw new Error('unknown poly type');
+      throw new Error("unknown poly type");
   }
 }
 
@@ -52,7 +55,7 @@ export function joinTypeToNative(nativeLib: NativeClipperLibInstance, joinType: 
     case JoinType.Miter:
       return nativeLib.JoinType.Miter;
     default:
-      throw new Error('unknown join type');
+      throw new Error("unknown join type");
   }
 }
 
@@ -69,6 +72,6 @@ export function endTypeToNative(nativeLib: NativeClipperLibInstance, endType: En
     case EndType.OpenRound:
       return nativeLib.EndType.OpenRound;
     default:
-      throw new Error('unknown end type');
+      throw new Error("unknown end type");
   }
 }

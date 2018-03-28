@@ -1,4 +1,4 @@
-import { NativePolyNode } from './NativePolyNode';
+import { NativePolyNode } from "./NativePolyNode";
 
 export interface NativePolyTree extends NativePolyNode {
   clear(): void;

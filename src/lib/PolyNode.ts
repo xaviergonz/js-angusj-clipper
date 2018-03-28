@@ -1,7 +1,7 @@
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { NativePolyNode } from './native/NativePolyNode';
-import { nativePathToPath } from './native/PathToNativePath';
-import { Path } from './Path';
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { NativePolyNode } from "./native/NativePolyNode";
+import { nativePathToPath } from "./native/PathToNativePath";
+import { Path } from "./Path";
 
 /**
  * PolyNodes are encapsulated within a PolyTree container, and together provide a data structure representing the parent-child relationships of polygon
@@ -86,28 +86,33 @@ export class PolyNode {
    * @return {PolyNode | undefined}
    */
   getNext(): PolyNode | undefined {
-    if (this._childs.length > 0)
+    if (this._childs.length > 0) {
       return this._childs[0];
-    else
+    } else {
       return this.getNextSiblingUp();
+    }
   }
 
   protected getNextSiblingUp(): PolyNode | undefined {
-    if (this._parent === undefined)
+    if (this._parent === undefined) {
       return undefined;
-    else if (this._index === this._parent._childs.length - 1) {
+    } else if (this._index === this._parent._childs.length - 1) {
       //noinspection TailRecursionJS
       return this._parent.getNextSiblingUp();
-    }
-    else
+    } else {
       return this._parent._childs[this._index + 1];
+    }
   }
 
   protected constructor() {}
 
   protected static fillFromNativePolyNode(
     pn: PolyNode,
-    nativeLib: NativeClipperLibInstance, nativePolyNode: NativePolyNode, parent: PolyNode | undefined, childIndex: number, freeNativePolyNode: boolean
+    nativeLib: NativeClipperLibInstance,
+    nativePolyNode: NativePolyNode,
+    parent: PolyNode | undefined,
+    childIndex: number,
+    freeNativePolyNode: boolean
   ): void {
     pn._parent = parent;
 
@@ -128,7 +133,11 @@ export class PolyNode {
   }
 
   protected static fromNativePolyNode(
-    nativeLib: NativeClipperLibInstance, nativePolyNode: NativePolyNode, parent: PolyNode | undefined, childIndex: number, freeNativePolyNode: boolean
+    nativeLib: NativeClipperLibInstance,
+    nativePolyNode: NativePolyNode,
+    parent: PolyNode | undefined,
+    childIndex: number,
+    freeNativePolyNode: boolean
   ): PolyNode {
     const pn = new PolyNode();
     PolyNode.fillFromNativePolyNode(pn, nativeLib, nativePolyNode, parent, childIndex, freeNativePolyNode);

@@ -1,5 +1,4 @@
-import { NativeIntPoint } from './NativeIntPoint';
-import { NativeVector } from './NativeVector';
+import { NativeIntPoint } from "./NativeIntPoint";
+import { NativeVector } from "./NativeVector";
 
-export interface NativePath extends NativeVector<NativeIntPoint> {
-}
+export interface NativePath extends NativeVector<NativeIntPoint> {}

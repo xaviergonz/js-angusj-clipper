@@ -1,12 +1,12 @@
-import { Path } from '../Path';
-import { freeTypedArray, mallocDoubleArray } from './mem';
-import { NativeClipperLibInstance } from './NativeClipperLibInstance';
-import { NativePath } from './NativePath';
+import { Path } from "../Path";
+import { freeTypedArray, mallocDoubleArray } from "./mem";
+import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
+import { NativePath } from "./NativePath";
 
 const coordsPerPoint = 2;
 
 export function getNofItemsForPath(path: Path): number {
-  return 1 + (path.length * coordsPerPoint);
+  return 1 + path.length * coordsPerPoint;
 }
 
 // js to c++
@@ -32,7 +32,11 @@ export function pathToDoubleArray(nativeClipperLib: NativeClipperLibInstance, pa
   return heapBytes;
 }
 
-export function doubleArrayToNativePath(nativeClipperLib: NativeClipperLibInstance, array: Float64Array, freeArray: boolean): NativePath {
+export function doubleArrayToNativePath(
+  nativeClipperLib: NativeClipperLibInstance,
+  array: Float64Array,
+  freeArray: boolean
+): NativePath {
   const p = new nativeClipperLib.Path();
   nativeClipperLib.toPath(p, array.byteOffset);
   if (freeArray) {
@@ -48,7 +52,11 @@ export function pathToNativePath(nativeClipperLib: NativeClipperLibInstance, pat
 
 // c++ to js
 
-export function nativePathToDoubleArray(nativeClipperLib: NativeClipperLibInstance, nativePath: NativePath, freeNativePath: boolean): Float64Array {
+export function nativePathToDoubleArray(
+  nativeClipperLib: NativeClipperLibInstance,
+  nativePath: NativePath,
+  freeNativePath: boolean
+): Float64Array {
   const array = nativeClipperLib.fromPath(nativePath);
   if (freeNativePath) {
     nativePath.delete();
@@ -56,7 +64,12 @@ export function nativePathToDoubleArray(nativeClipperLib: NativeClipperLibInstan
   return array;
 }
 
-export function doubleArrayToPath(nativeClipperLib: NativeClipperLibInstance, array: Float64Array, _freeDoubleArray: boolean, startPtr: number): { path: Path, ptrEnd: number } {
+export function doubleArrayToPath(
+  nativeClipperLib: NativeClipperLibInstance,
+  array: Float64Array,
+  _freeDoubleArray: boolean,
+  startPtr: number
+): { path: Path; ptrEnd: number } {
   const len = array[startPtr];
   const path = [];
   path.length = len;
@@ -79,7 +92,11 @@ export function doubleArrayToPath(nativeClipperLib: NativeClipperLibInstance, ar
   };
 }
 
-export function nativePathToPath(nativeClipperLib: NativeClipperLibInstance, nativePath: NativePath, freeNativePath: boolean): Path {
+export function nativePathToPath(
+  nativeClipperLib: NativeClipperLibInstance,
+  nativePath: NativePath,
+  freeNativePath: boolean
+): Path {
   const array = nativePathToDoubleArray(nativeClipperLib, nativePath, freeNativePath);
   return doubleArrayToPath(nativeClipperLib, array, true, 0).path;
 }

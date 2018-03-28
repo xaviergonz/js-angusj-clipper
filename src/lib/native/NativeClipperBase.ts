@@ -1,8 +1,8 @@
-import { NativeDeletable } from './NativeDeletable';
-import { NativePolyType } from './nativeEnums';
-import { NativeIntRect } from './NativeIntRect';
-import { NativePath } from './NativePath';
-import { NativePaths } from './NativePaths';
+import { NativeDeletable } from "./NativeDeletable";
+import { NativePolyType } from "./nativeEnums";
+import { NativeIntRect } from "./NativeIntRect";
+import { NativePath } from "./NativePath";
+import { NativePaths } from "./NativePaths";
 
 export interface NativeClipperBase extends NativeDeletable {
   addPath(path: NativePath, polyType: NativePolyType, closed: boolean): boolean;

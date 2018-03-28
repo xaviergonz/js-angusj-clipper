@@ -1,10 +1,10 @@
-import { Clipper } from './Clipper';
-import { ClipperError } from './ClipperError';
-import { ClipType, PolyFillType, PolyType } from './enums';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyTree } from './PolyTree';
+import { Clipper } from "./Clipper";
+import { ClipperError } from "./ClipperError";
+import { ClipType, PolyFillType, PolyType } from "./enums";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { Path } from "./Path";
+import { Paths } from "./Paths";
+import { PolyTree } from "./PolyTree";
 
 /**
  * A single subject input (of multiple possible inputs) for the clipToPaths / clipToPolyTree operations
@@ -145,19 +145,22 @@ const addPathOrPaths = (clipper: Clipper, inputDatas: (SubjectInput | ClipInput)
     if (Array.isArray(pathOrPaths[0])) {
       // paths
       if (!clipper.addPaths(pathOrPaths as Paths, polyType, closed)) {
-        throw new ClipperError('invalid paths');
+        throw new ClipperError("invalid paths");
       }
-    }
-    else {
+    } else {
       // path
       if (!clipper.addPath(pathOrPaths as Path, polyType, closed)) {
-        throw new ClipperError('invalid path');
+        throw new ClipperError("invalid path");
       }
     }
   }
 };
 
-export function clipToPathsOrPolyTree(polyTreeMode: boolean, nativeClipperLib: NativeClipperLibInstance, params: ClipParams): Paths | PolyTree {
+export function clipToPathsOrPolyTree(
+  polyTreeMode: boolean,
+  nativeClipperLib: NativeClipperLibInstance,
+  params: ClipParams
+): Paths | PolyTree {
   const clipper = new Clipper(nativeClipperLib, params);
 
   //noinspection UnusedCatchParameterJS
@@ -168,16 +171,14 @@ export function clipToPathsOrPolyTree(polyTreeMode: boolean, nativeClipperLib: N
     const clipFillType = params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
     if (!polyTreeMode) {
       result = clipper.executeToPaths(params.clipType, params.subjectFillType, clipFillType);
-    }
-    else {
+    } else {
       result = clipper.executeToPolyTee(params.clipType, params.subjectFillType, clipFillType);
     }
     if (result === undefined) {
-      throw new ClipperError('error while performing clipping task');
+      throw new ClipperError("error while performing clipping task");
     }
     return result;
-  }
-  finally {
+  } finally {
     clipper.dispose();
   }
 }

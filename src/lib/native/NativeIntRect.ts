@@ -1,4 +1,4 @@
-import { NativeDeletable } from './NativeDeletable';
+import { NativeDeletable } from "./NativeDeletable";
 
 export interface NativeIntRect extends NativeDeletable {
   left: number;

@@ -1,17 +1,17 @@
-import { NativeClipper } from './NativeClipper';
-import { NativeClipperOffset } from './NativeClipperOffset';
+import { NativeClipper } from "./NativeClipper";
+import { NativeClipperOffset } from "./NativeClipperOffset";
 import {
   NativeClipType,
   NativeEndType,
   NativeInitOptions,
   NativeJoinType,
   NativePolyFillType,
-  NativePolyType,
-} from './nativeEnums';
-import { NativeIntPoint } from './NativeIntPoint';
-import { NativePath } from './NativePath';
-import { NativePaths } from './NativePaths';
-import { NativePolyTree } from './NativePolyTree';
+  NativePolyType
+} from "./nativeEnums";
+import { NativeIntPoint } from "./NativeIntPoint";
+import { NativePath } from "./NativePath";
+import { NativePaths } from "./NativePaths";
+import { NativePolyTree } from "./NativePolyTree";
 
 export interface NativeClipperLibInstance {
   // custom conversion functions
@@ -24,7 +24,7 @@ export interface NativeClipperLibInstance {
   _malloc(nofBytes: number): number;
   _free(ptr: number): void;
   HEAPF64: {
-    buffer: ArrayBuffer
+    buffer: ArrayBuffer;
   };
 
   // types

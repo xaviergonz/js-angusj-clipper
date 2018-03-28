@@ -1,7 +1,7 @@
-import * as clipperLib from '../src/lib';
+import * as clipperLib from "../src/lib";
 
 // another port of clipper in pure js
-export const pureJsClipperLib = require('./external-libs/clipper');
+export const pureJsClipperLib = require("./external-libs/clipper");
 
 export interface PureJsPoint {
   X: number;
@@ -14,16 +14,15 @@ export type PureJsPaths = PureJsPath[];
 export function pureJsTestPolyOperation(
   clipType: clipperLib.ClipType,
   subjectFillType: clipperLib.PolyFillType,
-  mode: 'path' | 'paths',
+  mode: "path" | "paths",
   subjectInput: PureJsPath | PureJsPaths,
-  clipInput: PureJsPath | PureJsPaths,
+  clipInput: PureJsPath | PureJsPaths
 ) {
   const cl = new pureJsClipperLib.Clipper();
-  if (mode === 'path') {
+  if (mode === "path") {
     cl.AddPath(subjectInput, pureJsClipperLib.PolyType.ptSubject, true);
     cl.AddPath(clipInput, pureJsClipperLib.PolyType.ptClip, true);
-  }
-  else {
+  } else {
     cl.AddPaths(subjectInput, pureJsClipperLib.PolyType.ptSubject, true);
     cl.AddPaths(clipInput, pureJsClipperLib.PolyType.ptClip, true);
   }
@@ -33,46 +32,41 @@ export function pureJsTestPolyOperation(
     clipTypeToPureJs(clipType),
     solutionPaths,
     polyFillTypeToPureJs(subjectFillType),
-    polyFillTypeToPureJs(subjectFillType),
+    polyFillTypeToPureJs(subjectFillType)
   );
 
   return solutionPaths;
 }
 
 export function pureJsTestOffset(
-  mode: 'path' | 'paths',
+  mode: "path" | "paths",
   input: PureJsPath | PureJsPaths,
   joinType: clipperLib.JoinType,
   endType: clipperLib.EndType,
-  delta: number,
+  delta: number
 ) {
   const co = new pureJsClipperLib.ClipperOffset();
-  if (mode === 'path') {
+  if (mode === "path") {
     co.AddPath(input, joinTypeToPureJs(joinType), endTypeToPureJs(endType));
-  }
-  else {
+  } else {
     co.AddPaths(input, joinTypeToPureJs(joinType), endTypeToPureJs(endType));
   }
 
   const solutionPaths = new pureJsClipperLib.Paths();
-  co.Execute(
-    solutionPaths,
-    delta
-  );
+  co.Execute(solutionPaths, delta);
 
   return solutionPaths;
 }
 
-
 export function pathToPureJs(path: clipperLib.Path): PureJsPath {
-  return path.map((p) => ({
+  return path.map(p => ({
     X: p.x,
-    Y: p.y,
+    Y: p.y
   }));
 }
 
 export function pathsToPureJs(paths: clipperLib.Paths): PureJsPaths {
-  return paths.map((p) => (pathToPureJs(p)));
+  return paths.map(p => pathToPureJs(p));
 }
 
 export function clipTypeToPureJs(clipType: clipperLib.ClipType): number {
