@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`operations over simple polygons clipType: difference, subjectFillType: evenOdd 1`] = `
+exports[`unit tests simple polygons boolean operations clipType: difference, fillType: evenOdd 1`] = `
 Array [
   Array [
     Object {
@@ -41,7 +41,91 @@ Array [
 ]
 `;
 
-exports[`operations over simple polygons clipType: intersection, subjectFillType: evenOdd 1`] = `
+exports[`unit tests simple polygons boolean operations clipType: difference, fillType: negative 1`] = `Array []`;
+
+exports[`unit tests simple polygons boolean operations clipType: difference, fillType: nonZero 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+  ],
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: difference, fillType: positive 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+  ],
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: intersection, fillType: evenOdd 1`] = `
 Array [
   Array [
     Object {
@@ -64,7 +148,55 @@ Array [
 ]
 `;
 
-exports[`operations over simple polygons clipType: union, subjectFillType: evenOdd 1`] = `
+exports[`unit tests simple polygons boolean operations clipType: intersection, fillType: negative 1`] = `Array []`;
+
+exports[`unit tests simple polygons boolean operations clipType: intersection, fillType: nonZero 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: intersection, fillType: positive 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: union, fillType: evenOdd 1`] = `
 Array [
   Array [
     Object {
@@ -119,7 +251,119 @@ Array [
 ]
 `;
 
-exports[`operations over simple polygons clipType: xor, subjectFillType: evenOdd 1`] = `
+exports[`unit tests simple polygons boolean operations clipType: union, fillType: negative 1`] = `Array []`;
+
+exports[`unit tests simple polygons boolean operations clipType: union, fillType: nonZero 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 0,
+    },
+    Object {
+      "x": 20,
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: union, fillType: positive 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 0,
+    },
+    Object {
+      "x": 20,
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: xor, fillType: evenOdd 1`] = `
 Array [
   Array [
     Object {
@@ -187,6 +431,898 @@ Array [
     Object {
       "x": 20,
       "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: xor, fillType: negative 1`] = `Array []`;
+
+exports[`unit tests simple polygons boolean operations clipType: xor, fillType: nonZero 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+  Array [
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 0,
+    },
+    Object {
+      "x": 20,
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons boolean operations clipType: xor, fillType: positive 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 30,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 20,
+    },
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+  Array [
+    Object {
+      "x": 20,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 10,
+    },
+    Object {
+      "x": 10,
+      "y": 0,
+    },
+    Object {
+      "x": 20,
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: closedLine, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: closedLine, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: closedLine, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 35,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: closedPolygon, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: closedPolygon, delta: 0 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: closedPolygon, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 35,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openButt, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openButt, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openButt, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 35,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openRound, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openRound, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openRound, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": -5,
+      "y": 11,
+    },
+    Object {
+      "x": -5,
+      "y": 8,
+    },
+    Object {
+      "x": -3,
+      "y": 6,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": -3,
+      "y": 24,
+    },
+    Object {
+      "x": -5,
+      "y": 21,
+    },
+    Object {
+      "x": -5,
+      "y": 18,
+    },
+    Object {
+      "x": -3,
+      "y": 16,
+    },
+    Object {
+      "x": 0,
+      "y": 15,
+    },
+    Object {
+      "x": -3,
+      "y": 14,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openSquare, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openSquare, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: miter, endType: openSquare, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 35,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: closedLine, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: closedLine, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: closedLine, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 33,
+      "y": 6,
+    },
+    Object {
+      "x": 35,
+      "y": 10,
+    },
+    Object {
+      "x": 35,
+      "y": 20,
+    },
+    Object {
+      "x": 34,
+      "y": 23,
+    },
+    Object {
+      "x": 30,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": -3,
+      "y": 24,
+    },
+    Object {
+      "x": -5,
+      "y": 20,
+    },
+    Object {
+      "x": -5,
+      "y": 10,
+    },
+    Object {
+      "x": -4,
+      "y": 7,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+    Object {
+      "x": 30,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: closedPolygon, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: closedPolygon, delta: 0 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: closedPolygon, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 33,
+      "y": 6,
+    },
+    Object {
+      "x": 35,
+      "y": 10,
+    },
+    Object {
+      "x": 35,
+      "y": 20,
+    },
+    Object {
+      "x": 34,
+      "y": 23,
+    },
+    Object {
+      "x": 30,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": -3,
+      "y": 24,
+    },
+    Object {
+      "x": -5,
+      "y": 20,
+    },
+    Object {
+      "x": -5,
+      "y": 10,
+    },
+    Object {
+      "x": -4,
+      "y": 7,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+    Object {
+      "x": 30,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openButt, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openButt, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openButt, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 5,
+    },
+    Object {
+      "x": 33,
+      "y": 6,
+    },
+    Object {
+      "x": 35,
+      "y": 10,
+    },
+    Object {
+      "x": 35,
+      "y": 20,
+    },
+    Object {
+      "x": 34,
+      "y": 23,
+    },
+    Object {
+      "x": 30,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openRound, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openRound, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openRound, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": -5,
+      "y": 11,
+    },
+    Object {
+      "x": -5,
+      "y": 8,
+    },
+    Object {
+      "x": -3,
+      "y": 6,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+    Object {
+      "x": 30,
+      "y": 5,
+    },
+    Object {
+      "x": 33,
+      "y": 6,
+    },
+    Object {
+      "x": 35,
+      "y": 10,
+    },
+    Object {
+      "x": 35,
+      "y": 20,
+    },
+    Object {
+      "x": 34,
+      "y": 23,
+    },
+    Object {
+      "x": 30,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": -3,
+      "y": 24,
+    },
+    Object {
+      "x": -5,
+      "y": 21,
+    },
+    Object {
+      "x": -5,
+      "y": 18,
+    },
+    Object {
+      "x": -3,
+      "y": 16,
+    },
+    Object {
+      "x": 0,
+      "y": 15,
+    },
+    Object {
+      "x": -3,
+      "y": 14,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openSquare, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openSquare, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: round, endType: openSquare, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 5,
+    },
+    Object {
+      "x": 33,
+      "y": 6,
+    },
+    Object {
+      "x": 35,
+      "y": 10,
+    },
+    Object {
+      "x": 35,
+      "y": 20,
+    },
+    Object {
+      "x": 34,
+      "y": 23,
+    },
+    Object {
+      "x": 30,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: closedLine, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: closedLine, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: closedLine, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 35,
+      "y": 8,
+    },
+    Object {
+      "x": 35,
+      "y": 22,
+    },
+    Object {
+      "x": 32,
+      "y": 25,
+    },
+    Object {
+      "x": -2,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 22,
+    },
+    Object {
+      "x": -5,
+      "y": 8,
+    },
+    Object {
+      "x": -2,
+      "y": 5,
+    },
+    Object {
+      "x": 32,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: closedPolygon, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: closedPolygon, delta: 0 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 30,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 20,
+    },
+    Object {
+      "x": 0,
+      "y": 10,
+    },
+    Object {
+      "x": 30,
+      "y": 10,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: closedPolygon, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 35,
+      "y": 8,
+    },
+    Object {
+      "x": 35,
+      "y": 22,
+    },
+    Object {
+      "x": 32,
+      "y": 25,
+    },
+    Object {
+      "x": -2,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 22,
+    },
+    Object {
+      "x": -5,
+      "y": 8,
+    },
+    Object {
+      "x": -2,
+      "y": 5,
+    },
+    Object {
+      "x": 32,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openButt, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openButt, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openButt, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 32,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 8,
+    },
+    Object {
+      "x": 35,
+      "y": 22,
+    },
+    Object {
+      "x": 32,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openRound, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openRound, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openRound, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": -5,
+      "y": 11,
+    },
+    Object {
+      "x": -5,
+      "y": 8,
+    },
+    Object {
+      "x": -3,
+      "y": 6,
+    },
+    Object {
+      "x": 0,
+      "y": 5,
+    },
+    Object {
+      "x": 32,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 8,
+    },
+    Object {
+      "x": 35,
+      "y": 22,
+    },
+    Object {
+      "x": 32,
+      "y": 25,
+    },
+    Object {
+      "x": 0,
+      "y": 25,
+    },
+    Object {
+      "x": -3,
+      "y": 24,
+    },
+    Object {
+      "x": -5,
+      "y": 21,
+    },
+    Object {
+      "x": -5,
+      "y": 18,
+    },
+    Object {
+      "x": -3,
+      "y": 16,
+    },
+    Object {
+      "x": 0,
+      "y": 15,
+    },
+    Object {
+      "x": -3,
+      "y": 14,
+    },
+  ],
+]
+`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openSquare, delta: -5 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openSquare, delta: 0 1`] = `Array []`;
+
+exports[`unit tests simple polygons offset joinType: square, endType: openSquare, delta: 5 1`] = `
+Array [
+  Array [
+    Object {
+      "x": 32,
+      "y": 5,
+    },
+    Object {
+      "x": 35,
+      "y": 8,
+    },
+    Object {
+      "x": 35,
+      "y": 22,
+    },
+    Object {
+      "x": 32,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 25,
+    },
+    Object {
+      "x": -5,
+      "y": 5,
     },
   ],
 ]

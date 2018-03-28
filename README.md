@@ -31,7 +31,7 @@ As an example, the results of the benchmarks included on the test suite when run
 
 _Note, pureJs is [jsclipper](https://sourceforge.net/projects/jsclipper/), a pure JS port of the same library_
 ```
-benchmark 500 operations over two circles of 5000 points each
+500 boolean operations over two circles of 5000 points each
   clipType: intersection, subjectFillType: evenOdd
     √ wasm (553ms)
     √ asmJs (1862ms)
@@ -49,7 +49,7 @@ benchmark 500 operations over two circles of 5000 points each
     √ asmJs (2220ms)
     √ pureJs (1622ms)
 
-benchmark 10000 operations over two circles of 100 points each
+10000 boolean operations over two circles of 100 points each
   clipType: intersection, subjectFillType: evenOdd
     √ wasm (449ms)
     √ asmJs (1080ms)
@@ -66,18 +66,39 @@ benchmark 10000 operations over two circles of 100 points each
     √ wasm (589ms)
     √ asmJs (1243ms)
     √ pureJs (500ms)
+
+100 offset operations over a circle of 5000 points
+  joinType: miter, endType: closedPolygon, delta: 5
+    √ wasm (286ms)
+    √ asmJs (1079ms)
+    √ pureJs (1913ms)
+
+5000 offset operations over a circle of 100 points
+  joinType: miter, endType: closedPolygon, delta: 5
+    √ wasm (227ms)
+    √ asmJs (518ms)
+    √ pureJs (796ms)
 ```
 
-More or less, the results for moderately big polygons are:
-* Pure JS port of the Clipper library: **~1s, baseline**
+More or less, the results for **boolean operations** over moderately big polygons are:
+* Pure JS port of the Clipper library: **~1.0s, baseline**
 * This library (*WebAssembly*): **~0.5s**
 * This library (*Asm.js*): **~1.5s** (mostly due to the emulation of 64-bit integer operations)
 
 and for small polygons are:
-* Pure JS port of the Clipper library: **~1s, baseline**
+* Pure JS port of the Clipper library: **~1.0s, baseline**
 * This library (*WebAssembly*): **~1.1s** (due to the overhead of copying structures to/from JS/C++)
-* This library (*Asm.js*): **~2s** (mostly due to the emulation of 64-bit integer operations + the overhead of copying structures to/from JS/C++)
+* This library (*Asm.js*): **~2.0s** (mostly due to the emulation of 64-bit integer operations + the overhead of copying structures to/from JS/C++)
 
+As for **offsetting**, the results for a moderately big polygon are:
+* Pure JS port of the Clipper library: **~1s, baseline**
+* This library (*WebAssembly*): **~0.15s**
+* This library (*Asm.js*): **~0.56s**
+
+and for small polygons are:
+* Pure JS port of the Clipper library: **~1s, baseline**
+* This library (*WebAssembly*): **~0.28s**
+* This library (*Asm.js*): **~0.65s**
 ---
 
 ### Getting started
