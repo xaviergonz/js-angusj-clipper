@@ -5,7 +5,6 @@
     "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
   "main": "dist/lib/index.js",
   "scripts": {
-    "postinstall": "npm run pull-docker-image",
     "pull-docker-image": "docker pull trzeci/emscripten",
     "prepublishOnly": "npm run clean && npm run lint && npm run build && npm run test",
     "travis": "npm run prepublishOnly",
@@ -15,7 +14,7 @@
     "clean": "rimraf ./dist",
     "build": "npm run build:ts && npm run build:asm",
     "build:ts": "tsc -p .",
-    "build:asm": "node build/compile-asm",
+    "build:asm": "npm run pull-docker-image && node build/compile-asm",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "prettier-all": "prettier --write \"src/lib/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
