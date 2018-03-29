@@ -1,12 +1,20 @@
 import * as clipperLib from "../src/lib";
-import { pathsToPureJs, pathToPureJs, pureJsClipperLib, pureJsTestOffset, pureJsTestPolyOperation } from "./pureJs";
+import {
+  pathsToPureJs,
+  pathToPureJs,
+  pureJsClipperLib,
+  pureJsTestOffset,
+  pureJsTestPolyOperation
+} from "./pureJs";
 import { circlePath } from "./utils";
 
 let clipperWasm: clipperLib.ClipperLibWrapper;
 let clipperAsmJs: clipperLib.ClipperLibWrapper;
 
 beforeAll(async () => {
-  clipperWasm = await clipperLib.loadNativeClipperLibInstanceAsync(clipperLib.NativeClipperLibRequestedFormat.WasmOnly);
+  clipperWasm = await clipperLib.loadNativeClipperLibInstanceAsync(
+    clipperLib.NativeClipperLibRequestedFormat.WasmOnly
+  );
   clipperAsmJs = await clipperLib.loadNativeClipperLibInstanceAsync(
     clipperLib.NativeClipperLibRequestedFormat.AsmJsOnly
   );
@@ -57,7 +65,12 @@ describe("unit tests", () => {
               asm: true
             });
 
-            const pureJsRes = pureJsTestPolyOperation(clipType, polyFillType, "path", pureJsPoly1, pureJsPoly2);
+            const pureJsRes = pureJsTestPolyOperation(
+              clipType,
+              polyFillType,
+              pureJsPoly1,
+              pureJsPoly2
+            );
 
             expect(res.asmResult).toEqual(res.wasmResult);
             expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult));
@@ -68,7 +81,11 @@ describe("unit tests", () => {
     });
 
     describe("offset", () => {
-      for (const joinType of [clipperLib.JoinType.Miter, clipperLib.JoinType.Round, clipperLib.JoinType.Square]) {
+      for (const joinType of [
+        clipperLib.JoinType.Miter,
+        clipperLib.JoinType.Round,
+        clipperLib.JoinType.Square
+      ]) {
         for (const endType of [
           clipperLib.EndType.ClosedPolygon,
           clipperLib.EndType.ClosedLine,
@@ -83,7 +100,7 @@ describe("unit tests", () => {
                 asm: true
               });
 
-              const pureJsRes = pureJsTestOffset("path", pureJsPoly1, joinType, endType, delta);
+              const pureJsRes = pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
 
               expect(res.asmResult).toEqual(res.wasmResult);
               expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult));
@@ -98,7 +115,9 @@ describe("unit tests", () => {
 
 describe("benchmarks", () => {
   for (const benchmark of [{ ops: 500, points: 5000 }, { ops: 10000, points: 100 }]) {
-    describe(`${benchmark.ops} boolean operations over two circles of ${benchmark.points} points each`, () => {
+    describe(`${benchmark.ops} boolean operations over two circles of ${
+      benchmark.points
+    } points each`, () => {
       const poly1 = circlePath({ x: 1000, y: 1000 }, 1000, benchmark.points);
       const poly2 = circlePath({ x: 2500, y: 1000 }, 1000, benchmark.points);
       const pureJsPoly1 = pathToPureJs(poly1);
@@ -129,7 +148,7 @@ describe("benchmarks", () => {
                       asm: mode === "asmJs"
                     });
                   } else if (mode === "pureJs") {
-                    pureJsTestPolyOperation(clipType, polyFillType, "path", pureJsPoly1, pureJsPoly2);
+                    pureJsTestPolyOperation(clipType, polyFillType, pureJsPoly1, pureJsPoly2);
                   }
                 }
               });
@@ -141,7 +160,9 @@ describe("benchmarks", () => {
   }
 
   for (const benchmark of [{ ops: 100, points: 5000 }, { ops: 5000, points: 100 }]) {
-    describe(`${benchmark.ops} offset operations over a circle of ${benchmark.points} points`, () => {
+    describe(`${benchmark.ops} offset operations over a circle of ${
+      benchmark.points
+    } points`, () => {
       const poly1 = circlePath({ x: 1000, y: 1000 }, 1000, benchmark.points);
       const pureJsPoly1 = pathToPureJs(poly1);
       const scale = 100;
@@ -170,7 +191,7 @@ describe("benchmarks", () => {
                         asm: mode === "asmJs"
                       });
                     } else if (mode === "pureJs") {
-                      pureJsTestOffset("path", pureJsPoly1, joinType, endType, delta);
+                      pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
                     }
                   }
                 });

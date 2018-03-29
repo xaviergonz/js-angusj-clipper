@@ -118,7 +118,13 @@ export class PolyNode {
 
     const childs = nativePolyNode.childs;
     for (let i = 0, max = childs.size(); i < max; i++) {
-      const newChild = PolyNode.fromNativePolyNode(nativeLib, childs.get(i), pn, i, freeNativePolyNode);
+      const newChild = PolyNode.fromNativePolyNode(
+        nativeLib,
+        childs.get(i),
+        pn,
+        i,
+        freeNativePolyNode
+      );
       pn._childs.push(newChild);
     }
 
@@ -140,7 +146,14 @@ export class PolyNode {
     freeNativePolyNode: boolean
   ): PolyNode {
     const pn = new PolyNode();
-    PolyNode.fillFromNativePolyNode(pn, nativeLib, nativePolyNode, parent, childIndex, freeNativePolyNode);
+    PolyNode.fillFromNativePolyNode(
+      pn,
+      nativeLib,
+      nativePolyNode,
+      parent,
+      childIndex,
+      freeNativePolyNode
+    );
     return pn;
   }
 }

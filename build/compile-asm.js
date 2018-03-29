@@ -21,7 +21,9 @@ function build(wasmMode) {
 
   const output = wasmMode ? `clipper-wasm.js` : `clipper.js`;
 
-  const cmd = `docker run --rm -v ${wasmDir}:/src trzeci/emscripten emcc ${options.join(" ")} clipper.cpp -o ${output}`;
+  const cmd = `docker run --rm -v ${wasmDir}:/src trzeci/emscripten emcc ${options.join(
+    " "
+  )} clipper.cpp -o ${output}`;
   const returnData = shelljs.exec(cmd);
   if (returnData.code !== 0) {
     console.error(`build failed with error code ${returnData.code}`);

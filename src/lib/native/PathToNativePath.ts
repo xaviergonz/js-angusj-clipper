@@ -11,7 +11,11 @@ export function getNofItemsForPath(path: Path): number {
 
 // js to c++
 
-export function writePathToDoubleArray(path: Path, heapBytes: Float64Array, startPtr: number): number {
+export function writePathToDoubleArray(
+  path: Path,
+  heapBytes: Float64Array,
+  startPtr: number
+): number {
   const len = path.length;
 
   heapBytes[startPtr] = len;
@@ -25,7 +29,10 @@ export function writePathToDoubleArray(path: Path, heapBytes: Float64Array, star
   return arrayI;
 }
 
-export function pathToDoubleArray(nativeClipperLib: NativeClipperLibInstance, path: Path): Float64Array {
+export function pathToDoubleArray(
+  nativeClipperLib: NativeClipperLibInstance,
+  path: Path
+): Float64Array {
   const nofItems = getNofItemsForPath(path);
   const heapBytes = mallocDoubleArray(nativeClipperLib, nofItems);
   writePathToDoubleArray(path, heapBytes, 0);
@@ -45,7 +52,10 @@ export function doubleArrayToNativePath(
   return p;
 }
 
-export function pathToNativePath(nativeClipperLib: NativeClipperLibInstance, path: Path): NativePath {
+export function pathToNativePath(
+  nativeClipperLib: NativeClipperLibInstance,
+  path: Path
+): NativePath {
   const array = pathToDoubleArray(nativeClipperLib, path);
   return doubleArrayToNativePath(nativeClipperLib, array, true);
 }

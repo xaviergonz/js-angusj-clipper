@@ -119,7 +119,11 @@ export function offsetToPathsOrPolyTree(
     ...params
   };
 
-  const offset = new ClipperOffset(nativeClipperLib, filledData.miterLimit, filledData.arcTolerance);
+  const offset = new ClipperOffset(
+    nativeClipperLib,
+    filledData.miterLimit,
+    filledData.arcTolerance
+  );
 
   //noinspection UnusedCatchParameterJS
   try {
@@ -136,7 +140,10 @@ export function offsetToPathsOrPolyTree(
   }
 }
 
-export function offsetToPaths(nativeClipperLib: NativeClipperLibInstance, params: OffsetParams): Paths | undefined {
+export function offsetToPaths(
+  nativeClipperLib: NativeClipperLibInstance,
+  params: OffsetParams
+): Paths | undefined {
   return offsetToPathsOrPolyTree(false, nativeClipperLib, params) as Paths | undefined;
 }
 

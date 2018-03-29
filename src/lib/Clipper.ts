@@ -2,7 +2,11 @@ import { ClipType, PolyFillType, PolyType } from "./enums";
 import { IntRect } from "./IntRect";
 import { NativeClipper } from "./native/NativeClipper";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { clipTypeToNative, polyFillTypeToNative, polyTypeToNative } from "./native/nativeEnumConversion";
+import {
+  clipTypeToNative,
+  polyFillTypeToNative,
+  polyTypeToNative
+} from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { pathToNativePath } from "./native/PathToNativePath";
 import { Path } from "./Path";
@@ -121,7 +125,10 @@ export class Clipper {
    * @param _nativeLib
    * @param initOptions
    */
-  constructor(private readonly _nativeLib: NativeClipperLibInstance, initOptions: ClipperInitOptions = {}) {
+  constructor(
+    private readonly _nativeLib: NativeClipperLibInstance,
+    initOptions: ClipperInitOptions = {}
+  ) {
     const realInitOptions = {
       reverseSolutions: false,
       strictlySimple: false,
@@ -170,7 +177,11 @@ export class Clipper {
   addPath(path: Path, polyType: PolyType, closed: boolean): boolean {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
-      return this._clipper!.addPath(nativePath, polyTypeToNative(this._nativeLib, polyType), closed);
+      return this._clipper!.addPath(
+        nativePath,
+        polyTypeToNative(this._nativeLib, polyType),
+        closed
+      );
     } finally {
       nativePath.delete();
     }
@@ -203,7 +214,11 @@ export class Clipper {
   addPaths(paths: Paths, polyType: PolyType, closed: boolean): boolean {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
-      return this._clipper!.addPaths(nativePaths, polyTypeToNative(this._nativeLib, polyType), closed);
+      return this._clipper!.addPaths(
+        nativePaths,
+        polyTypeToNative(this._nativeLib, polyType),
+        closed
+      );
     } finally {
       nativePaths.delete();
     }
@@ -267,7 +282,11 @@ export class Clipper {
    * @param clipFillType - Fill type of the clip polygons
    * @return {Paths | undefined} - The solution or undefined if there was an error
    */
-  executeToPaths(clipType: ClipType, subjFillType: PolyFillType, clipFillType: PolyFillType): Paths | undefined {
+  executeToPaths(
+    clipType: ClipType,
+    subjFillType: PolyFillType,
+    clipFillType: PolyFillType
+  ): Paths | undefined {
     const outNativePaths = new this._nativeLib.Paths();
     try {
       const success = this._clipper!.executePathsWithFillTypes(
@@ -322,7 +341,11 @@ export class Clipper {
    * @param clipFillType - Fill type of the clip polygons
    * @return {PolyTree | undefined} - The solution or undefined if there was an error
    */
-  executeToPolyTee(clipType: ClipType, subjFillType: PolyFillType, clipFillType: PolyFillType): PolyTree | undefined {
+  executeToPolyTee(
+    clipType: ClipType,
+    subjFillType: PolyFillType,
+    clipFillType: PolyFillType
+  ): PolyTree | undefined {
     const outNativePolyTree = new this._nativeLib.PolyTree();
     try {
       const success = this._clipper!.executePolyTreeWithFillTypes(

@@ -124,7 +124,11 @@ export interface ClipParams {
   preserveCollinear?: boolean;
 }
 
-const addPathOrPaths = (clipper: Clipper, inputDatas: (SubjectInput | ClipInput)[] | undefined, polyType: PolyType) => {
+const addPathOrPaths = (
+  clipper: Clipper,
+  inputDatas: (SubjectInput | ClipInput)[] | undefined,
+  polyType: PolyType
+) => {
   if (inputDatas === undefined) {
     return;
   }
@@ -139,7 +143,8 @@ const addPathOrPaths = (clipper: Clipper, inputDatas: (SubjectInput | ClipInput)
       continue;
     }
 
-    const closed = (inputData as SubjectInput).closed === undefined ? true : (inputData as SubjectInput).closed;
+    const closed =
+      (inputData as SubjectInput).closed === undefined ? true : (inputData as SubjectInput).closed;
 
     // is it a path or paths?
     if (Array.isArray(pathOrPaths[0])) {
@@ -168,7 +173,8 @@ export function clipToPathsOrPolyTree(
     addPathOrPaths(clipper, params.subjectInputs, PolyType.Subject);
     addPathOrPaths(clipper, params.clipInputs, PolyType.Clip);
     let result;
-    const clipFillType = params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
+    const clipFillType =
+      params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
     if (!polyTreeMode) {
       result = clipper.executeToPaths(params.clipType, params.subjectFillType, clipFillType);
     } else {
@@ -187,6 +193,9 @@ export function clipToPaths(nativeClipperLib: NativeClipperLibInstance, params: 
   return clipToPathsOrPolyTree(false, nativeClipperLib, params) as Paths;
 }
 
-export function clipToPolyTree(nativeClipperLib: NativeClipperLibInstance, params: ClipParams): PolyTree {
+export function clipToPolyTree(
+  nativeClipperLib: NativeClipperLibInstance,
+  params: ClipParams
+): PolyTree {
   return clipToPathsOrPolyTree(true, nativeClipperLib, params) as PolyTree;
 }

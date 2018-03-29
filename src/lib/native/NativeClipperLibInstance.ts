@@ -52,7 +52,11 @@ export interface NativeClipperLibInstance {
   pointInPolygon(pt: NativeIntPoint, path: NativePath): number;
 
   simplifyPolygon(path: NativePath, outPaths: NativePaths, fillType: NativePolyFillType): void;
-  simplifyPolygonsInOut(paths: NativePaths, outPaths: NativePaths, fillType: NativePolyFillType): void;
+  simplifyPolygonsInOut(
+    paths: NativePaths,
+    outPaths: NativePaths,
+    fillType: NativePolyFillType
+  ): void;
   simplifyPolygonsOverwrite(paths: NativePaths, fillType: NativePolyFillType): void;
 
   cleanPolygon(path: NativePath, outPath: NativePath, distance: number): void;
@@ -60,8 +64,18 @@ export interface NativeClipperLibInstance {
   cleanPolygons(paths: NativePaths, outPaths: NativePaths, distance: number): void;
   cleanPolygons(inOutPaths: NativePaths, distance: number): void;
 
-  minkowskiSumPath(pattern: NativePath, path: NativePath, outPaths: NativePaths, pathIsClosed: boolean): void;
-  minkowskiSumPaths(pattern: NativePath, paths: NativePaths, outPaths: NativePaths, pathIsClosed: boolean): void;
+  minkowskiSumPath(
+    pattern: NativePath,
+    path: NativePath,
+    outPaths: NativePaths,
+    pathIsClosed: boolean
+  ): void;
+  minkowskiSumPaths(
+    pattern: NativePath,
+    paths: NativePaths,
+    outPaths: NativePaths,
+    pathIsClosed: boolean
+  ): void;
   minkowskiDiff(path1: NativePath, path2: NativePath, outPaths: NativePaths): void;
 
   polyTreeToPaths(polyTree: NativePolyTree, outPaths: NativePaths): void;

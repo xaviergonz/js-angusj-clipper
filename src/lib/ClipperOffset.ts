@@ -121,7 +121,11 @@ export class ClipperOffset {
    * @param miterLimit - Miter limit
    * @param arcTolerance - ArcTolerance (round precision)
    */
-  constructor(private readonly _nativeLib: NativeClipperLibInstance, miterLimit = 2, arcTolerance = 0.25) {
+  constructor(
+    private readonly _nativeLib: NativeClipperLibInstance,
+    miterLimit = 2,
+    arcTolerance = 0.25
+  ) {
     this._clipperOffset = new _nativeLib.ClipperOffset(miterLimit, arcTolerance);
   }
 

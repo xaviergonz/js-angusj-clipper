@@ -1,7 +1,8 @@
 {
   "name": "js-angusj-clipper",
   "version": "0.16.0",
-  "description": "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
+  "description":
+    "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
   "main": "dist/lib/index.js",
   "scripts": {
     "postinstall": "npm run pull-docker-image",
@@ -15,23 +16,15 @@
     "build": "npm run build:ts && npm run build:asm",
     "build:ts": "tsc -p .",
     "build:asm": "node build/compile-asm",
-    "tslint-check": "tslint-config-prettier-check ./tslint.json"
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "prettier-all": "prettier --write \"src/lib/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
-  "files": [
-    "dist/lib",
-    "dist/wasm"
-  ],
+  "files": ["dist/lib", "dist/wasm"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xaviergonz/js-angusj-clipper.git"
   },
-  "keywords": [
-    "polygon",
-    "clipping",
-    "offseting",
-    "boolean",
-    "geometry"
-  ],
+  "keywords": ["polygon", "clipping", "offseting", "boolean", "geometry"],
   "author": "Javier Gonzalez Garces <xaviergonz@gmail.com>",
   "license": "MIT",
   "bugs": {

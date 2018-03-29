@@ -7,7 +7,10 @@ import { doubleArrayToPath, getNofItemsForPath, writePathToDoubleArray } from ".
 
 // js to c++
 
-export function pathsToDoubleArray(nativeClipperLib: NativeClipperLibInstance, myPaths: Paths): Float64Array {
+export function pathsToDoubleArray(
+  nativeClipperLib: NativeClipperLibInstance,
+  myPaths: Paths
+): Float64Array {
   const nofPaths = myPaths.length;
 
   // first calculate nof items required
@@ -40,7 +43,10 @@ export function doubleArrayToNativePaths(
   return p;
 }
 
-export function pathsToNativePaths(nativeClipperLib: NativeClipperLibInstance, paths: Paths): NativePaths {
+export function pathsToNativePaths(
+  nativeClipperLib: NativeClipperLibInstance,
+  paths: Paths
+): NativePaths {
   const array = pathsToDoubleArray(nativeClipperLib, paths);
   return doubleArrayToNativePaths(nativeClipperLib, array, true);
 }

@@ -32,7 +32,11 @@ export function area(path: Path): number {
   return -a * 0.5;
 }
 
-export function cleanPolygon(nativeLib: NativeClipperLibInstance, path: Path, distance = 1.1415): Path {
+export function cleanPolygon(
+  nativeLib: NativeClipperLibInstance,
+  path: Path,
+  distance = 1.1415
+): Path {
   const nativePath = pathToNativePath(nativeLib, path);
   try {
     nativeLib.cleanPolygon(nativePath, distance);
@@ -42,7 +46,11 @@ export function cleanPolygon(nativeLib: NativeClipperLibInstance, path: Path, di
   }
 }
 
-export function cleanPolygons(nativeLib: NativeClipperLibInstance, paths: Paths, distance = 1.1415): Paths {
+export function cleanPolygons(
+  nativeLib: NativeClipperLibInstance,
+  paths: Paths,
+  distance = 1.1415
+): Paths {
   const nativePaths = pathsToNativePaths(nativeLib, paths);
   try {
     nativeLib.cleanPolygons(nativePaths, distance);
@@ -88,7 +96,11 @@ export function closedPathsFromPolyTree(polyTree: PolyTree): Paths {
   return result;
 }
 
-export function minkowskiDiff(nativeLib: NativeClipperLibInstance, poly1: Path, poly2: Path): Paths {
+export function minkowskiDiff(
+  nativeLib: NativeClipperLibInstance,
+  poly1: Path,
+  poly2: Path
+): Paths {
   const nativePath1 = pathToNativePath(nativeLib, poly1);
   const nativePath2 = pathToNativePath(nativeLib, poly2);
   const outNativePaths = new nativeLib.Paths();
@@ -185,7 +197,8 @@ export function pointInPolygon(point: IntPoint, path: Path): PointInPolygonResul
         if (ipNext.x > point.x) {
           result = 1 - result;
         } else {
-          const d = (ip.x - point.x) * (ipNext.y - point.y) - (ipNext.x - point.x) * (ip.y - point.y);
+          const d =
+            (ip.x - point.x) * (ipNext.y - point.y) - (ipNext.x - point.x) * (ip.y - point.y);
           if (d === 0) {
             return -1;
           } else if (d > 0 === ipNext.y > ip.y) {
@@ -194,7 +207,8 @@ export function pointInPolygon(point: IntPoint, path: Path): PointInPolygonResul
         }
       } else {
         if (ipNext.x > point.x) {
-          const d = (ip.x - point.x) * (ipNext.y - point.y) - (ipNext.x - point.x) * (ip.y - point.y);
+          const d =
+            (ip.x - point.x) * (ipNext.y - point.y) - (ipNext.x - point.x) * (ip.y - point.y);
           if (d === 0) {
             return -1;
           } else if (d > 0 === ipNext.y > ip.y) {
@@ -237,7 +251,11 @@ export function simplifyPolygon(
   const nativePath = pathToNativePath(nativeLib, path);
   const outNativePaths = new nativeLib.Paths();
   try {
-    nativeLib.simplifyPolygon(nativePath, outNativePaths, polyFillTypeToNative(nativeLib, fillType));
+    nativeLib.simplifyPolygon(
+      nativePath,
+      outNativePaths,
+      polyFillTypeToNative(nativeLib, fillType)
+    );
     tryDelete(nativePath);
     return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
   } finally {

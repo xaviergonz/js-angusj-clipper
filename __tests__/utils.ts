@@ -1,6 +1,10 @@
 import * as clipperLib from "../src/lib";
 
-export function circlePath(center: clipperLib.IntPoint, radius: number, points: number): clipperLib.Path {
+export function circlePath(
+  center: clipperLib.IntPoint,
+  radius: number,
+  points: number
+): clipperLib.Path {
   const path = [];
 
   for (let i = 0; i < points; i++) {

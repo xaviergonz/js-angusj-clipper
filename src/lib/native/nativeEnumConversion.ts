@@ -1,6 +1,12 @@
 import { ClipType, EndType, JoinType, PolyFillType, PolyType } from "../enums";
 import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
-import { NativeClipType, NativeEndType, NativeJoinType, NativePolyFillType, NativePolyType } from "./nativeEnums";
+import {
+  NativeClipType,
+  NativeEndType,
+  NativeJoinType,
+  NativePolyFillType,
+  NativePolyType
+} from "./nativeEnums";
 
 export function polyFillTypeToNative(
   nativeLib: NativeClipperLibInstance,
@@ -20,7 +26,10 @@ export function polyFillTypeToNative(
   }
 }
 
-export function clipTypeToNative(nativeLib: NativeClipperLibInstance, clipType: ClipType): NativeClipType {
+export function clipTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  clipType: ClipType
+): NativeClipType {
   switch (clipType) {
     case ClipType.Intersection:
       return nativeLib.ClipType.Intersection;
@@ -35,7 +44,10 @@ export function clipTypeToNative(nativeLib: NativeClipperLibInstance, clipType: 
   }
 }
 
-export function polyTypeToNative(nativeLib: NativeClipperLibInstance, polyType: PolyType): NativePolyType {
+export function polyTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  polyType: PolyType
+): NativePolyType {
   switch (polyType) {
     case PolyType.Subject:
       return nativeLib.PolyType.Subject;
@@ -46,7 +58,10 @@ export function polyTypeToNative(nativeLib: NativeClipperLibInstance, polyType: 
   }
 }
 
-export function joinTypeToNative(nativeLib: NativeClipperLibInstance, joinType: JoinType): NativeJoinType {
+export function joinTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  joinType: JoinType
+): NativeJoinType {
   switch (joinType) {
     case JoinType.Square:
       return nativeLib.JoinType.Square;
@@ -59,7 +74,10 @@ export function joinTypeToNative(nativeLib: NativeClipperLibInstance, joinType: 
   }
 }
 
-export function endTypeToNative(nativeLib: NativeClipperLibInstance, endType: EndType): NativeEndType {
+export function endTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  endType: EndType
+): NativeEndType {
   switch (endType) {
     case EndType.ClosedPolygon:
       return nativeLib.EndType.ClosedPolygon;
