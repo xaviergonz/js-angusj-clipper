@@ -1,5 +1,5 @@
 import { Path } from "../Path";
-import { Paths } from "../Paths";
+import { Paths, ReadonlyPaths } from "../Paths";
 import { freeTypedArray, mallocDoubleArray } from "./mem";
 import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
 import { NativePaths } from "./NativePaths";
@@ -9,7 +9,7 @@ import { doubleArrayToPath, getNofItemsForPath, writePathToDoubleArray } from ".
 
 export function pathsToDoubleArray(
   nativeClipperLib: NativeClipperLibInstance,
-  myPaths: Paths
+  myPaths: ReadonlyPaths
 ): Float64Array {
   const nofPaths = myPaths.length;
 
@@ -45,7 +45,7 @@ export function doubleArrayToNativePaths(
 
 export function pathsToNativePaths(
   nativeClipperLib: NativeClipperLibInstance,
-  paths: Paths
+  paths: ReadonlyPaths
 ): NativePaths {
   const array = pathsToDoubleArray(nativeClipperLib, paths);
   return doubleArrayToNativePaths(nativeClipperLib, array, true);

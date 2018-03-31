@@ -15,8 +15,8 @@ import { IntPoint } from "./IntPoint";
 import { IntRect } from "./IntRect";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import { OffsetInput, OffsetParams, offsetToPaths, offsetToPolyTree } from "./offsetFunctions";
-import { Path } from "./Path";
-import { Paths } from "./Paths";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyNode } from "./PolyNode";
 import { PolyTree } from "./PolyTree";
 
@@ -184,7 +184,7 @@ export class ClipperLibWrapper {
    * @param path - The path
    * @return {number} - Area
    */
-  area(path: Path): number {
+  area(path: ReadonlyPath): number {
     return functions.area(path);
   }
 
@@ -204,7 +204,7 @@ export class ClipperLibWrapper {
    * @param distance - How close points need to be before they are cleaned
    * @return {Path} - The cleaned path
    */
-  cleanPolygon(path: Path, distance = 1.1415): Path {
+  cleanPolygon(path: ReadonlyPath, distance = 1.1415): Path {
     return functions.cleanPolygon(this.instance, path, distance);
   }
 
@@ -224,7 +224,7 @@ export class ClipperLibWrapper {
    * @param distance - How close points need to be before they are cleaned
    * @return {Paths} - The cleaned paths
    */
-  cleanPolygons(paths: Paths, distance = 1.1415): Paths {
+  cleanPolygons(paths: ReadonlyPaths, distance = 1.1415): Paths {
     return functions.cleanPolygons(this.instance, paths, distance);
   }
 
@@ -248,7 +248,7 @@ export class ClipperLibWrapper {
    * @param poly2
    * @return {Paths}
    */
-  minkowskiDiff(poly1: Path, poly2: Path): Paths {
+  minkowskiDiff(poly1: ReadonlyPath, poly2: ReadonlyPath): Paths {
     return functions.minkowskiDiff(this.instance, poly1, poly2);
   }
 
@@ -261,7 +261,7 @@ export class ClipperLibWrapper {
    * @param pathIsClosed
    * @return {Paths}
    */
-  minkowskiSumPath(pattern: Path, path: Path, pathIsClosed: boolean): Paths {
+  minkowskiSumPath(pattern: ReadonlyPath, path: ReadonlyPath, pathIsClosed: boolean): Paths {
     return functions.minkowskiSumPath(this.instance, pattern, path, pathIsClosed);
   }
 
@@ -274,7 +274,7 @@ export class ClipperLibWrapper {
    * @param pathIsClosed
    * @return {Paths}
    */
-  minkowskiSumPaths(pattern: Path, paths: Paths, pathIsClosed: boolean): Paths {
+  minkowskiSumPaths(pattern: ReadonlyPath, paths: ReadonlyPaths, pathIsClosed: boolean): Paths {
     return functions.minkowskiSumPaths(this.instance, pattern, paths, pathIsClosed);
   }
 
@@ -283,9 +283,9 @@ export class ClipperLibWrapper {
    * This function filters out closed paths from the PolyTree structure and returns only open paths in a Paths structure.
    *
    * @param polyTree
-   * @return {Paths}
+   * @return {ReadonlyPath[]}
    */
-  openPathsFromPolyTree(polyTree: PolyTree): Paths {
+  openPathsFromPolyTree(polyTree: PolyTree): ReadonlyPath[] {
     return functions.openPathsFromPolyTree(polyTree);
   }
 
@@ -310,7 +310,7 @@ export class ClipperLibWrapper {
    * @param path - Path
    * @return {boolean}
    */
-  orientation(path: Path): boolean {
+  orientation(path: ReadonlyPath): boolean {
     return functions.orientation(path);
   }
 
@@ -325,7 +325,7 @@ export class ClipperLibWrapper {
    * @param path
    * @return {PointInPolygonResult}
    */
-  pointInPolygon(point: IntPoint, path: Path): PointInPolygonResult {
+  pointInPolygon(point: Readonly<IntPoint>, path: ReadonlyPath): PointInPolygonResult {
     return functions.pointInPolygon(point, path);
   }
 
@@ -370,7 +370,7 @@ export class ClipperLibWrapper {
    * @param fillType
    * @return {Paths} - The solution
    */
-  simplifyPolygon(path: Path, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
+  simplifyPolygon(path: ReadonlyPath, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
     return functions.simplifyPolygon(this.instance, path, fillType);
   }
 
@@ -384,7 +384,7 @@ export class ClipperLibWrapper {
    * @param fillType
    * @return {Paths} - The solution
    */
-  simplifyPolygons(paths: Paths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
+  simplifyPolygons(paths: ReadonlyPaths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
     return functions.simplifyPolygons(this.instance, paths, fillType);
   }
 
@@ -396,7 +396,7 @@ export class ClipperLibWrapper {
    * @param scale - Scale multiplier
    * @return {Path} - The scaled path
    */
-  scalePath(path: Path, scale: number): Path {
+  scalePath(path: ReadonlyPath, scale: number): Path {
     return functions.scalePath(path, scale);
   }
 
@@ -408,7 +408,7 @@ export class ClipperLibWrapper {
    * @param scale - Scale multiplier
    * @return {Paths} - The scaled paths
    */
-  scalePaths(paths: Paths, scale: number): Paths {
+  scalePaths(paths: ReadonlyPaths, scale: number): Paths {
     return functions.scalePaths(paths, scale);
   }
 }

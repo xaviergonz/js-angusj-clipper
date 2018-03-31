@@ -1,18 +1,18 @@
-import { Path } from "../Path";
+import { Path, ReadonlyPath } from "../Path";
 import { freeTypedArray, mallocDoubleArray } from "./mem";
 import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
 import { NativePath } from "./NativePath";
 
 const coordsPerPoint = 2;
 
-export function getNofItemsForPath(path: Path): number {
+export function getNofItemsForPath(path: ReadonlyPath): number {
   return 1 + path.length * coordsPerPoint;
 }
 
 // js to c++
 
 export function writePathToDoubleArray(
-  path: Path,
+  path: ReadonlyPath,
   heapBytes: Float64Array,
   startPtr: number
 ): number {
@@ -31,7 +31,7 @@ export function writePathToDoubleArray(
 
 export function pathToDoubleArray(
   nativeClipperLib: NativeClipperLibInstance,
-  path: Path
+  path: ReadonlyPath
 ): Float64Array {
   const nofItems = getNofItemsForPath(path);
   const heapBytes = mallocDoubleArray(nativeClipperLib, nofItems);
@@ -54,7 +54,7 @@ export function doubleArrayToNativePath(
 
 export function pathToNativePath(
   nativeClipperLib: NativeClipperLibInstance,
-  path: Path
+  path: ReadonlyPath
 ): NativePath {
   const array = pathToDoubleArray(nativeClipperLib, path);
   return doubleArrayToNativePath(nativeClipperLib, array, true);

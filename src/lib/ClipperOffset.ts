@@ -4,8 +4,8 @@ import { NativeClipperOffset } from "./native/NativeClipperOffset";
 import { endTypeToNative, joinTypeToNative } from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { pathToNativePath } from "./native/PathToNativePath";
-import { Path } from "./Path";
-import { Paths } from "./Paths";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
 /**
@@ -140,7 +140,7 @@ export class ClipperOffset {
    * @param joinType - Join type
    * @param endType - End type
    */
-  addPath(path: Path, joinType: JoinType, endType: EndType) {
+  addPath(path: ReadonlyPath, joinType: JoinType, endType: EndType) {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
       this._clipperOffset!.addPath(
@@ -164,7 +164,7 @@ export class ClipperOffset {
    * @param joinType - Join type
    * @param endType - End type
    */
-  addPaths(paths: Paths, joinType: JoinType, endType: EndType) {
+  addPaths(paths: ReadonlyPaths, joinType: JoinType, endType: EndType) {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
       this._clipperOffset!.addPaths(

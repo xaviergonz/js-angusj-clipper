@@ -2,8 +2,8 @@ import { Clipper } from "./Clipper";
 import { ClipperError } from "./ClipperError";
 import { ClipType, PolyFillType, PolyType } from "./enums";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { Path } from "./Path";
-import { Paths } from "./Paths";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
 /**
@@ -26,7 +26,7 @@ export interface SubjectInput {
    * - it has 2 vertices but is not an open path
    * - the vertices are all co-linear and it is not an open path
    */
-  data: Path | Paths;
+  data: ReadonlyPath | ReadonlyPaths;
 
   /**
    * If the path/paths is closed or not.
@@ -54,7 +54,7 @@ export interface ClipInput {
    * - it has 2 vertices but is not an open path
    * - the vertices are all co-linear and it is not an open path
    */
-  data: Path | Paths;
+  data: ReadonlyPath | ReadonlyPaths;
 }
 
 /**

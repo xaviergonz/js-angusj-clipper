@@ -1,7 +1,7 @@
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import { NativePolyNode } from "./native/NativePolyNode";
 import { nativePathToPath } from "./native/PathToNativePath";
-import { Path } from "./Path";
+import { ReadonlyPath } from "./Path";
 
 /**
  * PolyNodes are encapsulated within a PolyTree container, and together provide a data structure representing the parent-child relationships of polygon
@@ -31,11 +31,11 @@ export class PolyNode {
     return this._childs;
   }
 
-  protected _contour: Path = [];
+  protected _contour: ReadonlyPath = [];
   /**
    * Returns a path list which contains any number of vertices.
    */
-  get contour(): Path {
+  get contour(): ReadonlyPath {
     return this._contour;
   }
 

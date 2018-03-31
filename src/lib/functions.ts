@@ -5,8 +5,8 @@ import { NativeDeletable } from "./native/NativeDeletable";
 import { polyFillTypeToNative } from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { nativePathToPath, pathToNativePath } from "./native/PathToNativePath";
-import { Path } from "./Path";
-import { Paths } from "./Paths";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyNode } from "./PolyNode";
 import { PolyTree } from "./PolyTree";
 
@@ -18,7 +18,7 @@ function tryDelete(...objs: NativeDeletable[]) {
   }
 }
 
-export function area(path: Path): number {
+export function area(path: ReadonlyPath): number {
   // we use JS since copying structures is slower than actually doing it
   const cnt = path.length;
   if (cnt < 3) {
@@ -34,7 +34,7 @@ export function area(path: Path): number {
 
 export function cleanPolygon(
   nativeLib: NativeClipperLibInstance,
-  path: Path,
+  path: ReadonlyPath,
   distance = 1.1415
 ): Path {
   const nativePath = pathToNativePath(nativeLib, path);
@@ -48,7 +48,7 @@ export function cleanPolygon(
 
 export function cleanPolygons(
   nativeLib: NativeClipperLibInstance,
-  paths: Paths,
+  paths: ReadonlyPaths,
   distance = 1.1415
 ): Paths {
   const nativePaths = pathsToNativePaths(nativeLib, paths);
@@ -66,7 +66,7 @@ const enum NodeType {
   Closed
 }
 
-function addPolyNodeToPaths(polynode: PolyNode, nt: NodeType, paths: Paths): void {
+function addPolyNodeToPaths(polynode: PolyNode, nt: NodeType, paths: ReadonlyPath[]): void {
   let match = true;
   switch (nt) {
     case NodeType.Open:
@@ -98,8 +98,8 @@ export function closedPathsFromPolyTree(polyTree: PolyTree): Paths {
 
 export function minkowskiDiff(
   nativeLib: NativeClipperLibInstance,
-  poly1: Path,
-  poly2: Path
+  poly1: ReadonlyPath,
+  poly2: ReadonlyPath
 ): Paths {
   const nativePath1 = pathToNativePath(nativeLib, poly1);
   const nativePath2 = pathToNativePath(nativeLib, poly2);
@@ -116,8 +116,8 @@ export function minkowskiDiff(
 
 export function minkowskiSumPath(
   nativeLib: NativeClipperLibInstance,
-  pattern: Path,
-  path: Path,
+  pattern: ReadonlyPath,
+  path: ReadonlyPath,
   pathIsClosed: boolean
 ): Paths {
   const patternNativePath = pathToNativePath(nativeLib, pattern);
@@ -135,8 +135,8 @@ export function minkowskiSumPath(
 
 export function minkowskiSumPaths(
   nativeLib: NativeClipperLibInstance,
-  pattern: Path,
-  paths: Paths,
+  pattern: ReadonlyPath,
+  paths: ReadonlyPaths,
   pathIsClosed: boolean
 ): Paths {
   // TODO: im not sure if for this method we can reuse the input/output path
@@ -153,7 +153,7 @@ export function minkowskiSumPaths(
   }
 }
 
-export function openPathsFromPolyTree(polyTree: PolyTree): Paths {
+export function openPathsFromPolyTree(polyTree: PolyTree): ReadonlyPath[] {
   // we do this in JS since copying path is more expensive than just doing it
 
   const result = [];
@@ -169,11 +169,14 @@ export function openPathsFromPolyTree(polyTree: PolyTree): Paths {
   return result;
 }
 
-export function orientation(path: Path): boolean {
+export function orientation(path: ReadonlyPath): boolean {
   return area(path) >= 0;
 }
 
-export function pointInPolygon(point: IntPoint, path: Path): PointInPolygonResult {
+export function pointInPolygon(
+  point: Readonly<IntPoint>,
+  path: ReadonlyPath
+): PointInPolygonResult {
   // we do this in JS since copying path is more expensive than just doing it
 
   // returns 0 if false, +1 if true, -1 if pt ON polygon boundary
@@ -245,7 +248,7 @@ export function reversePaths(paths: Paths): void {
 
 export function simplifyPolygon(
   nativeLib: NativeClipperLibInstance,
-  path: Path,
+  path: ReadonlyPath,
   fillType: PolyFillType = PolyFillType.EvenOdd
 ): Paths {
   const nativePath = pathToNativePath(nativeLib, path);
@@ -265,7 +268,7 @@ export function simplifyPolygon(
 
 export function simplifyPolygons(
   nativeLib: NativeClipperLibInstance,
-  paths: Paths,
+  paths: ReadonlyPaths,
   fillType: PolyFillType = PolyFillType.EvenOdd
 ): Paths {
   const nativePaths = pathsToNativePaths(nativeLib, paths);
@@ -277,7 +280,7 @@ export function simplifyPolygons(
   }
 }
 
-export function scalePath(path: Path, scale: number): Path {
+export function scalePath(path: ReadonlyPath, scale: number): Path {
   const sol: Path = [];
   let i = path.length;
   while (i--) {
@@ -297,7 +300,7 @@ export function scalePath(path: Path, scale: number): Path {
  * @param scale - Scale multiplier
  * @return {Paths} - The scaled paths
  */
-export function scalePaths(paths: Paths, scale: number): Paths {
+export function scalePaths(paths: ReadonlyPaths, scale: number): Paths {
   if (scale === 0) {
     return [];
   }

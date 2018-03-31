@@ -9,8 +9,8 @@ import {
 } from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { pathToNativePath } from "./native/PathToNativePath";
-import { Path } from "./Path";
-import { Paths } from "./Paths";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
 export interface ClipperInitOptions {
@@ -174,7 +174,7 @@ export class Clipper {
    * @param polyType - Polygon type
    * @param closed - If the path is closed
    */
-  addPath(path: Path, polyType: PolyType, closed: boolean): boolean {
+  addPath(path: ReadonlyPath, polyType: PolyType, closed: boolean): boolean {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
       return this._clipper!.addPath(
@@ -211,7 +211,7 @@ export class Clipper {
    * @param polyType - Paths polygon type
    * @param closed - If all the inner paths are closed
    */
-  addPaths(paths: Paths, polyType: PolyType, closed: boolean): boolean {
+  addPaths(paths: ReadonlyPaths, polyType: PolyType, closed: boolean): boolean {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
       return this._clipper!.addPaths(

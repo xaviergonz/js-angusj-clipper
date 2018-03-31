@@ -1,8 +1,8 @@
 import { ClipperOffset } from "./ClipperOffset";
 import { EndType, JoinType } from "./enums";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { Path } from "./Path";
-import { Paths } from "./Paths";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
 /**
@@ -25,7 +25,7 @@ export interface OffsetInput {
    * All 'outer' Paths must have the same orientation, and any 'hole' paths must have reverse orientation. Closed paths must have at least 3 vertices.
    * Open paths may have as few as one vertex. Open paths can only be offset with positive deltas.
    */
-  data: Path | Paths;
+  data: ReadonlyPath | ReadonlyPaths;
 }
 
 /**
@@ -100,15 +100,15 @@ const addPathOrPaths = (offset: ClipperOffset, inputDatas: OffsetInput[] | undef
     // is it a path or paths?
     if (Array.isArray(pathOrPaths[0])) {
       // paths
-      offset.addPaths(pathOrPaths as Paths, inputData.joinType, inputData.endType);
+      offset.addPaths(pathOrPaths as ReadonlyPaths, inputData.joinType, inputData.endType);
     } else {
       // path
-      offset.addPath(pathOrPaths as Path, inputData.joinType, inputData.endType);
+      offset.addPath(pathOrPaths as ReadonlyPath, inputData.joinType, inputData.endType);
     }
   }
 };
 
-export function offsetToPathsOrPolyTree(
+function offsetToPathsOrPolyTree(
   polyTreeMode: boolean,
   nativeClipperLib: NativeClipperLibInstance,
   params: OffsetParams
