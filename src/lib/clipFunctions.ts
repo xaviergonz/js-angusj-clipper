@@ -122,6 +122,12 @@ export interface ClipParams {
    * clipping. When enabled the preserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
    */
   preserveCollinear?: boolean;
+
+  /**
+   * If this is not undefined then cleaning of the result polygon will be performed.
+   * This operation is only available when the output format is not a poly tree.
+   */
+  cleanDistance?: number;
 }
 
 const addPathOrPaths = (
@@ -176,8 +182,16 @@ export function clipToPathsOrPolyTree(
     const clipFillType =
       params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
     if (!polyTreeMode) {
-      result = clipper.executeToPaths(params.clipType, params.subjectFillType, clipFillType);
+      result = clipper.executeToPaths(
+        params.clipType,
+        params.subjectFillType,
+        clipFillType,
+        params.cleanDistance
+      );
     } else {
+      if (params.cleanDistance !== undefined) {
+        throw new ClipperError("cleaning is not available for poly tree results");
+      }
       result = clipper.executeToPolyTee(params.clipType, params.subjectFillType, clipFillType);
     }
     if (result === undefined) {

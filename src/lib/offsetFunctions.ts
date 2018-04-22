@@ -1,3 +1,4 @@
+import { ClipperError } from "./ClipperError";
 import { ClipperOffset } from "./ClipperOffset";
 import { EndType, JoinType } from "./enums";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
@@ -80,6 +81,12 @@ export interface OffsetParams {
    * One or more inputs to use for the offset operation.
    */
   offsetInputs: OffsetInput[];
+
+  /**
+   * If this is not undefined then cleaning of the result polygon will be performed.
+   * This operation is only available when the output format is not a poly tree.
+   */
+  cleanDistance?: number;
 }
 
 const addPathOrPaths = (offset: ClipperOffset, inputDatas: OffsetInput[] | undefined) => {
@@ -129,8 +136,11 @@ function offsetToPathsOrPolyTree(
   try {
     addPathOrPaths(offset, params.offsetInputs);
     if (!polyTreeMode) {
-      return offset.executeToPaths(params.delta);
+      return offset.executeToPaths(params.delta, params.cleanDistance);
     } else {
+      if (params.cleanDistance !== undefined) {
+        throw new ClipperError("cleaning is not available for poly tree results");
+      }
       return offset.executeToPolyTree(params.delta);
     }
   } catch (err) {

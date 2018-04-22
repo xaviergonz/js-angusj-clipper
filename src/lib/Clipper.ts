@@ -280,12 +280,14 @@ export class Clipper {
    * @param clipType - Clip operation type
    * @param subjFillType - Fill type of the subject polygons
    * @param clipFillType - Fill type of the clip polygons
+   * @param cleanDistance - Clean distance over the output, or undefined for no cleaning.
    * @return {Paths | undefined} - The solution or undefined if there was an error
    */
   executeToPaths(
     clipType: ClipType,
     subjFillType: PolyFillType,
-    clipFillType: PolyFillType
+    clipFillType: PolyFillType,
+    cleanDistance: number | undefined
   ): Paths | undefined {
     const outNativePaths = new this._nativeLib.Paths();
     try {
@@ -298,6 +300,9 @@ export class Clipper {
       if (!success) {
         return undefined;
       } else {
+        if (cleanDistance !== undefined) {
+          this._nativeLib.cleanPolygons(outNativePaths, cleanDistance);
+        }
         return nativePathsToPaths(this._nativeLib, outNativePaths, true); // frees outNativePaths
       }
     } finally {

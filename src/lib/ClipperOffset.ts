@@ -183,12 +183,16 @@ export class ClipperOffset {
    * This method can be called multiple times, offsetting the same paths by different amounts (ie using different deltas).
    *
    * @param delta - Delta
+   * @param cleanDistance - Clean distance over the output, or undefined for no cleaning.
    * @return {Paths} - Solution paths
    */
-  executeToPaths(delta: number): Paths {
+  executeToPaths(delta: number, cleanDistance: number | undefined): Paths {
     const outNativePaths = new this._nativeLib.Paths();
     try {
       this._clipperOffset!.executePaths(outNativePaths, delta);
+      if (cleanDistance !== undefined) {
+        this._nativeLib.cleanPolygons(outNativePaths, cleanDistance);
+      }
       return nativePathsToPaths(this._nativeLib, outNativePaths, true); // frees outNativePaths
     } finally {
       if (!outNativePaths.isDeleted()) {
