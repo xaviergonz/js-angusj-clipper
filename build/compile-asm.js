@@ -17,6 +17,8 @@ function build(wasmMode) {
 
   if (wasmMode) {
     options.push("-s WASM=1");
+  } else {
+    options.push("-s WASM=0");
   }
 
   const output = wasmMode ? `clipper-wasm.js` : `clipper.js`;
