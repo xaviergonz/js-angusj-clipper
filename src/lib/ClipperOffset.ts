@@ -1,12 +1,12 @@
-import { EndType, JoinType } from './enums';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { endTypeToNative, joinTypeToNative } from './native/nativeEnumConversion';
-import { nativePathsToPaths, pathsToNativePaths } from './native/PathsToNativePaths';
-import { pathToNativePath } from './native/PathToNativePath';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyTree } from './PolyTree';
-import { NativeClipperOffset } from './native/NativeClipperOffset';
+import { EndType, JoinType } from "./enums";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { NativeClipperOffset } from "./native/NativeClipperOffset";
+import { endTypeToNative, joinTypeToNative } from "./native/nativeEnumConversion";
+import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
+import { pathToNativePath } from "./native/PathToNativePath";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
+import { PolyTree } from "./PolyTree";
 
 /**
  * The ClipperOffset class encapsulates the process of offsetting (inflating/deflating) both open and closed paths using a number of different join types
@@ -121,7 +121,11 @@ export class ClipperOffset {
    * @param miterLimit - Miter limit
    * @param arcTolerance - ArcTolerance (round precision)
    */
-  constructor(private readonly _nativeLib: NativeClipperLibInstance, miterLimit = 2, arcTolerance = 0.25) {
+  constructor(
+    private readonly _nativeLib: NativeClipperLibInstance,
+    miterLimit = 2,
+    arcTolerance = 0.25
+  ) {
     this._clipperOffset = new _nativeLib.ClipperOffset(miterLimit, arcTolerance);
   }
 
@@ -136,12 +140,15 @@ export class ClipperOffset {
    * @param joinType - Join type
    * @param endType - End type
    */
-  addPath(path: Path, joinType: JoinType, endType: EndType) {
+  addPath(path: ReadonlyPath, joinType: JoinType, endType: EndType) {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
-      this._clipperOffset!.addPath(nativePath, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
-    }
-    finally {
+      this._clipperOffset!.addPath(
+        nativePath,
+        joinTypeToNative(this._nativeLib, joinType),
+        endTypeToNative(this._nativeLib, endType)
+      );
+    } finally {
       nativePath.delete();
     }
   }
@@ -157,12 +164,15 @@ export class ClipperOffset {
    * @param joinType - Join type
    * @param endType - End type
    */
-  addPaths(paths: Paths, joinType: JoinType, endType: EndType) {
+  addPaths(paths: ReadonlyPaths, joinType: JoinType, endType: EndType) {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
-      this._clipperOffset!.addPaths(nativePaths, joinTypeToNative(this._nativeLib, joinType), endTypeToNative(this._nativeLib, endType));
-    }
-    finally {
+      this._clipperOffset!.addPaths(
+        nativePaths,
+        joinTypeToNative(this._nativeLib, joinType),
+        endTypeToNative(this._nativeLib, endType)
+      );
+    } finally {
       nativePaths.delete();
     }
   }
@@ -173,15 +183,18 @@ export class ClipperOffset {
    * This method can be called multiple times, offsetting the same paths by different amounts (ie using different deltas).
    *
    * @param delta - Delta
+   * @param cleanDistance - Clean distance over the output, or undefined for no cleaning.
    * @return {Paths} - Solution paths
    */
-  executeToPaths(delta: number): Paths {
+  executeToPaths(delta: number, cleanDistance: number | undefined): Paths {
     const outNativePaths = new this._nativeLib.Paths();
     try {
       this._clipperOffset!.executePaths(outNativePaths, delta);
+      if (cleanDistance !== undefined) {
+        this._nativeLib.cleanPolygons(outNativePaths, cleanDistance);
+      }
       return nativePathsToPaths(this._nativeLib, outNativePaths, true); // frees outNativePaths
-    }
-    finally {
+    } finally {
       if (!outNativePaths.isDeleted()) {
         outNativePaths.delete();
       }
@@ -202,8 +215,7 @@ export class ClipperOffset {
     try {
       this._clipperOffset!.executePolyTree(outNativePolyTree, delta);
       return PolyTree.fromNativePolyTree(this._nativeLib, outNativePolyTree, true); // frees outNativePolyTree
-    }
-    finally {
+    } finally {
       if (!outNativePolyTree.isDeleted()) {
         outNativePolyTree.delete();
       }

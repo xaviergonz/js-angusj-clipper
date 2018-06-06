@@ -4,40 +4,40 @@
  * see http://glprogramming.com/red/chapter11.html
  */
 export enum PolyFillType {
-  EvenOdd = 'evenOdd',
-  NonZero = 'nonZero',
-  Positive = 'positive',
-  Negative = 'negative',
+  EvenOdd = "evenOdd",
+  NonZero = "nonZero",
+  Positive = "positive",
+  Negative = "negative"
 }
 
 export enum ClipType {
-  Intersection = 'intersection',
-  Union = 'union',
-  Difference = 'difference',
-  Xor = 'xor',
+  Intersection = "intersection",
+  Union = "union",
+  Difference = "difference",
+  Xor = "xor"
 }
 export enum PolyType {
-  Subject = 'subject',
-  Clip = 'clip',
+  Subject = "subject",
+  Clip = "clip"
 }
 
 export enum JoinType {
-  Square = 'square',
-  Round = 'round',
-  Miter = 'miter',
+  Square = "square",
+  Round = "round",
+  Miter = "miter"
 }
 export enum EndType {
-  ClosedPolygon = 'closedPolygon',
-  ClosedLine = 'closedLine',
-  OpenButt = 'openButt',
-  OpenSquare = 'openSquare',
-  OpenRound = 'openRound',
+  ClosedPolygon = "closedPolygon",
+  ClosedLine = "closedLine",
+  OpenButt = "openButt",
+  OpenSquare = "openSquare",
+  OpenRound = "openRound"
 }
 
 export enum PointInPolygonResult {
   Outside = 0,
   Inside = 1,
-  OnBoundary = -1,
+  OnBoundary = -1
 }
 
 /**
@@ -47,15 +47,15 @@ export enum NativeClipperLibRequestedFormat {
   /**
    * Try to load the WebAssembly version, if it fails try to load the Asm.js version.
    */
-  WasmWithAsmJsFallback = 'wasmWithAsmJsFallback',
-    /**
-     * Load the WebAssembly version exclusively.
-     */
-  WasmOnly = 'wasmOnly',
-    /**
-     * Load the Asm.js version exclusively.
-     */
-  AsmJsOnly = 'asmJsOnly',
+  WasmWithAsmJsFallback = "wasmWithAsmJsFallback",
+  /**
+   * Load the WebAssembly version exclusively.
+   */
+  WasmOnly = "wasmOnly",
+  /**
+   * Load the Asm.js version exclusively.
+   */
+  AsmJsOnly = "asmJsOnly"
 }
 
 /**
@@ -65,9 +65,9 @@ export enum NativeClipperLibLoadedFormat {
   /**
    * WebAssembly.
    */
-  Wasm = 'wasm',
-    /**
-     * Asm.js.
-     */
-  AsmJs = 'asmJs'
+  Wasm = "wasm",
+  /**
+   * Asm.js.
+   */
+  AsmJs = "asmJs"
 }

@@ -1,6 +1,6 @@
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { NativePolyTree } from './native/NativePolyTree';
-import { PolyNode } from './PolyNode';
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { NativePolyTree } from "./native/NativePolyTree";
+import { PolyNode } from "./PolyNode";
 
 /**
  * PolyTree is intended as a read-only data structure that should only be used to receive solutions from clipping and offsetting operations. It's an
@@ -34,10 +34,11 @@ export class PolyTree extends PolyNode {
    * This function is equivalent to calling childs[0].
    */
   public getFirst(): PolyNode | undefined {
-    if (this.childs.length > 0)
+    if (this.childs.length > 0) {
       return this.childs[0];
-    else
+    } else {
       return undefined;
+    }
   }
 
   protected constructor() {
@@ -48,7 +49,11 @@ export class PolyTree extends PolyNode {
    * Internal use.
    * Constructs a PolyTree from a native PolyTree.
    */
-  static fromNativePolyTree(nativeLib: NativeClipperLibInstance, nativePolyTree: NativePolyTree, freeNativePolyTree: boolean): PolyTree {
+  static fromNativePolyTree(
+    nativeLib: NativeClipperLibInstance,
+    nativePolyTree: NativePolyTree,
+    freeNativePolyTree: boolean
+  ): PolyTree {
     const pt = new PolyTree();
     PolyNode.fillFromNativePolyNode(pt, nativeLib, nativePolyTree, undefined, 0, false); // do NOT free them, they are freed on destruction of the polytree
 

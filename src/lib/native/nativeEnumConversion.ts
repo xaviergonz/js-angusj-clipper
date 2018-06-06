@@ -1,8 +1,17 @@
-import { ClipType, EndType, JoinType, PolyFillType, PolyType } from '../enums';
-import { NativeClipType, NativeEndType, NativeJoinType, NativePolyFillType, NativePolyType } from './nativeEnums';
-import { NativeClipperLibInstance } from './NativeClipperLibInstance';
+import { ClipType, EndType, JoinType, PolyFillType, PolyType } from "../enums";
+import { NativeClipperLibInstance } from "./NativeClipperLibInstance";
+import {
+  NativeClipType,
+  NativeEndType,
+  NativeJoinType,
+  NativePolyFillType,
+  NativePolyType
+} from "./nativeEnums";
 
-export function polyFillTypeToNative(nativeLib: NativeClipperLibInstance, polyFillType: PolyFillType): NativePolyFillType {
+export function polyFillTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  polyFillType: PolyFillType
+): NativePolyFillType {
   switch (polyFillType) {
     case PolyFillType.EvenOdd:
       return nativeLib.PolyFillType.EvenOdd;
@@ -13,11 +22,14 @@ export function polyFillTypeToNative(nativeLib: NativeClipperLibInstance, polyFi
     case PolyFillType.Negative:
       return nativeLib.PolyFillType.Negative;
     default:
-      throw new Error('unknown poly fill type');
+      throw new Error("unknown poly fill type");
   }
 }
 
-export function clipTypeToNative(nativeLib: NativeClipperLibInstance, clipType: ClipType): NativeClipType {
+export function clipTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  clipType: ClipType
+): NativeClipType {
   switch (clipType) {
     case ClipType.Intersection:
       return nativeLib.ClipType.Intersection;
@@ -28,22 +40,28 @@ export function clipTypeToNative(nativeLib: NativeClipperLibInstance, clipType: 
     case ClipType.Xor:
       return nativeLib.ClipType.Xor;
     default:
-      throw new Error('unknown clip type');
+      throw new Error("unknown clip type");
   }
 }
 
-export function polyTypeToNative(nativeLib: NativeClipperLibInstance, polyType: PolyType): NativePolyType {
+export function polyTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  polyType: PolyType
+): NativePolyType {
   switch (polyType) {
     case PolyType.Subject:
       return nativeLib.PolyType.Subject;
     case PolyType.Clip:
       return nativeLib.PolyType.Clip;
     default:
-      throw new Error('unknown poly type');
+      throw new Error("unknown poly type");
   }
 }
 
-export function joinTypeToNative(nativeLib: NativeClipperLibInstance, joinType: JoinType): NativeJoinType {
+export function joinTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  joinType: JoinType
+): NativeJoinType {
   switch (joinType) {
     case JoinType.Square:
       return nativeLib.JoinType.Square;
@@ -52,11 +70,14 @@ export function joinTypeToNative(nativeLib: NativeClipperLibInstance, joinType: 
     case JoinType.Miter:
       return nativeLib.JoinType.Miter;
     default:
-      throw new Error('unknown join type');
+      throw new Error("unknown join type");
   }
 }
 
-export function endTypeToNative(nativeLib: NativeClipperLibInstance, endType: EndType): NativeEndType {
+export function endTypeToNative(
+  nativeLib: NativeClipperLibInstance,
+  endType: EndType
+): NativeEndType {
   switch (endType) {
     case EndType.ClosedPolygon:
       return nativeLib.EndType.ClosedPolygon;
@@ -69,6 +90,6 @@ export function endTypeToNative(nativeLib: NativeClipperLibInstance, endType: En
     case EndType.OpenRound:
       return nativeLib.EndType.OpenRound;
     default:
-      throw new Error('unknown end type');
+      throw new Error("unknown end type");
   }
 }

@@ -1,34 +1,51 @@
-import { ClipInput, ClipParams, clipToPaths, clipToPolyTree } from './clipFunctions';
-import { ClipperError } from './ClipperError';
-import { hiRange } from './constants';
-import { ClipType, EndType, JoinType, NativeClipperLibLoadedFormat, NativeClipperLibRequestedFormat, PointInPolygonResult, PolyFillType } from './enums';
-import * as functions from './functions';
-import { IntPoint } from './IntPoint';
-import { IntRect } from './IntRect';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { OffsetInput, OffsetParams, offsetToPaths, offsetToPolyTree } from './offsetFunctions';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyNode } from './PolyNode';
-import { PolyTree } from './PolyTree';
+import { ClipInput, ClipParams, clipToPaths, clipToPolyTree } from "./clipFunctions";
+import { ClipperError } from "./ClipperError";
+import { hiRange } from "./constants";
+import {
+  ClipType,
+  EndType,
+  JoinType,
+  NativeClipperLibLoadedFormat,
+  NativeClipperLibRequestedFormat,
+  PointInPolygonResult,
+  PolyFillType
+} from "./enums";
+import * as functions from "./functions";
+import { IntPoint } from "./IntPoint";
+import { IntRect } from "./IntRect";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { OffsetInput, OffsetParams, offsetToPaths, offsetToPolyTree } from "./offsetFunctions";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
+import { PolyNode } from "./PolyNode";
+import { PolyTree } from "./PolyTree";
 
 // export types
 export {
-  ClipType, EndType, JoinType, PolyFillType, NativeClipperLibLoadedFormat, NativeClipperLibRequestedFormat, PointInPolygonResult,
+  ClipType,
+  EndType,
+  JoinType,
+  PolyFillType,
+  NativeClipperLibLoadedFormat,
+  NativeClipperLibRequestedFormat,
+  PointInPolygonResult,
   PolyNode,
   PolyTree,
   IntPoint,
   IntRect,
   Path,
+  ReadonlyPath,
   Paths,
-  ClipInput, ClipParams,
-  OffsetInput, OffsetParams,
+  ReadonlyPaths,
+  ClipInput,
+  ClipParams,
+  OffsetInput,
+  OffsetParams,
   ClipperError
 };
 
 let wasmModule: NativeClipperLibInstance | undefined | Error;
 let asmJsModule: NativeClipperLibInstance | undefined;
-
 
 /**
  * A wrapper for the Native Clipper Library instance with all the operations available.
@@ -169,7 +186,7 @@ export class ClipperLibWrapper {
    * @param path - The path
    * @return {number} - Area
    */
-  area(path: Path): number {
+  area(path: ReadonlyPath): number {
     return functions.area(path);
   }
 
@@ -189,7 +206,7 @@ export class ClipperLibWrapper {
    * @param distance - How close points need to be before they are cleaned
    * @return {Path} - The cleaned path
    */
-  cleanPolygon(path: Path, distance = 1.1415): Path {
+  cleanPolygon(path: ReadonlyPath, distance = 1.1415): Path {
     return functions.cleanPolygon(this.instance, path, distance);
   }
 
@@ -209,7 +226,7 @@ export class ClipperLibWrapper {
    * @param distance - How close points need to be before they are cleaned
    * @return {Paths} - The cleaned paths
    */
-  cleanPolygons(paths: Paths, distance = 1.1415): Paths {
+  cleanPolygons(paths: ReadonlyPaths, distance = 1.1415): Paths {
     return functions.cleanPolygons(this.instance, paths, distance);
   }
 
@@ -224,7 +241,6 @@ export class ClipperLibWrapper {
     return functions.closedPathsFromPolyTree(polyTree);
   }
 
-
   /**
    *  Minkowski Difference is performed by subtracting each point in a polygon from the set of points in an open or closed path. A key feature of Minkowski
    *  Difference is that when it's applied to two polygons, the resulting polygon will contain the coordinate space origin whenever the two polygons touch or
@@ -234,7 +250,7 @@ export class ClipperLibWrapper {
    * @param poly2
    * @return {Paths}
    */
-  minkowskiDiff(poly1: Path, poly2: Path): Paths {
+  minkowskiDiff(poly1: ReadonlyPath, poly2: ReadonlyPath): Paths {
     return functions.minkowskiDiff(this.instance, poly1, poly2);
   }
 
@@ -247,7 +263,7 @@ export class ClipperLibWrapper {
    * @param pathIsClosed
    * @return {Paths}
    */
-  minkowskiSumPath(pattern: Path, path: Path, pathIsClosed: boolean): Paths {
+  minkowskiSumPath(pattern: ReadonlyPath, path: ReadonlyPath, pathIsClosed: boolean): Paths {
     return functions.minkowskiSumPath(this.instance, pattern, path, pathIsClosed);
   }
 
@@ -260,7 +276,7 @@ export class ClipperLibWrapper {
    * @param pathIsClosed
    * @return {Paths}
    */
-  minkowskiSumPaths(pattern: Path, paths: Paths, pathIsClosed: boolean): Paths {
+  minkowskiSumPaths(pattern: ReadonlyPath, paths: ReadonlyPaths, pathIsClosed: boolean): Paths {
     return functions.minkowskiSumPaths(this.instance, pattern, paths, pathIsClosed);
   }
 
@@ -269,9 +285,9 @@ export class ClipperLibWrapper {
    * This function filters out closed paths from the PolyTree structure and returns only open paths in a Paths structure.
    *
    * @param polyTree
-   * @return {Paths}
+   * @return {ReadonlyPath[]}
    */
-  openPathsFromPolyTree(polyTree: PolyTree): Paths {
+  openPathsFromPolyTree(polyTree: PolyTree): ReadonlyPath[] {
     return functions.openPathsFromPolyTree(polyTree);
   }
 
@@ -296,7 +312,7 @@ export class ClipperLibWrapper {
    * @param path - Path
    * @return {boolean}
    */
-  orientation(path: Path): boolean {
+  orientation(path: ReadonlyPath): boolean {
     return functions.orientation(path);
   }
 
@@ -311,7 +327,7 @@ export class ClipperLibWrapper {
    * @param path
    * @return {PointInPolygonResult}
    */
-  pointInPolygon(point: IntPoint, path: Path): PointInPolygonResult {
+  pointInPolygon(point: Readonly<IntPoint>, path: ReadonlyPath): PointInPolygonResult {
     return functions.pointInPolygon(point, path);
   }
 
@@ -356,7 +372,7 @@ export class ClipperLibWrapper {
    * @param fillType
    * @return {Paths} - The solution
    */
-  simplifyPolygon(path: Path, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
+  simplifyPolygon(path: ReadonlyPath, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
     return functions.simplifyPolygon(this.instance, path, fillType);
   }
 
@@ -370,7 +386,7 @@ export class ClipperLibWrapper {
    * @param fillType
    * @return {Paths} - The solution
    */
-  simplifyPolygons(paths: Paths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
+  simplifyPolygons(paths: ReadonlyPaths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
     return functions.simplifyPolygons(this.instance, paths, fillType);
   }
 
@@ -382,7 +398,7 @@ export class ClipperLibWrapper {
    * @param scale - Scale multiplier
    * @return {Path} - The scaled path
    */
-  scalePath(path: Path, scale: number): Path {
+  scalePath(path: ReadonlyPath, scale: number): Path {
     return functions.scalePath(path, scale);
   }
 
@@ -394,23 +410,24 @@ export class ClipperLibWrapper {
    * @param scale - Scale multiplier
    * @return {Paths} - The scaled paths
    */
-  scalePaths(paths: Paths, scale: number): Paths {
+  scalePaths(paths: ReadonlyPaths, scale: number): Paths {
     return functions.scalePaths(paths, scale);
   }
-
 }
 
 /**
  * Asynchronously tries to load a new native instance of the clipper library to be shared across all method invocations.
  *
  * @param format - Format to load, either WasmThenAsmJs, WasmOnly or AsmJsOnly.
- * @param resourceFilePrefixUrl - URL prefix to add when looking for the clipper-wasm.wasm file, defaults to ''.
  * @return {Promise<ClipperLibWrapper>} - Promise that resolves with the wrapper instance.
  */
-export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLibRequestedFormat, resourceFilePrefixUrl: string = ''): Promise<ClipperLibWrapper> => {
+export const loadNativeClipperLibInstanceAsync = async (
+  format: NativeClipperLibRequestedFormat
+): Promise<ClipperLibWrapper> => {
   // TODO: in the future use these methods instead https://github.com/jedisct1/libsodium.js/issues/94
 
-  let tryWasm, tryAsmJs;
+  let tryWasm;
+  let tryAsmJs;
   switch (format) {
     case NativeClipperLibRequestedFormat.WasmWithAsmJsFallback:
       tryWasm = true;
@@ -425,24 +442,22 @@ export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLib
       tryAsmJs = true;
       break;
     default:
-      throw new ClipperError('unknown native clipper format');
+      throw new ClipperError("unknown native clipper format");
   }
 
-  function getModuleAsync(initModule: (overrides: object) => NativeClipperLibInstance | undefined): Promise<NativeClipperLibInstance> {
+  function getModuleAsync(
+    initModule: (overrides: object) => NativeClipperLibInstance | undefined
+  ): Promise<NativeClipperLibInstance> {
     return new Promise<NativeClipperLibInstance>((resolve, reject) => {
       let finalModule: NativeClipperLibInstance | undefined;
 
       //noinspection JSUnusedLocalSymbols
       const moduleOverrides = {
         noExitRuntime: true,
-        locateFile(file: string) {
-          return resourceFilePrefixUrl + file;
-        },
         preRun() {
           if (finalModule) {
             resolve(finalModule);
-          }
-          else {
+          } else {
             setTimeout(() => {
               resolve(finalModule);
             }, 1);
@@ -460,19 +475,16 @@ export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLib
   if (tryWasm) {
     if (wasmModule instanceof Error) {
       // skip
-    }
-    else if (wasmModule === undefined) {
+    } else if (wasmModule === undefined) {
       try {
-        const initModule = require('../wasm/clipper-wasm').init;
+        const initModule = require("../wasm/clipper-wasm").init;
         wasmModule = await getModuleAsync(initModule);
 
         return new ClipperLibWrapper(wasmModule, NativeClipperLibLoadedFormat.Wasm);
-      }
-      catch (err) {
+      } catch (err) {
         wasmModule = err;
       }
-    }
-    else {
+    } else {
       return new ClipperLibWrapper(wasmModule, NativeClipperLibLoadedFormat.Wasm);
     }
   }
@@ -480,22 +492,19 @@ export const loadNativeClipperLibInstanceAsync = async (format: NativeClipperLib
   if (tryAsmJs) {
     if (asmJsModule instanceof Error) {
       // skip
-    }
-    else if (asmJsModule === undefined) {
+    } else if (asmJsModule === undefined) {
       try {
-        const initModule = require('../wasm/clipper').init;
+        const initModule = require("../wasm/clipper").init;
         asmJsModule = await getModuleAsync(initModule);
 
         return new ClipperLibWrapper(asmJsModule, NativeClipperLibLoadedFormat.AsmJs);
-      }
-      catch (err) {
+      } catch (err) {
         asmJsModule = err;
       }
-    }
-    else {
+    } else {
       return new ClipperLibWrapper(asmJsModule, NativeClipperLibLoadedFormat.AsmJs);
     }
   }
 
-  throw new ClipperError('could not load native clipper in the desired format');
+  throw new ClipperError("could not load native clipper in the desired format");
 };

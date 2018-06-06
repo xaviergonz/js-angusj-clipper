@@ -1,10 +1,10 @@
-import { Clipper } from './Clipper';
-import { ClipType, PolyFillType, PolyType } from './enums';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyTree } from './PolyTree';
-import { ClipperError } from './ClipperError';
+import { Clipper } from "./Clipper";
+import { ClipperError } from "./ClipperError";
+import { ClipType, PolyFillType, PolyType } from "./enums";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
+import { PolyTree } from "./PolyTree";
 
 /**
  * A single subject input (of multiple possible inputs) for the clipToPaths / clipToPolyTree operations
@@ -26,7 +26,7 @@ export interface SubjectInput {
    * - it has 2 vertices but is not an open path
    * - the vertices are all co-linear and it is not an open path
    */
-  data: Path | Paths;
+  data: ReadonlyPath | ReadonlyPaths;
 
   /**
    * If the path/paths is closed or not.
@@ -54,7 +54,7 @@ export interface ClipInput {
    * - it has 2 vertices but is not an open path
    * - the vertices are all co-linear and it is not an open path
    */
-  data: Path | Paths;
+  data: ReadonlyPath | ReadonlyPaths;
 }
 
 /**
@@ -122,9 +122,19 @@ export interface ClipParams {
    * clipping. When enabled the preserveCollinear property prevents this default behavior to allow these inner vertices to appear in the solution.
    */
   preserveCollinear?: boolean;
+
+  /**
+   * If this is not undefined then cleaning of the result polygon will be performed.
+   * This operation is only available when the output format is not a poly tree.
+   */
+  cleanDistance?: number;
 }
 
-const addPathOrPaths = (clipper: Clipper, inputDatas: (SubjectInput | ClipInput)[] | undefined, polyType: PolyType) => {
+const addPathOrPaths = (
+  clipper: Clipper,
+  inputDatas: (SubjectInput | ClipInput)[] | undefined,
+  polyType: PolyType
+) => {
   if (inputDatas === undefined) {
     return;
   }
@@ -139,25 +149,29 @@ const addPathOrPaths = (clipper: Clipper, inputDatas: (SubjectInput | ClipInput)
       continue;
     }
 
-    const closed = (inputData as SubjectInput).closed === undefined ? true : (inputData as SubjectInput).closed;
+    const closed =
+      (inputData as SubjectInput).closed === undefined ? true : (inputData as SubjectInput).closed;
 
     // is it a path or paths?
     if (Array.isArray(pathOrPaths[0])) {
       // paths
       if (!clipper.addPaths(pathOrPaths as Paths, polyType, closed)) {
-        throw new ClipperError('invalid paths');
+        throw new ClipperError("invalid paths");
       }
-    }
-    else {
+    } else {
       // path
       if (!clipper.addPath(pathOrPaths as Path, polyType, closed)) {
-        throw new ClipperError('invalid path');
+        throw new ClipperError("invalid path");
       }
     }
   }
 };
 
-export function clipToPathsOrPolyTree(polyTreeMode: boolean, nativeClipperLib: NativeClipperLibInstance, params: ClipParams): Paths | PolyTree {
+export function clipToPathsOrPolyTree(
+  polyTreeMode: boolean,
+  nativeClipperLib: NativeClipperLibInstance,
+  params: ClipParams
+): Paths | PolyTree {
   const clipper = new Clipper(nativeClipperLib, params);
 
   //noinspection UnusedCatchParameterJS
@@ -165,19 +179,26 @@ export function clipToPathsOrPolyTree(polyTreeMode: boolean, nativeClipperLib: N
     addPathOrPaths(clipper, params.subjectInputs, PolyType.Subject);
     addPathOrPaths(clipper, params.clipInputs, PolyType.Clip);
     let result;
-    const clipFillType = params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
+    const clipFillType =
+      params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
     if (!polyTreeMode) {
-      result = clipper.executeToPaths(params.clipType, params.subjectFillType, clipFillType);
-    }
-    else {
+      result = clipper.executeToPaths(
+        params.clipType,
+        params.subjectFillType,
+        clipFillType,
+        params.cleanDistance
+      );
+    } else {
+      if (params.cleanDistance !== undefined) {
+        throw new ClipperError("cleaning is not available for poly tree results");
+      }
       result = clipper.executeToPolyTee(params.clipType, params.subjectFillType, clipFillType);
     }
     if (result === undefined) {
-      throw new ClipperError('error while performing clipping task');
+      throw new ClipperError("error while performing clipping task");
     }
     return result;
-  }
-  finally {
+  } finally {
     clipper.dispose();
   }
 }
@@ -186,6 +207,9 @@ export function clipToPaths(nativeClipperLib: NativeClipperLibInstance, params: 
   return clipToPathsOrPolyTree(false, nativeClipperLib, params) as Paths;
 }
 
-export function clipToPolyTree(nativeClipperLib: NativeClipperLibInstance, params: ClipParams): PolyTree {
+export function clipToPolyTree(
+  nativeClipperLib: NativeClipperLibInstance,
+  params: ClipParams
+): PolyTree {
   return clipToPathsOrPolyTree(true, nativeClipperLib, params) as PolyTree;
 }

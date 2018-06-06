@@ -1,10 +1,17 @@
-import { NativeClipType, NativeEndType, NativeInitOptions, NativeJoinType, NativePolyFillType, NativePolyType } from './nativeEnums';
-import { NativeClipper } from './NativeClipper';
-import { NativeClipperOffset } from './NativeClipperOffset';
-import { NativeIntPoint } from './NativeIntPoint';
-import { NativePath } from './NativePath';
-import { NativePaths } from './NativePaths';
-import { NativePolyTree } from './NativePolyTree';
+import { NativeClipper } from "./NativeClipper";
+import { NativeClipperOffset } from "./NativeClipperOffset";
+import {
+  NativeClipType,
+  NativeEndType,
+  NativeInitOptions,
+  NativeJoinType,
+  NativePolyFillType,
+  NativePolyType
+} from "./nativeEnums";
+import { NativeIntPoint } from "./NativeIntPoint";
+import { NativePath } from "./NativePath";
+import { NativePaths } from "./NativePaths";
+import { NativePolyTree } from "./NativePolyTree";
 
 export interface NativeClipperLibInstance {
   // custom conversion functions
@@ -17,10 +24,10 @@ export interface NativeClipperLibInstance {
   _malloc(nofBytes: number): number;
   _free(ptr: number): void;
   HEAPF64: {
-    buffer: ArrayBuffer
+    buffer: ArrayBuffer;
   };
 
-  //types
+  // types
   Path: {
     new (): NativePath;
   };
@@ -45,7 +52,11 @@ export interface NativeClipperLibInstance {
   pointInPolygon(pt: NativeIntPoint, path: NativePath): number;
 
   simplifyPolygon(path: NativePath, outPaths: NativePaths, fillType: NativePolyFillType): void;
-  simplifyPolygonsInOut(paths: NativePaths, outPaths: NativePaths, fillType: NativePolyFillType): void;
+  simplifyPolygonsInOut(
+    paths: NativePaths,
+    outPaths: NativePaths,
+    fillType: NativePolyFillType
+  ): void;
   simplifyPolygonsOverwrite(paths: NativePaths, fillType: NativePolyFillType): void;
 
   cleanPolygon(path: NativePath, outPath: NativePath, distance: number): void;
@@ -53,8 +64,18 @@ export interface NativeClipperLibInstance {
   cleanPolygons(paths: NativePaths, outPaths: NativePaths, distance: number): void;
   cleanPolygons(inOutPaths: NativePaths, distance: number): void;
 
-  minkowskiSumPath(pattern: NativePath, path: NativePath, outPaths: NativePaths, pathIsClosed: boolean): void;
-  minkowskiSumPaths(pattern: NativePath, paths: NativePaths, outPaths: NativePaths, pathIsClosed: boolean): void;
+  minkowskiSumPath(
+    pattern: NativePath,
+    path: NativePath,
+    outPaths: NativePaths,
+    pathIsClosed: boolean
+  ): void;
+  minkowskiSumPaths(
+    pattern: NativePath,
+    paths: NativePaths,
+    outPaths: NativePaths,
+    pathIsClosed: boolean
+  ): void;
   minkowskiDiff(path1: NativePath, path2: NativePath, outPaths: NativePaths): void;
 
   polyTreeToPaths(polyTree: NativePolyTree, outPaths: NativePaths): void;

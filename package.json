@@ -1,13 +1,22 @@
 {
   "name": "js-angusj-clipper",
-  "version": "0.9.0",
+  "version": "0.19.0",
   "description": "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
   "main": "dist/lib/index.js",
+  "typings": "dist/lib/index.d.ts",
   "scripts": {
-    "build": "tsc -p . && npm run build:wasm",
+    "pull-docker-image": "docker pull trzeci/emscripten",
+    "prepublishOnly": "npm run clean && npm run lint && npm run build && npm run test",
+    "travis": "npm run prepublishOnly",
+    "test": "jest -t unit",
+    "benchmark": "jest -t benchmark",
+    "lint": "tslint -p .",
     "clean": "rimraf ./dist",
-    "prepublishOnly": "npm run clean && npm run build",
-    "build:wasm": "cd src/wasm && cmd /C compile.bat && cmd /C compile-wasm.bat && cd .. && cd .. && mkdirp dist/wasm && ncp src/wasm/clipper.js dist/wasm/clipper.js && ncp src/wasm/clipper-wasm.js dist/wasm/clipper-wasm.js && ncp src/wasm/clipper-wasm.wasm dist/wasm/clipper-wasm.wasm"
+    "build": "npm run build:ts && npm run build:asm",
+    "build:ts": "tsc -p .",
+    "build:asm": "npm run pull-docker-image && node build/compile-asm",
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "prettier-all": "prettier --write \"src/lib/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
   "files": [
     "dist/lib",
@@ -31,12 +40,16 @@
   },
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
-    "@types/node": "^8.0.14",
-    "mkdirp": "^0.5.1",
-    "ncp": "^2.0.0",
-    "rimraf": "^2.6.1",
-    "tslint": "^5.5.0",
-    "typescript": "^2.4.1"
-  },
-  "dependencies": {}
+    "@types/jest": "^22.2.3",
+    "@types/node": "^8.10.9",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1",
+    "rimraf": "^2.6.2",
+    "shelljs": "^0.8.1",
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
+    "tslint-eslint-rules": "^5.1.0",
+    "typescript": "^2.8.3"
+  }
 }

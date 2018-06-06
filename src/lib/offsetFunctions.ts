@@ -1,9 +1,10 @@
-import { ClipperOffset } from './ClipperOffset';
-import { EndType, JoinType } from './enums';
-import { NativeClipperLibInstance } from './native/NativeClipperLibInstance';
-import { Path } from './Path';
-import { Paths } from './Paths';
-import { PolyTree } from './PolyTree';
+import { ClipperError } from "./ClipperError";
+import { ClipperOffset } from "./ClipperOffset";
+import { EndType, JoinType } from "./enums";
+import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import { Path, ReadonlyPath } from "./Path";
+import { Paths, ReadonlyPaths } from "./Paths";
+import { PolyTree } from "./PolyTree";
 
 /**
  * A single input (of multiple possible inputs) for the offsetToPaths / offsetToPolyTree operation.
@@ -25,7 +26,7 @@ export interface OffsetInput {
    * All 'outer' Paths must have the same orientation, and any 'hole' paths must have reverse orientation. Closed paths must have at least 3 vertices.
    * Open paths may have as few as one vertex. Open paths can only be offset with positive deltas.
    */
-  data: Path | Paths;
+  data: ReadonlyPath | ReadonlyPaths;
 }
 
 /**
@@ -80,6 +81,12 @@ export interface OffsetParams {
    * One or more inputs to use for the offset operation.
    */
   offsetInputs: OffsetInput[];
+
+  /**
+   * If this is not undefined then cleaning of the result polygon will be performed.
+   * This operation is only available when the output format is not a poly tree.
+   */
+  cleanDistance?: number;
 }
 
 const addPathOrPaths = (offset: ClipperOffset, inputDatas: OffsetInput[] | undefined) => {
@@ -100,46 +107,59 @@ const addPathOrPaths = (offset: ClipperOffset, inputDatas: OffsetInput[] | undef
     // is it a path or paths?
     if (Array.isArray(pathOrPaths[0])) {
       // paths
-      offset.addPaths(pathOrPaths as Paths, inputData.joinType, inputData.endType);
-    }
-    else {
+      offset.addPaths(pathOrPaths as ReadonlyPaths, inputData.joinType, inputData.endType);
+    } else {
       // path
-      offset.addPath(pathOrPaths as Path, inputData.joinType, inputData.endType);
+      offset.addPath(pathOrPaths as ReadonlyPath, inputData.joinType, inputData.endType);
     }
   }
 };
 
-export function offsetToPathsOrPolyTree(polyTreeMode: boolean, nativeClipperLib: NativeClipperLibInstance, params: OffsetParams): Paths | PolyTree | undefined {
+function offsetToPathsOrPolyTree(
+  polyTreeMode: boolean,
+  nativeClipperLib: NativeClipperLibInstance,
+  params: OffsetParams
+): Paths | PolyTree | undefined {
   const filledData = {
     arcTolerance: 0.25,
     miterLimit: 2,
     ...params
   };
 
-  const offset = new ClipperOffset(nativeClipperLib, filledData.miterLimit, filledData.arcTolerance);
+  const offset = new ClipperOffset(
+    nativeClipperLib,
+    filledData.miterLimit,
+    filledData.arcTolerance
+  );
 
   //noinspection UnusedCatchParameterJS
   try {
     addPathOrPaths(offset, params.offsetInputs);
     if (!polyTreeMode) {
-      return offset.executeToPaths(params.delta);
-    }
-    else {
+      return offset.executeToPaths(params.delta, params.cleanDistance);
+    } else {
+      if (params.cleanDistance !== undefined) {
+        throw new ClipperError("cleaning is not available for poly tree results");
+      }
       return offset.executeToPolyTree(params.delta);
     }
-  }
-  catch (err) {
+  } catch (err) {
     return undefined;
-  }
-  finally {
+  } finally {
     offset.dispose();
   }
 }
 
-export function offsetToPaths(nativeClipperLib: NativeClipperLibInstance, params: OffsetParams): Paths | undefined {
-  return offsetToPathsOrPolyTree(false, nativeClipperLib, params) as (Paths | undefined);
+export function offsetToPaths(
+  nativeClipperLib: NativeClipperLibInstance,
+  params: OffsetParams
+): Paths | undefined {
+  return offsetToPathsOrPolyTree(false, nativeClipperLib, params) as Paths | undefined;
 }
 
-export function offsetToPolyTree(nativeClipperLib: NativeClipperLibInstance, params: OffsetParams): PolyTree | undefined {
-  return offsetToPathsOrPolyTree(true, nativeClipperLib, params) as (PolyTree | undefined);
+export function offsetToPolyTree(
+  nativeClipperLib: NativeClipperLibInstance,
+  params: OffsetParams
+): PolyTree | undefined {
+  return offsetToPathsOrPolyTree(true, nativeClipperLib, params) as PolyTree | undefined;
 }
