@@ -1,6 +1,6 @@
 {
   "name": "js-angusj-clipper",
-  "version": "0.19.1",
+  "version": "0.20.0",
   "description": "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
   "main": "dist/universal/index.js",
   "typings": "dist/universal/index.d.ts",
