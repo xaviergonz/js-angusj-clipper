@@ -111,12 +111,13 @@ and for small polygons are:
 ### Getting started
 
 ```js
+// universal version
 // import it with
 import * as clipperLib from "js-angusj-clipper"; // es6 / typescript
 // or
 const clipperLib = require("js-angusj-clipper"); // nodejs style require
 
-// or if you want the non-universal web-only version (for example for angular 6+)
+// web-only version (for example for angular 6+)
 // import it with
 import * as clipperLib from "js-angusj-clipper/web"; // es6 / typescript
 // or
