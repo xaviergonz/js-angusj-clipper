@@ -1,4 +1,4 @@
-import * as clipperLib from "../src/lib";
+import * as clipperLib from "../src";
 
 // another port of clipper in pure js
 export const pureJsClipperLib = require("./external-libs/clipper");
@@ -12,7 +12,7 @@ export type PureJsPath = PureJsPoint[];
 export type PureJsPaths = PureJsPath[];
 
 function isPureJsPaths(path: PureJsPath | PureJsPaths): path is PureJsPaths {
-  return Array.isArray(path) && (Array.isArray(path[0]));
+  return Array.isArray(path) && Array.isArray(path[0]);
 }
 
 export function pureJsTestPolyOperation(

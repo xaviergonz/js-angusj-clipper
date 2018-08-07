@@ -1,4 +1,4 @@
-import * as clipperLib from "../src/lib";
+import * as clipperLib from "../src";
 import {
   pathsToPureJs,
   pathToPureJs,

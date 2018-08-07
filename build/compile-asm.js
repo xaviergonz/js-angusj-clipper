@@ -1,11 +1,14 @@
 const shelljs = require("shelljs");
 const path = require("path");
 const fs = require("fs");
+const commandLineArgs = require("command-line-args");
+
+const options = commandLineArgs([{ name: "env", type: String, defaultValue: "universal" }]);
 
 const wasmDir = path.join(__dirname, "..", "src", "wasm");
 console.log(`using "${wasmDir}" as wasm dir`);
 
-function build(wasmMode) {
+function build(wasmMode, environment) {
   const options = [
     "--bind",
     "-s ALLOW_MEMORY_GROWTH=1",
@@ -14,6 +17,9 @@ function build(wasmMode) {
     "-O3"
     // '-s MODULARIZE=1',
   ];
+  if (environment !== "universal") {
+    options.push(`-s ENVIRONMENT=${environment}`);
+  }
 
   if (wasmMode) {
     options.push("-s WASM=1");
@@ -57,7 +63,7 @@ module.exports = { init: init };
   shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
 }
 
-console.log("building asmjs version");
-build(false);
-console.log("building wasm version");
-build(true);
+console.log("building asmjs version for env " + options.env);
+build(false, options.env);
+console.log("building wasm version for env " + options.env);
+build(true, options.env);

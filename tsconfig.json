@@ -1,7 +1,5 @@
 {
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "compilerOptions": {
     /* Basic Options */
     /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
@@ -9,20 +7,15 @@
     /* Specify module code generation: 'none', commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "module": "commonjs",
     /* Specify library files to be included in the compilation:  */
-    "lib": [
-      "es2016",
-      "dom",
-      "dom.iterable",
-      "es2017.object"
-    ],
+    "lib": ["es2016", "dom", "dom.iterable", "es2017.object"],
     // "allowJs": true,                       /* Allow javascript files to be compiled. */
     // "checkJs": true,                       /* Report errors in .js files. */
     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "jsx": "react",
-    "declaration": true,                      /* Generates corresponding '.d.ts' file. */
-    "sourceMap": false,                       /* Generates corresponding '.map' file. */
+    "declaration": true /* Generates corresponding '.d.ts' file. */,
+    "sourceMap": false /* Generates corresponding '.map' file. */,
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./dist/lib",                        /* Redirect output structure to the directory. */
+    "outDir": "./dist" /* Redirect output structure to the directory. */,
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "removeComments": true,                /* Do not emit comments to output. */
     // "noEmit": true,                        /* Do not emit outputs. */

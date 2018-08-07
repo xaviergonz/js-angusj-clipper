@@ -477,7 +477,7 @@ export const loadNativeClipperLibInstanceAsync = async (
       // skip
     } else if (wasmModule === undefined) {
       try {
-        const initModule = require("../wasm/clipper-wasm").init;
+        const initModule = require("./wasm/clipper-wasm").init;
         wasmModule = await getModuleAsync(initModule);
 
         return new ClipperLibWrapper(wasmModule, NativeClipperLibLoadedFormat.Wasm);
@@ -494,7 +494,7 @@ export const loadNativeClipperLibInstanceAsync = async (
       // skip
     } else if (asmJsModule === undefined) {
       try {
-        const initModule = require("../wasm/clipper").init;
+        const initModule = require("./wasm/clipper").init;
         asmJsModule = await getModuleAsync(initModule);
 
         return new ClipperLibWrapper(asmJsModule, NativeClipperLibLoadedFormat.AsmJs);

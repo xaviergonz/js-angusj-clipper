@@ -1,5 +1,7 @@
 /node_modules/
 /dist/
+/dist-web/
+/dist-universal/
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm

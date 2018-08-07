@@ -2,8 +2,8 @@
   "name": "js-angusj-clipper",
   "version": "0.19.1",
   "description": "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
-  "main": "dist/lib/index.js",
-  "typings": "dist/lib/index.d.ts",
+  "main": "dist/universal/index.js",
+  "typings": "dist/universal/index.d.ts",
   "scripts": {
     "pull-docker-image": "docker pull trzeci/emscripten",
     "prepublishOnly": "npm run clean && npm run lint && npm run build && npm run test",
@@ -11,16 +11,17 @@
     "test": "jest -t unit",
     "benchmark": "jest -t benchmark",
     "lint": "tslint -p .",
-    "clean": "rimraf ./dist",
-    "build": "npm run build:ts && npm run build:asm",
+    "clean": "rimraf ./dist && rimraf ./dist-universal && rimraf ./dist-web",
+    "build": "npm run build:universal && npm run build:web && shx mkdir -p dist && shx mv dist-universal dist/universal/ && shx mv dist-web dist/web/",
+    "build:universal": "npm run build:ts && npm run build:asm && shx mv dist dist-universal",
+    "build:web": "npm run build:ts && npm run build:asm -- --env web && shx mv dist dist-web",
     "build:ts": "tsc -p .",
     "build:asm": "npm run pull-docker-image && node build/compile-asm",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "prettier-all": "prettier --write \"src/lib/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
   "files": [
-    "dist/lib",
-    "dist/wasm"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -50,6 +51,8 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.14.0",
     "tslint-eslint-rules": "^5.3.1",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "shx": "^0.3.2",
+    "command-line-args": "^5.0.2"
   }
 }
