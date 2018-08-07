@@ -1,7 +1,7 @@
 /node_modules/
 /dist/
-/dist-web/
-/dist-universal/
+/web/
+/universal/
 /src/wasm/*.js
 
 ### JetBrains template
