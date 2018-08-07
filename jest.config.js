@@ -1,5 +1,6 @@
 module.exports = {
   verbose: true,
+  testURL: "http://localhost",
   transform: {
     ".+\\.tsx?$": "ts-jest"
   },
