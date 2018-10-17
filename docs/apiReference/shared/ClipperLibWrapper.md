@@ -4,7 +4,7 @@ A wrapper for the Native Clipper Library instance with all the operations availa
 
 ###### Properties
 
-* **static readonly hiRange = 9007199254740992**
+* **static readonly hiRange = 9007199254740991 (Number.MAX_SAFE_INTEGER)**
 
     Max coordinate value (both positive and negative).
 

@@ -19,13 +19,14 @@ export function pureJsTestPolyOperation(
   clipType: clipperLib.ClipType,
   subjectFillType: clipperLib.PolyFillType,
   subjectInput: PureJsPath | PureJsPaths,
-  clipInput: PureJsPath | PureJsPaths
+  clipInput: PureJsPath | PureJsPaths,
+  subjectClosed = true
 ) {
   const cl = new pureJsClipperLib.Clipper();
   if (isPureJsPaths(subjectInput)) {
-    cl.AddPaths(subjectInput, pureJsClipperLib.PolyType.ptSubject, true);
+    cl.AddPaths(subjectInput, pureJsClipperLib.PolyType.ptSubject, subjectClosed);
   } else {
-    cl.AddPath(subjectInput, pureJsClipperLib.PolyType.ptSubject, true);
+    cl.AddPath(subjectInput, pureJsClipperLib.PolyType.ptSubject, subjectClosed);
   }
   if (isPureJsPaths(clipInput)) {
     cl.AddPaths(clipInput, pureJsClipperLib.PolyType.ptClip, true);
@@ -63,14 +64,14 @@ export function pureJsTestOffset(
   return solutionPaths;
 }
 
-export function pathToPureJs(path: clipperLib.Path): PureJsPath {
+export function pathToPureJs(path: clipperLib.ReadonlyPath): PureJsPath {
   return path.map((p) => ({
     X: p.x,
     Y: p.y
   }));
 }
 
-export function pathsToPureJs(paths: clipperLib.Paths): PureJsPaths {
+export function pathsToPureJs(paths: clipperLib.ReadonlyPaths): PureJsPaths {
   return paths.map((p) => pathToPureJs(p));
 }
 

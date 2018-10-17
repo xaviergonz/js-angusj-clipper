@@ -1,5 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`unit tests issue #4 subjectClosed: false 1`] = `
+PolyTree {
+  "_childs": Array [
+    PolyNode {
+      "_childs": Array [],
+      "_contour": Array [
+        Object {
+          "x": 10,
+          "y": 10,
+        },
+        Object {
+          "x": 50,
+          "y": 10,
+        },
+      ],
+      "_index": 0,
+      "_isOpen": true,
+      "_parent": [Circular],
+    },
+  ],
+  "_contour": Array [],
+  "_index": 0,
+  "_isOpen": false,
+  "_parent": undefined,
+  "_total": 1,
+}
+`;
+
+exports[`unit tests issue #4 subjectClosed: true 1`] = `
+PolyTree {
+  "_childs": Array [
+    PolyNode {
+      "_childs": Array [],
+      "_contour": Array [
+        Object {
+          "x": 50,
+          "y": 50,
+        },
+        Object {
+          "x": 10,
+          "y": 10,
+        },
+        Object {
+          "x": 50,
+          "y": 10,
+        },
+      ],
+      "_index": 0,
+      "_isOpen": false,
+      "_parent": [Circular],
+    },
+  ],
+  "_contour": Array [],
+  "_index": 0,
+  "_isOpen": false,
+  "_parent": undefined,
+  "_total": 1,
+}
+`;
+
 exports[`unit tests simple polygons boolean operations clipType: difference, fillType: evenOdd 1`] = `
 Array [
   Array [
@@ -22,19 +82,19 @@ Array [
   ],
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
@@ -65,19 +125,19 @@ Array [
   ],
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
@@ -106,19 +166,19 @@ Array [
   ],
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
@@ -129,7 +189,7 @@ exports[`unit tests simple polygons boolean operations clipType: intersection, f
 Array [
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
@@ -141,7 +201,7 @@ Array [
       "y": 10,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
   ],
@@ -154,7 +214,7 @@ exports[`unit tests simple polygons boolean operations clipType: intersection, f
 Array [
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
@@ -166,7 +226,7 @@ Array [
       "y": 10,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
   ],
@@ -177,7 +237,7 @@ exports[`unit tests simple polygons boolean operations clipType: intersection, f
 Array [
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
@@ -189,7 +249,7 @@ Array [
       "y": 10,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
   ],
@@ -200,23 +260,23 @@ exports[`unit tests simple polygons boolean operations clipType: union, fillType
 Array [
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 30,
     },
     Object {
@@ -244,7 +304,7 @@ Array [
       "y": 0,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 0,
     },
   ],
@@ -257,23 +317,23 @@ exports[`unit tests simple polygons boolean operations clipType: union, fillType
 Array [
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 30,
     },
     Object {
@@ -301,7 +361,7 @@ Array [
       "y": 0,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 0,
     },
   ],
@@ -312,23 +372,23 @@ exports[`unit tests simple polygons boolean operations clipType: union, fillType
 Array [
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 30,
     },
     Object {
@@ -356,7 +416,7 @@ Array [
       "y": 0,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 0,
     },
   ],
@@ -367,15 +427,15 @@ exports[`unit tests simple polygons boolean operations clipType: xor, fillType: 
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 30,
     },
     Object {
@@ -387,21 +447,21 @@ Array [
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
@@ -429,7 +489,7 @@ Array [
       "y": 0,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 0,
     },
   ],
@@ -442,15 +502,15 @@ exports[`unit tests simple polygons boolean operations clipType: xor, fillType: 
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 30,
     },
     Object {
@@ -462,21 +522,21 @@ Array [
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
@@ -504,7 +564,7 @@ Array [
       "y": 0,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 0,
     },
   ],
@@ -515,15 +575,15 @@ exports[`unit tests simple polygons boolean operations clipType: xor, fillType: 
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 30,
     },
     Object {
@@ -535,21 +595,21 @@ Array [
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 20,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
   Array [
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 10,
     },
     Object {
@@ -577,7 +637,7 @@ Array [
       "y": 0,
     },
     Object {
-      "x": 20,
+      "x": 2251799813685247,
       "y": 0,
     },
   ],
@@ -592,7 +652,7 @@ exports[`unit tests simple polygons offset joinType: miter, endType: closedLine,
 Array [
   Array [
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 25,
     },
     Object {
@@ -604,7 +664,7 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 5,
     },
   ],
@@ -617,7 +677,7 @@ exports[`unit tests simple polygons offset joinType: miter, endType: closedPolyg
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
@@ -629,7 +689,7 @@ Array [
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
@@ -640,7 +700,7 @@ exports[`unit tests simple polygons offset joinType: miter, endType: closedPolyg
 Array [
   Array [
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 25,
     },
     Object {
@@ -652,7 +712,7 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 5,
     },
   ],
@@ -667,11 +727,11 @@ exports[`unit tests simple polygons offset joinType: miter, endType: openButt, d
 Array [
   Array [
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 25,
     },
     Object {
@@ -710,11 +770,11 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 25,
     },
     Object {
@@ -757,11 +817,11 @@ exports[`unit tests simple polygons offset joinType: miter, endType: openSquare,
 Array [
   Array [
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 25,
     },
     Object {
@@ -784,23 +844,23 @@ exports[`unit tests simple polygons offset joinType: round, endType: closedLine,
 Array [
   Array [
     Object {
-      "x": 33,
+      "x": 3002399751580333,
       "y": 6,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 10,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 20,
     },
     Object {
-      "x": 34,
+      "x": 3002399751580334,
       "y": 23,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 25,
     },
     Object {
@@ -828,7 +888,7 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 5,
     },
   ],
@@ -841,7 +901,7 @@ exports[`unit tests simple polygons offset joinType: round, endType: closedPolyg
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
@@ -853,7 +913,7 @@ Array [
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
@@ -864,23 +924,23 @@ exports[`unit tests simple polygons offset joinType: round, endType: closedPolyg
 Array [
   Array [
     Object {
-      "x": 33,
+      "x": 3002399751580333,
       "y": 6,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 10,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 20,
     },
     Object {
-      "x": 34,
+      "x": 3002399751580334,
       "y": 23,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 25,
     },
     Object {
@@ -908,7 +968,7 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 5,
     },
   ],
@@ -923,27 +983,27 @@ exports[`unit tests simple polygons offset joinType: round, endType: openButt, d
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 5,
     },
     Object {
-      "x": 33,
+      "x": 3002399751580333,
       "y": 6,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 10,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 20,
     },
     Object {
-      "x": 34,
+      "x": 3002399751580334,
       "y": 23,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 25,
     },
     Object {
@@ -982,27 +1042,27 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 5,
     },
     Object {
-      "x": 33,
+      "x": 3002399751580333,
       "y": 6,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 10,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 20,
     },
     Object {
-      "x": 34,
+      "x": 3002399751580334,
       "y": 23,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 25,
     },
     Object {
@@ -1045,27 +1105,27 @@ exports[`unit tests simple polygons offset joinType: round, endType: openSquare,
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 5,
     },
     Object {
-      "x": 33,
+      "x": 3002399751580333,
       "y": 6,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 10,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 20,
     },
     Object {
-      "x": 34,
+      "x": 3002399751580334,
       "y": 23,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 25,
     },
     Object {
@@ -1088,15 +1148,15 @@ exports[`unit tests simple polygons offset joinType: square, endType: closedLine
 Array [
   Array [
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 8,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 22,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 25,
     },
     Object {
@@ -1116,7 +1176,7 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 5,
     },
   ],
@@ -1129,7 +1189,7 @@ exports[`unit tests simple polygons offset joinType: square, endType: closedPoly
 Array [
   Array [
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 20,
     },
     Object {
@@ -1141,7 +1201,7 @@ Array [
       "y": 10,
     },
     Object {
-      "x": 30,
+      "x": 3002399751580330,
       "y": 10,
     },
   ],
@@ -1152,15 +1212,15 @@ exports[`unit tests simple polygons offset joinType: square, endType: closedPoly
 Array [
   Array [
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 8,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 22,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 25,
     },
     Object {
@@ -1180,7 +1240,7 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 5,
     },
   ],
@@ -1195,19 +1255,19 @@ exports[`unit tests simple polygons offset joinType: square, endType: openButt, 
 Array [
   Array [
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 8,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 22,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 25,
     },
     Object {
@@ -1246,19 +1306,19 @@ Array [
       "y": 5,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 8,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 22,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 25,
     },
     Object {
@@ -1301,19 +1361,19 @@ exports[`unit tests simple polygons offset joinType: square, endType: openSquare
 Array [
   Array [
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 5,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 8,
     },
     Object {
-      "x": 35,
+      "x": 3002399751580335,
       "y": 22,
     },
     Object {
-      "x": 32,
+      "x": 3002399751580332,
       "y": 25,
     },
     Object {

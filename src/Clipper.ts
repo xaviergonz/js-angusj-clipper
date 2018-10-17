@@ -160,7 +160,7 @@ export class Clipper {
    * With closed paths, orientation should conform with the filling rule that will be passed via Clipper's execute method.
    *
    * Path Coordinate range:
-   * Path coordinates must be between ± 9007199254740992, otherwise a range error will be thrown when attempting to add the path to the Clipper object.
+   * Path coordinates must be between ± 9007199254740991, otherwise a range error will be thrown when attempting to add the path to the Clipper object.
    * If coordinates can be kept between ± 0x3FFFFFFF (± 1.0e+9), a modest increase in performance (approx. 15-20%) over the larger range can be achieved by
    * avoiding large integer math.
    *
@@ -197,7 +197,7 @@ export class Clipper {
    * With closed paths, orientation should conform with the filling rule that will be passed via Clipper's execute method.
    *
    * Path Coordinate range:
-   * Path coordinates must be between ± 9007199254740992, otherwise a range error will be thrown when attempting to add the path to the Clipper object.
+   * Path coordinates must be between ± 9007199254740991, otherwise a range error will be thrown when attempting to add the path to the Clipper object.
    * If coordinates can be kept between ± 0x3FFFFFFF (± 1.0e+9), a modest increase in performance (approx. 15-20%) over the larger range can be achieved
    * by avoiding large integer math.
    *

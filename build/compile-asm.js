@@ -9,13 +9,26 @@ const wasmDir = path.join(__dirname, "..", "src", "wasm");
 console.log(`using "${wasmDir}" as wasm dir`);
 
 function build(wasmMode, environment) {
+  const debug = false;
+
   const options = [
     "--bind",
+    "-s STRICT=1",
     "-s ALLOW_MEMORY_GROWTH=1",
     "-s NO_EXIT_RUNTIME=1",
     "-s SINGLE_FILE=1",
-    "-O3"
+    "-s INVOKE_RUN=0",
+    "-s NODEJS_CATCH_EXIT=0",
+    "-s NO_FILESYSTEM=1",
     // '-s MODULARIZE=1',
+    ...(debug
+      ? ["-s DISABLE_EXCEPTION_CATCHING=0", "-O0"]
+      : [
+          // "-s ASSERTIONS=0",
+          // "-s PRECISE_I64_MATH=0",
+          // "-s ALIASING_FUNCTION_POINTERS=1",
+          "-O3"
+        ])
   ];
   if (environment !== "universal") {
     options.push(`-s ENVIRONMENT=${environment}`);

@@ -1,4 +1,5 @@
 import * as clipperLib from "../src";
+import { hiRange } from "../src/constants";
 import {
   pathsToPureJs,
   pathToPureJs,
@@ -7,6 +8,9 @@ import {
   pureJsTestPolyOperation
 } from "./pureJs";
 import { circlePath } from "./utils";
+
+// tslint:disable-next-line:no-console
+window.alert = (msg) => console.error("window alert: ", msg);
 
 let clipperWasm: clipperLib.ClipperLibWrapper;
 let clipperAsmJs: clipperLib.ClipperLibWrapper;
@@ -40,10 +44,20 @@ describe("unit tests", () => {
 
   describe("simple polygons", () => {
     // create some polygons (note that they MUST be integer coordinates)
-    const poly1 = [{ x: 0, y: 10 }, { x: 30, y: 10 }, { x: 30, y: 20 }, { x: 0, y: 20 }];
+    const poly1 = [
+      { x: 0, y: 10 },
+      { x: Math.trunc(hiRange / 3), y: 10 },
+      { x: Math.trunc(hiRange / 3), y: 20 },
+      { x: 0, y: 20 }
+    ];
     const pureJsPoly1 = pathToPureJs(poly1);
 
-    const poly2 = [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 30 }, { x: 10, y: 30 }];
+    const poly2 = [
+      { x: 10, y: 0 },
+      { x: Math.trunc(hiRange / 4), y: 0 },
+      { x: Math.trunc(hiRange / 4), y: 30 },
+      { x: 10, y: 30 }
+    ];
     const pureJsPoly2 = pathToPureJs(poly2);
 
     describe("boolean operations", () => {
@@ -73,7 +87,7 @@ describe("unit tests", () => {
             );
 
             expect(res.asmResult).toEqual(res.wasmResult);
-            expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult));
+            expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult!));
             expect(res.wasmResult).toMatchSnapshot();
           });
         }
@@ -103,7 +117,7 @@ describe("unit tests", () => {
               const pureJsRes = pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
 
               expect(res.asmResult).toEqual(res.wasmResult);
-              expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult));
+              expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult!));
               expect(res.wasmResult).toMatchSnapshot();
             });
           }
@@ -111,9 +125,87 @@ describe("unit tests", () => {
       }
     });
   });
+
+  test("using clipToPaths with open paths should throw", () => {
+    const clipType = clipperLib.ClipType.Intersection;
+    const polyFillType = clipperLib.PolyFillType.Positive;
+
+    const poly1 = [{ x: 10, y: 10 }, { x: 90, y: 10 }, { x: 90, y: 90 }];
+    const poly2 = [{ x: 0, y: 0 }, { x: 50, y: 0 }, { x: 50, y: 50 }, { x: 0, y: 50 }];
+
+    function testShouldThrow(wasm: boolean) {
+      expect(() => {
+        testPolyOperation(
+          clipType,
+          polyFillType,
+          poly1,
+          poly2,
+          { wasm: wasm, asm: !wasm },
+          false,
+          false
+        );
+      }).toThrow("clip to a PolyTree (not to a Path) when using open paths");
+    }
+
+    testShouldThrow(true);
+    testShouldThrow(false);
+  });
+
+  describe("issue #4", () => {
+    for (const subjectClosed of [true, false]) {
+      test(`subjectClosed: ${subjectClosed}`, () => {
+        const clipType = clipperLib.ClipType.Intersection;
+        const polyFillType = clipperLib.PolyFillType.Positive;
+
+        const poly1 = [{ x: 10, y: 10 }, { x: 90, y: 10 }, { x: 90, y: 90 }];
+        const pureJsPoly1 = pathToPureJs(poly1);
+
+        const poly2 = [{ x: 0, y: 0 }, { x: 50, y: 0 }, { x: 50, y: 50 }, { x: 0, y: 50 }];
+        const pureJsPoly2 = pathToPureJs(poly2);
+
+        const pureJsRes = pureJsTestPolyOperation(
+          clipType,
+          polyFillType,
+          pureJsPoly1,
+          pureJsPoly2,
+          subjectClosed
+        );
+
+        const res = testPolyOperation(
+          clipType,
+          polyFillType,
+          poly1,
+          poly2,
+          { wasm: true, asm: true },
+          subjectClosed,
+          true
+        );
+
+        expect(res.ptAsmResult).toEqual(res.ptWasmResult);
+        const open = clipperWasm.openPathsFromPolyTree(res.ptWasmResult!);
+        const closed = clipperWasm.closedPathsFromPolyTree(res.ptWasmResult!);
+        if (subjectClosed) {
+          expect(pureJsRes).toEqual(pathsToPureJs(closed));
+          expect(open.length).toBe(0);
+        } else {
+          expect(pureJsRes).toEqual(pathsToPureJs(open));
+          expect(closed.length).toBe(0);
+        }
+        expect(res.ptWasmResult).toMatchSnapshot();
+      });
+    }
+  });
 });
 
 describe("benchmarks", () => {
+  const oldNodeEnv = process.env.NODE_ENV;
+  beforeAll(() => {
+    process.env.NODE_ENV = "production";
+  });
+  afterAll(() => {
+    process.env.NODE_ENV = oldNodeEnv;
+  });
+
   for (const benchmark of [{ ops: 500, points: 5000 }, { ops: 10000, points: 100 }]) {
     describe(`${benchmark.ops} boolean operations over two circles of ${
       benchmark.points
@@ -209,21 +301,37 @@ function testPolyOperation(
   subjectFillType: clipperLib.PolyFillType,
   subjectInput: clipperLib.Path | clipperLib.Paths,
   clipInput: clipperLib.Path | clipperLib.Paths,
-  format: { wasm: boolean; asm: boolean }
+  format: { wasm: boolean; asm: boolean },
+  subjectInputClosed = true,
+  clipToPolyTrees = false
 ) {
   const data = {
     clipType: clipType,
 
-    subjectInputs: [{ data: subjectInput, closed: true }],
+    subjectInputs: [{ data: subjectInput, closed: subjectInputClosed }],
 
     clipInputs: [{ data: clipInput }],
 
     subjectFillType: subjectFillType
   };
 
+  const pathResults = !clipToPolyTrees
+    ? {
+        asmResult: format.asm ? clipperAsmJs.clipToPaths(data) : undefined,
+        wasmResult: format.wasm ? clipperWasm.clipToPaths(data) : undefined
+      }
+    : {};
+
+  const polyTreeResults = clipToPolyTrees
+    ? {
+        ptAsmResult: format.asm ? clipperAsmJs.clipToPolyTree(data) : undefined,
+        ptWasmResult: format.wasm ? clipperWasm.clipToPolyTree(data) : undefined
+      }
+    : {};
+
   return {
-    wasmResult: format.wasm ? clipperWasm.clipToPaths(data) : undefined,
-    asmResult: format.asm ? clipperAsmJs.clipToPaths(data) : undefined
+    ...pathResults,
+    ...polyTreeResults
   };
 }
 

@@ -83,7 +83,7 @@ enum PolyFillType { pftEvenOdd, pftNonZero, pftPositive, pftNegative };
   // however hiRange has to change since double do not support 64 bits ints
   //static cInt const loRange = 47453132; // sqrt(2^53 -1)/2
   //static cInt const hiRange = 4503599627370495LL; // sqrt(2^106 -1)/2
-  static cInt const hiRange = 9007199254740992LL;
+  static cInt const hiRange = 9007199254740991LL;
 
   typedef signed long long long64;     //used by Int128 class
   typedef unsigned long long ulong64;
