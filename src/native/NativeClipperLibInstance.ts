@@ -28,21 +28,11 @@ export interface NativeClipperLibInstance {
   };
 
   // types
-  Path: {
-    new (): NativePath;
-  };
-  Paths: {
-    new (): NativePaths;
-  };
-  PolyTree: {
-    new (): NativePolyTree;
-  };
-  Clipper: {
-    new (initOptions: number): NativeClipper;
-  };
-  ClipperOffset: {
-    new (miterLimit: number, arcTolerance: number): NativeClipperOffset;
-  };
+  Path: new () => NativePath;
+  Paths: new () => NativePaths;
+  PolyTree: new () => NativePolyTree;
+  Clipper: new (initOptions: number) => NativeClipper;
+  ClipperOffset: new (miterLimit: number, arcTolerance: number) => NativeClipperOffset;
 
   // functions
   newIntPoint(x: number, y: number): NativeIntPoint;
