@@ -6,19 +6,18 @@
   "typings": "universal/index.d.ts",
   "scripts": {
     "pull-docker-image": "docker pull trzeci/emscripten",
-    "prepublishOnly": "npm run clean && npm run lint && npm run build && npm run test",
+    "prepublishOnly": "npm run lint && npm run build && npm run test",
     "travis": "npm run prepublishOnly",
     "test": "jest -t unit",
     "benchmark": "jest -t benchmark",
     "lint": "tslint -p .",
-    "clean": "rimraf ./dist && rimraf ./universal && rimraf ./web",
     "build": "npm run build:universal && npm run build:web",
-    "build:universal": "npm run build:ts && npm run build:asm && shx mv dist universal",
-    "build:web": "npm run build:ts && npm run build:asm -- --env web && shx mv dist web",
+    "build:universal": "rimraf ./dist && rimraf ./universal && npm run build:ts && npm run build:asm && shx mv dist universal",
+    "build:web": "rimraf ./dist && rimraf ./web && npm run build:ts && npm run build:asm -- --env web && shx mv dist web",
     "build:ts": "tsc -p .",
     "build:asm": "npm run pull-docker-image && node build/compile-asm",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
-    "prettier-all": "prettier --write \"src/lib/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
+    "prettier-all": "prettier --write \"src/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
   "files": [
     "universal",
