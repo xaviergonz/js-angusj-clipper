@@ -1,11 +1,11 @@
 {
   "name": "js-angusj-clipper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
   "main": "universal/index.js",
   "typings": "universal/index.d.ts",
   "scripts": {
-    "pull-docker-image": "docker pull trzeci/emscripten",
+    "_pull-docker-image": "docker pull trzeci/emscripten",
     "prepublishOnly": "npm run lint && npm run build && npm run test",
     "travis": "npm run prepublishOnly",
     "test": "jest -t unit",
@@ -15,7 +15,7 @@
     "build:universal": "rimraf ./dist && rimraf ./universal && npm run build:ts && npm run build:asm && shx mv dist universal",
     "build:web": "rimraf ./dist && rimraf ./web && npm run build:ts && npm run build:asm -- --env web && shx mv dist web",
     "build:ts": "tsc -p .",
-    "build:asm": "npm run pull-docker-image && node build/compile-asm",
+    "build:asm": "npm run _pull-docker-image && node build/compile-asm",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "prettier-all": "prettier --write \"src/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
@@ -41,17 +41,17 @@
   },
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "@types/node": "^11.13.6",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.4",
     "command-line-args": "^5.1.1",
-    "jest": "^24.7.1",
-    "prettier": "^1.17.0",
-    "rimraf": "^2.6.3",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^3.0.0",
     "shelljs": "^0.8.3",
     "shx": "^0.3.2",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
+    "tslint": "^5.19.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.4.4"
+    "typescript": "^3.6.2"
   }
 }
