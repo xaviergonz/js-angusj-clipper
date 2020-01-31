@@ -60,6 +60,67 @@ PolyTree {
 }
 `;
 
+exports[`unit tests issue #9 1`] = `
+PolyTree {
+  "_childs": Array [
+    PolyNode {
+      "_childs": Array [
+        PolyNode {
+          "_childs": Array [],
+          "_contour": Array [
+            Object {
+              "x": -5,
+              "y": -5,
+            },
+            Object {
+              "x": -5,
+              "y": 5,
+            },
+            Object {
+              "x": 5,
+              "y": 5,
+            },
+            Object {
+              "x": 5,
+              "y": -5,
+            },
+          ],
+          "_index": 0,
+          "_isOpen": false,
+          "_parent": [Circular],
+        },
+      ],
+      "_contour": Array [
+        Object {
+          "x": 50,
+          "y": 50,
+        },
+        Object {
+          "x": -50,
+          "y": 50,
+        },
+        Object {
+          "x": -50,
+          "y": -50,
+        },
+        Object {
+          "x": 50,
+          "y": -50,
+        },
+      ],
+      "_index": 0,
+      "_isOpen": false,
+      "_parent": [Circular],
+    },
+  ],
+  "_contour": Array [],
+  "_index": 0,
+  "_isOpen": false,
+  "_parent": undefined,
+  "_total": 2,
+}
+`;
+
 exports[`unit tests simple polygons boolean operations clipType: difference, fillType: evenOdd 1`] = `
 Array [
   Array [
