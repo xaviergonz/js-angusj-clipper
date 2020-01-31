@@ -138,13 +138,13 @@ export class Clipper {
 
     let nativeInitOptions = 0;
     if (realInitOptions.reverseSolutions) {
-      nativeInitOptions += _nativeLib.InitOptions.ReverseSolution as number;
+      nativeInitOptions += _nativeLib.InitOptions.ReverseSolution.value;
     }
     if (realInitOptions.strictlySimple) {
-      nativeInitOptions += _nativeLib.InitOptions.StrictlySimple as number;
+      nativeInitOptions += _nativeLib.InitOptions.StrictlySimple.value;
     }
     if (realInitOptions.preserveCollinear) {
-      nativeInitOptions += _nativeLib.InitOptions.PreserveCollinear as number;
+      nativeInitOptions += _nativeLib.InitOptions.PreserveCollinear.value;
     }
 
     this._clipper = new _nativeLib.Clipper(nativeInitOptions);

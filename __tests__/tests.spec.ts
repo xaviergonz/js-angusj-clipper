@@ -130,8 +130,17 @@ describe("unit tests", () => {
     const clipType = clipperLib.ClipType.Intersection;
     const polyFillType = clipperLib.PolyFillType.Positive;
 
-    const poly1 = [{ x: 10, y: 10 }, { x: 90, y: 10 }, { x: 90, y: 90 }];
-    const poly2 = [{ x: 0, y: 0 }, { x: 50, y: 0 }, { x: 50, y: 50 }, { x: 0, y: 50 }];
+    const poly1 = [
+      { x: 10, y: 10 },
+      { x: 90, y: 10 },
+      { x: 90, y: 90 }
+    ];
+    const poly2 = [
+      { x: 0, y: 0 },
+      { x: 50, y: 0 },
+      { x: 50, y: 50 },
+      { x: 0, y: 50 }
+    ];
 
     function testShouldThrow(wasm: boolean) {
       expect(() => {
@@ -157,10 +166,19 @@ describe("unit tests", () => {
         const clipType = clipperLib.ClipType.Intersection;
         const polyFillType = clipperLib.PolyFillType.Positive;
 
-        const poly1 = [{ x: 10, y: 10 }, { x: 90, y: 10 }, { x: 90, y: 90 }];
+        const poly1 = [
+          { x: 10, y: 10 },
+          { x: 90, y: 10 },
+          { x: 90, y: 90 }
+        ];
         const pureJsPoly1 = pathToPureJs(poly1);
 
-        const poly2 = [{ x: 0, y: 0 }, { x: 50, y: 0 }, { x: 50, y: 50 }, { x: 0, y: 50 }];
+        const poly2 = [
+          { x: 0, y: 0 },
+          { x: 50, y: 0 },
+          { x: 50, y: 50 },
+          { x: 0, y: 50 }
+        ];
         const pureJsPoly2 = pathToPureJs(poly2);
 
         const pureJsRes = pureJsTestPolyOperation(
@@ -195,6 +213,37 @@ describe("unit tests", () => {
       });
     }
   });
+
+  test("issue #9", () => {
+    const clipper = clipperWasm;
+    const request = {
+      clipType: clipperLib.ClipType.Union,
+      subjectInputs: [
+        {
+          data: [
+            { x: 50, y: 50 },
+            { x: -50, y: 50 },
+            { x: -50, y: -50 },
+            { x: 50, y: -50 }
+          ],
+          closed: true
+        },
+        {
+          data: [
+            { x: -5, y: -5 },
+            { x: -5, y: 5 },
+            { x: 5, y: 5 },
+            { x: 5, y: -5 }
+          ],
+          closed: true
+        }
+      ],
+      subjectFillType: clipperLib.PolyFillType.NonZero,
+      strictlySimple: true
+    };
+    const result = clipper.clipToPolyTree(request);
+    expect(result).toMatchSnapshot();
+  });
 });
 
 describe("benchmarks", () => {
@@ -206,10 +255,11 @@ describe("benchmarks", () => {
     process.env.NODE_ENV = oldNodeEnv;
   });
 
-  for (const benchmark of [{ ops: 500, points: 5000 }, { ops: 10000, points: 100 }]) {
-    describe(`${benchmark.ops} boolean operations over two circles of ${
-      benchmark.points
-    } points each`, () => {
+  for (const benchmark of [
+    { ops: 500, points: 5000 },
+    { ops: 10000, points: 100 }
+  ]) {
+    describe(`${benchmark.ops} boolean operations over two circles of ${benchmark.points} points each`, () => {
       const poly1 = circlePath({ x: 1000, y: 1000 }, 1000, benchmark.points);
       const poly2 = circlePath({ x: 2500, y: 1000 }, 1000, benchmark.points);
       const pureJsPoly1 = pathToPureJs(poly1);
@@ -251,10 +301,11 @@ describe("benchmarks", () => {
     });
   }
 
-  for (const benchmark of [{ ops: 100, points: 5000 }, { ops: 5000, points: 100 }]) {
-    describe(`${benchmark.ops} offset operations over a circle of ${
-      benchmark.points
-    } points`, () => {
+  for (const benchmark of [
+    { ops: 100, points: 5000 },
+    { ops: 5000, points: 100 }
+  ]) {
+    describe(`${benchmark.ops} offset operations over a circle of ${benchmark.points} points`, () => {
       const poly1 = circlePath({ x: 1000, y: 1000 }, 1000, benchmark.points);
       const pureJsPoly1 = pathToPureJs(poly1);
       const scale = 100;

@@ -1,10 +1,16 @@
 language: node_js
+
 node_js:
   - "node"
+
 cache:
+  yarn: true
   directories:
-    - "node_modules"
+    - node_modules
+
 sudo: required
+
 services:
   - docker
-script: npm run travis
+
+script: yarn travis
