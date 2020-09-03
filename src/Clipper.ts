@@ -12,6 +12,7 @@ import { pathToNativePath } from "./native/PathToNativePath";
 import { Path, ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
+import { nativeFinalizationRegistry } from "./nativeFinalizationRegistry";
 
 export interface ClipperInitOptions {
   /**
@@ -148,6 +149,7 @@ export class Clipper {
     }
 
     this._clipper = new _nativeLib.Clipper(nativeInitOptions);
+    nativeFinalizationRegistry?.register(this, this._clipper, this);
   }
 
   /**
@@ -382,10 +384,12 @@ export class Clipper {
 
   /**
    * Since this library uses WASM/ASM.JS internally for speed this means that you must dispose objects after you are done using them or mem leaks will occur.
+   * (If the runtime supports FinalizationRegistry then this becomes non-mandatory, but still recommended).
    */
   dispose(): void {
     if (this._clipper) {
       this._clipper.delete();
+      nativeFinalizationRegistry?.unregister(this);
       this._clipper = undefined;
     }
   }

@@ -4,9 +4,10 @@ import { NativeClipperOffset } from "./native/NativeClipperOffset";
 import { endTypeToNative, joinTypeToNative } from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { pathToNativePath } from "./native/PathToNativePath";
-import { Path, ReadonlyPath } from "./Path";
+import { ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
+import { nativeFinalizationRegistry } from "./nativeFinalizationRegistry";
 
 /**
  * The ClipperOffset class encapsulates the process of offsetting (inflating/deflating) both open and closed paths using a number of different join types
@@ -127,6 +128,7 @@ export class ClipperOffset {
     arcTolerance = 0.25
   ) {
     this._clipperOffset = new _nativeLib.ClipperOffset(miterLimit, arcTolerance);
+    nativeFinalizationRegistry?.register(this, this._clipperOffset, this);
   }
 
   /**
@@ -240,10 +242,12 @@ export class ClipperOffset {
 
   /**
    * Since this library uses WASM/ASM.JS internally for speed this means that you must dispose objects after you are done using them or mem leaks will occur.
+   * (If the runtime supports FinalizationRegistry then this becomes non-mandatory, but still recommended).
    */
   dispose(): void {
     if (this._clipperOffset) {
       this._clipperOffset.delete();
+      nativeFinalizationRegistry?.unregister(this);
       this._clipperOffset = undefined;
     }
   }
