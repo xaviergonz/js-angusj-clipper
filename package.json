@@ -5,7 +5,7 @@
   "main": "universal/index.js",
   "typings": "universal/index.d.ts",
   "scripts": {
-    "_pull-docker-image": "docker pull trzeci/emscripten",
+    "_pull-docker-image": "docker pull emscripten/emsdk",
     "prepublishOnly": "yarn lint && yarn build && yarn test",
     "travis": "yarn prepublishOnly",
     "test": "jest -t unit",
@@ -41,17 +41,17 @@
   },
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
-    "@types/jest": "^25.1.1",
-    "@types/node": "^13.5.3",
+    "@types/jest": "^26.0.13",
+    "@types/node": "^14.6.3",
     "command-line-args": "^5.1.1",
-    "jest": "^25.1.0",
-    "prettier": "^1.19.1",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.1",
     "rimraf": "^3.0.1",
     "shelljs": "^0.8.3",
     "shx": "^0.3.2",
-    "ts-jest": "^25.1.0",
+    "ts-jest": "^26.3.0",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.5"
+    "typescript": "^4.0.2"
   }
 }
