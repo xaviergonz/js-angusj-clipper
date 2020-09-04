@@ -15,7 +15,7 @@
     "build:universal": "rimraf ./dist && rimraf ./universal && yarn build:ts && yarn build:asm && shx mv dist universal",
     "build:web": "rimraf ./dist && rimraf ./web && yarn build:ts && yarn build:asm --env web && shx mv dist web",
     "build:ts": "tsc -p .",
-    "build:asm": "yarn _pull-docker-image && node build/compile-asm",
+    "build:asm": "yarn _pull-docker-image && ts-node build/compile-asm",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "prettier-all": "prettier --write \"src/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
   },
@@ -41,8 +41,10 @@
   },
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
+    "@types/command-line-args": "^5.0.0",
     "@types/jest": "^26.0.13",
     "@types/node": "^14.6.3",
+    "@types/shelljs": "^0.8.8",
     "command-line-args": "^5.1.1",
     "jest": "^26.4.2",
     "prettier": "^2.1.1",
@@ -50,6 +52,7 @@
     "shelljs": "^0.8.3",
     "shx": "^0.3.2",
     "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.0.2"

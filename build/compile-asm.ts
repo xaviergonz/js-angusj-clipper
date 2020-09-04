@@ -1,18 +1,22 @@
-const shelljs = require("shelljs");
-const path = require("path");
-const fs = require("fs");
-const commandLineArgs = require("command-line-args");
+// tslint:disable: no-console
+// tslint:disable: no-implicit-dependencies
 
-const options = commandLineArgs([{ name: "env", type: String, defaultValue: "universal" }]);
+import * as shelljs from "shelljs";
+import * as path from "path";
+import * as fs from "fs";
+import * as commandLineArgs from "command-line-args";
+
+const cmdLineOptions = commandLineArgs([{ name: "env", type: String, defaultValue: "universal" }]);
 
 const wasmDir = path.join(__dirname, "..", "src", "wasm");
 console.log(`using "${wasmDir}" as wasm dir`);
 
-function build(wasmMode, environment) {
+function build(wasmMode: boolean, environment: string) {
   const debug = false;
 
   const options = [
     "--bind",
+    "--no-entry",
     "-s STRICT=1",
     "-s ALLOW_MEMORY_GROWTH=1",
     "-s NO_EXIT_RUNTIME=1",
@@ -27,8 +31,8 @@ function build(wasmMode, environment) {
           // "-s ASSERTIONS=0",
           // "-s PRECISE_I64_MATH=0",
           // "-s ALIASING_FUNCTION_POINTERS=1",
-          "-O3"
-        ])
+          "-O3",
+        ]),
   ];
   if (environment !== "universal") {
     options.push(`-s ENVIRONMENT=${environment}`);
@@ -42,7 +46,7 @@ function build(wasmMode, environment) {
 
   const output = wasmMode ? `clipper-wasm.js` : `clipper.js`;
 
-  const cmd = `docker run --rm -v ${wasmDir}:/src trzeci/emscripten emcc ${options.join(
+  const cmd = `docker run --rm -v ${wasmDir}:/src emscripten/emsdk emcc ${options.join(
     " "
   )} clipper.cpp -o ${output}`;
   const returnData = shelljs.exec(cmd);
@@ -76,7 +80,7 @@ module.exports = { init: init };
   shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
 }
 
-console.log("building asmjs version for env " + options.env);
-build(false, options.env);
-console.log("building wasm version for env " + options.env);
-build(true, options.env);
+console.log("building asmjs version for env " + cmdLineOptions.env);
+build(false, cmdLineOptions.env);
+console.log("building wasm version for env " + cmdLineOptions.env);
+build(true, cmdLineOptions.env);
