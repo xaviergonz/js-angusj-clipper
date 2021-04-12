@@ -46,7 +46,7 @@ function build(wasmMode: boolean, environment: string) {
 
   const output = wasmMode ? `clipper-wasm.js` : `clipper.js`;
 
-  const cmd = `docker run --rm -v ${wasmDir}:/src emscripten/emsdk emcc ${options.join(
+  const cmd = `docker run --rm -v ${wasmDir}:/src emscripten/emsdk em++ ${options.join(
     " "
   )} clipper.cpp -o ${output}`;
   const returnData = shelljs.exec(cmd);

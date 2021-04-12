@@ -3,6 +3,7 @@
 /web/
 /universal/
 /src/wasm/*.js
+**/yarn-error.log
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm

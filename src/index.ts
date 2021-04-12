@@ -459,7 +459,7 @@ export const loadNativeClipperLibInstanceAsync = async (
             resolve(finalModule);
           } else {
             setTimeout(() => {
-              resolve(finalModule);
+              resolve(finalModule!);
             }, 1);
           }
         },
