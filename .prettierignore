@@ -1,0 +1,6 @@
+/universal
+/web
+__tests__/external-libs
+docs
+README.md
+src/wasm/clipper*.js

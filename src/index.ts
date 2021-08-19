@@ -8,7 +8,7 @@ import {
   NativeClipperLibLoadedFormat,
   NativeClipperLibRequestedFormat,
   PointInPolygonResult,
-  PolyFillType
+  PolyFillType,
 } from "./enums";
 import * as functions from "./functions";
 import { IntPoint } from "./IntPoint";
@@ -41,7 +41,7 @@ export {
   ClipParams,
   OffsetInput,
   OffsetParams,
-  ClipperError
+  ClipperError,
 };
 
 let wasmModule: NativeClipperLibInstance | undefined | Error;
@@ -445,13 +445,12 @@ export const loadNativeClipperLibInstanceAsync = async (
       throw new ClipperError("unknown native clipper format");
   }
 
-  async function initModuleAsync(
-    mode: "wasm" | "asmjs",
-  ): Promise<NativeClipperLibInstance> {
+  async function initModuleAsync(mode: "wasm" | "asmjs"): Promise<NativeClipperLibInstance> {
     // we use direct requires so bundlers have an easier time
-    const createModuleAsync = mode === "wasm" ? require("./wasm/clipper-wasm") : require("./wasm/clipper");
+    const createModuleAsync =
+      mode === "wasm" ? require("./wasm/clipper-wasm") : require("./wasm/clipper");
     const module = await createModuleAsync();
-    return module
+    return module;
   }
 
   if (tryWasm) {

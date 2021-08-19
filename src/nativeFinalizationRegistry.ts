@@ -29,13 +29,16 @@ interface FinalizationRegistryConstructor {
    * Creates a finalization registry with an associated cleanup callback
    * @param cleanupCallback The callback to call after an object in the registry has been reclaimed.
    */
-  new(cleanupCallback: (heldValue: any) => void): FinalizationRegistry;
+  new (cleanupCallback: (heldValue: any) => void): FinalizationRegistry;
 }
 
 declare var FinalizationRegistry: FinalizationRegistryConstructor;
 
-export const nativeFinalizationRegistry = typeof FinalizationRegistry === "undefined" ? undefined : new FinalizationRegistry((nativeObj: NativeDeletable) => {
-  if (!nativeObj.isDeleted()) {
-    nativeObj.delete();
-  }
-});
+export const nativeFinalizationRegistry =
+  typeof FinalizationRegistry === "undefined"
+    ? undefined
+    : new FinalizationRegistry((nativeObj: NativeDeletable) => {
+        if (!nativeObj.isDeleted()) {
+          nativeObj.delete();
+        }
+      });

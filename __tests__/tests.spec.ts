@@ -5,7 +5,7 @@ import {
   pathToPureJs,
   pureJsClipperLib,
   pureJsTestOffset,
-  pureJsTestPolyOperation
+  pureJsTestPolyOperation,
 } from "./pureJs";
 import { circlePath } from "./utils";
 
@@ -48,7 +48,7 @@ describe("unit tests", () => {
       { x: 0, y: 10 },
       { x: Math.trunc(hiRange / 3), y: 10 },
       { x: Math.trunc(hiRange / 3), y: 20 },
-      { x: 0, y: 20 }
+      { x: 0, y: 20 },
     ];
     const pureJsPoly1 = pathToPureJs(poly1);
 
@@ -56,7 +56,7 @@ describe("unit tests", () => {
       { x: 10, y: 0 },
       { x: Math.trunc(hiRange / 4), y: 0 },
       { x: Math.trunc(hiRange / 4), y: 30 },
-      { x: 10, y: 30 }
+      { x: 10, y: 30 },
     ];
     const pureJsPoly2 = pathToPureJs(poly2);
 
@@ -65,18 +65,18 @@ describe("unit tests", () => {
         clipperLib.ClipType.Intersection,
         clipperLib.ClipType.Union,
         clipperLib.ClipType.Difference,
-        clipperLib.ClipType.Xor
+        clipperLib.ClipType.Xor,
       ]) {
         for (const polyFillType of [
           clipperLib.PolyFillType.EvenOdd,
           clipperLib.PolyFillType.NonZero,
           clipperLib.PolyFillType.Negative,
-          clipperLib.PolyFillType.Positive
+          clipperLib.PolyFillType.Positive,
         ]) {
           test(`clipType: ${clipType}, fillType: ${polyFillType}`, () => {
             const res = testPolyOperation(clipType, polyFillType, poly1, poly2, {
               wasm: true,
-              asm: true
+              asm: true,
             });
 
             const pureJsRes = pureJsTestPolyOperation(
@@ -98,20 +98,20 @@ describe("unit tests", () => {
       for (const joinType of [
         clipperLib.JoinType.Miter,
         clipperLib.JoinType.Round,
-        clipperLib.JoinType.Square
+        clipperLib.JoinType.Square,
       ]) {
         for (const endType of [
           clipperLib.EndType.ClosedPolygon,
           clipperLib.EndType.ClosedLine,
           clipperLib.EndType.OpenButt,
           clipperLib.EndType.OpenRound,
-          clipperLib.EndType.OpenSquare
+          clipperLib.EndType.OpenSquare,
         ]) {
           for (const delta of [5, 0, -5]) {
             test(`joinType: ${joinType}, endType: ${endType}, delta: ${delta}`, () => {
               const res = testOffset(poly1, joinType, endType, delta, {
                 wasm: true,
-                asm: true
+                asm: true,
               });
 
               const pureJsRes = pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
@@ -133,13 +133,13 @@ describe("unit tests", () => {
     const poly1 = [
       { x: 10, y: 10 },
       { x: 90, y: 10 },
-      { x: 90, y: 90 }
+      { x: 90, y: 90 },
     ];
     const poly2 = [
       { x: 0, y: 0 },
       { x: 50, y: 0 },
       { x: 50, y: 50 },
-      { x: 0, y: 50 }
+      { x: 0, y: 50 },
     ];
 
     function testShouldThrow(wasm: boolean) {
@@ -169,7 +169,7 @@ describe("unit tests", () => {
         const poly1 = [
           { x: 10, y: 10 },
           { x: 90, y: 10 },
-          { x: 90, y: 90 }
+          { x: 90, y: 90 },
         ];
         const pureJsPoly1 = pathToPureJs(poly1);
 
@@ -177,7 +177,7 @@ describe("unit tests", () => {
           { x: 0, y: 0 },
           { x: 50, y: 0 },
           { x: 50, y: 50 },
-          { x: 0, y: 50 }
+          { x: 0, y: 50 },
         ];
         const pureJsPoly2 = pathToPureJs(poly2);
 
@@ -224,22 +224,22 @@ describe("unit tests", () => {
             { x: 50, y: 50 },
             { x: -50, y: 50 },
             { x: -50, y: -50 },
-            { x: 50, y: -50 }
+            { x: 50, y: -50 },
           ],
-          closed: true
+          closed: true,
         },
         {
           data: [
             { x: -5, y: -5 },
             { x: -5, y: 5 },
             { x: 5, y: 5 },
-            { x: 5, y: -5 }
+            { x: 5, y: -5 },
           ],
-          closed: true
-        }
+          closed: true,
+        },
       ],
       subjectFillType: clipperLib.PolyFillType.NonZero,
-      strictlySimple: true
+      strictlySimple: true,
     };
     const result = clipper.clipToPolyTree(request);
     expect(result).toMatchSnapshot();
@@ -257,7 +257,7 @@ describe("benchmarks", () => {
 
   for (const benchmark of [
     { ops: 500, points: 5000 },
-    { ops: 10000, points: 100 }
+    { ops: 10000, points: 100 },
   ]) {
     describe(`${benchmark.ops} boolean operations over two circles of ${benchmark.points} points each`, () => {
       const poly1 = circlePath({ x: 1000, y: 1000 }, 1000, benchmark.points);
@@ -272,10 +272,10 @@ describe("benchmarks", () => {
         clipperLib.ClipType.Intersection,
         clipperLib.ClipType.Union,
         clipperLib.ClipType.Difference,
-        clipperLib.ClipType.Xor
+        clipperLib.ClipType.Xor,
       ]) {
         for (const polyFillType of [
-          clipperLib.PolyFillType.EvenOdd
+          clipperLib.PolyFillType.EvenOdd,
           // clipperLib.PolyFillType.NonZero,
           // clipperLib.PolyFillType.Negative,
           // clipperLib.PolyFillType.Positive,
@@ -287,7 +287,7 @@ describe("benchmarks", () => {
                   if (mode === "wasm" || mode === "asmJs") {
                     testPolyOperation(clipType, polyFillType, poly1, poly2, {
                       wasm: mode === "wasm",
-                      asm: mode === "asmJs"
+                      asm: mode === "asmJs",
                     });
                   } else if (mode === "pureJs") {
                     pureJsTestPolyOperation(clipType, polyFillType, pureJsPoly1, pureJsPoly2);
@@ -303,7 +303,7 @@ describe("benchmarks", () => {
 
   for (const benchmark of [
     { ops: 100, points: 5000 },
-    { ops: 5000, points: 100 }
+    { ops: 5000, points: 100 },
   ]) {
     describe(`${benchmark.ops} offset operations over a circle of ${benchmark.points} points`, () => {
       const poly1 = circlePath({ x: 1000, y: 1000 }, 1000, benchmark.points);
@@ -312,12 +312,12 @@ describe("benchmarks", () => {
       pureJsClipperLib.JS.ScaleUpPaths(pureJsPoly1, scale);
 
       for (const joinType of [
-        clipperLib.JoinType.Miter
+        clipperLib.JoinType.Miter,
         // clipperLib.JoinType.Round,
         // clipperLib.JoinType.Square
       ]) {
         for (const endType of [
-          clipperLib.EndType.ClosedPolygon
+          clipperLib.EndType.ClosedPolygon,
           // clipperLib.EndType.ClosedLine,
           // clipperLib.EndType.OpenButt,
           // clipperLib.EndType.OpenRound,
@@ -331,7 +331,7 @@ describe("benchmarks", () => {
                     if (mode === "wasm" || mode === "asmJs") {
                       testOffset(poly1, joinType, endType, delta, {
                         wasm: mode === "wasm",
-                        asm: mode === "asmJs"
+                        asm: mode === "asmJs",
                       });
                     } else if (mode === "pureJs") {
                       pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
@@ -363,26 +363,26 @@ function testPolyOperation(
 
     clipInputs: [{ data: clipInput }],
 
-    subjectFillType: subjectFillType
+    subjectFillType: subjectFillType,
   };
 
   const pathResults = !clipToPolyTrees
     ? {
         asmResult: format.asm ? clipperAsmJs.clipToPaths(data) : undefined,
-        wasmResult: format.wasm ? clipperWasm.clipToPaths(data) : undefined
+        wasmResult: format.wasm ? clipperWasm.clipToPaths(data) : undefined,
       }
     : {};
 
   const polyTreeResults = clipToPolyTrees
     ? {
         ptAsmResult: format.asm ? clipperAsmJs.clipToPolyTree(data) : undefined,
-        ptWasmResult: format.wasm ? clipperWasm.clipToPolyTree(data) : undefined
+        ptWasmResult: format.wasm ? clipperWasm.clipToPolyTree(data) : undefined,
       }
     : {};
 
   return {
     ...pathResults,
-    ...polyTreeResults
+    ...polyTreeResults,
   };
 }
 
@@ -399,13 +399,13 @@ function testOffset(
       {
         joinType: joinType,
         endType: endType,
-        data: input
-      }
-    ]
+        data: input,
+      },
+    ],
   };
 
   return {
     wasmResult: format.wasm ? clipperWasm.offsetToPaths(data) : undefined,
-    asmResult: format.asm ? clipperAsmJs.offsetToPaths(data) : undefined
+    asmResult: format.asm ? clipperAsmJs.offsetToPaths(data) : undefined,
   };
 }

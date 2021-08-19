@@ -7,37 +7,37 @@ export enum PolyFillType {
   EvenOdd = "evenOdd",
   NonZero = "nonZero",
   Positive = "positive",
-  Negative = "negative"
+  Negative = "negative",
 }
 
 export enum ClipType {
   Intersection = "intersection",
   Union = "union",
   Difference = "difference",
-  Xor = "xor"
+  Xor = "xor",
 }
 export enum PolyType {
   Subject = "subject",
-  Clip = "clip"
+  Clip = "clip",
 }
 
 export enum JoinType {
   Square = "square",
   Round = "round",
-  Miter = "miter"
+  Miter = "miter",
 }
 export enum EndType {
   ClosedPolygon = "closedPolygon",
   ClosedLine = "closedLine",
   OpenButt = "openButt",
   OpenSquare = "openSquare",
-  OpenRound = "openRound"
+  OpenRound = "openRound",
 }
 
 export enum PointInPolygonResult {
   Outside = 0,
   Inside = 1,
-  OnBoundary = -1
+  OnBoundary = -1,
 }
 
 /**
@@ -55,7 +55,7 @@ export enum NativeClipperLibRequestedFormat {
   /**
    * Load the Asm.js version exclusively.
    */
-  AsmJsOnly = "asmJsOnly"
+  AsmJsOnly = "asmJsOnly",
 }
 
 /**
@@ -69,5 +69,5 @@ export enum NativeClipperLibLoadedFormat {
   /**
    * Asm.js.
    */
-  AsmJs = "asmJs"
+  AsmJs = "asmJs",
 }

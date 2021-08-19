@@ -6,7 +6,7 @@ import {
   NativeInitOptions,
   NativeJoinType,
   NativePolyFillType,
-  NativePolyType
+  NativePolyType,
 } from "./nativeEnums";
 import { NativeIntPoint } from "./NativeIntPoint";
 import { NativePath } from "./NativePath";

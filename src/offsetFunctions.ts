@@ -123,7 +123,7 @@ function offsetToPathsOrPolyTree(
   const filledData = {
     arcTolerance: 0.25,
     miterLimit: 2,
-    ...params
+    ...params,
   };
 
   const offset = new ClipperOffset(

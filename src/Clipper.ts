@@ -5,7 +5,7 @@ import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import {
   clipTypeToNative,
   polyFillTypeToNative,
-  polyTypeToNative
+  polyTypeToNative,
 } from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { pathToNativePath } from "./native/PathToNativePath";
@@ -134,7 +134,7 @@ export class Clipper {
       reverseSolutions: false,
       strictlySimple: false,
       preserveCollinear: false,
-      ...initOptions
+      ...initOptions,
     };
 
     let nativeInitOptions = 0;
@@ -244,7 +244,7 @@ export class Clipper {
       left: nativeBounds.left,
       right: nativeBounds.right,
       top: nativeBounds.top,
-      bottom: nativeBounds.bottom
+      bottom: nativeBounds.bottom,
     };
     nativeBounds.delete();
     return rect;
