@@ -9,14 +9,13 @@
     "travis": "yarn lint && yarn build && yarn test",
     "test": "jest -t unit",
     "benchmark": "jest -t benchmark",
-    "lint": "tslint -p .",
+    "lint": "eslint src",
     "build": "yarn build:universal && yarn build:web",
     "build:universal": "rimraf ./dist && rimraf ./universal && yarn build:ts && yarn build:asm && shx mv dist universal",
     "build:web": "rimraf ./dist && rimraf ./web && yarn build:ts && yarn build:asm --env web && shx mv dist web",
     "build:ts": "tsc -p .",
     "build:asm": "yarn _pull-docker-image && ts-node build/compile-asm",
-    "tslint-check": "tslint-config-prettier-check ./tslint.json",
-    "prettier-all": "prettier --write \"src/**/*.ts\" \"build/**/*.js\" \"__tests__/**/*.ts\""
+    "prettier-all": "prettier --write ."
   },
   "files": [
     "universal",
@@ -44,7 +43,13 @@
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.23",
     "@types/shelljs": "^0.8.11",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
     "command-line-args": "^5.2.1",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.5.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.1",
@@ -52,8 +57,11 @@
     "shx": "^0.3.4",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
-    "tslint": "^6.0.0",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.4"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "arrowParens": "always",
+    "endOfLine": "lf"
   }
 }
