@@ -449,8 +449,7 @@ export const loadNativeClipperLibInstanceAsync = async (
     // we use direct requires so bundlers have an easier time
     const createModuleAsync =
       mode === "wasm" ? require("./wasm/clipper-wasm") : require("./wasm/clipper");
-    const module = await createModuleAsync();
-    return module;
+    return createModuleAsync();
   }
 
   if (tryWasm) {

@@ -104,8 +104,6 @@ export class PolyNode {
     }
   }
 
-  protected constructor() {}
-
   protected static fillFromNativePolyNode(
     pn: PolyNode,
     nativeLib: NativeClipperLibInstance,

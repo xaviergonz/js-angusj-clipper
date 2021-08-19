@@ -1,4 +1,4 @@
 import { NativePath } from "./NativePath";
 import { NativeVector } from "./NativeVector";
 
-export type NativePaths = NativeVector<NativePath>
+export type NativePaths = NativeVector<NativePath>;
