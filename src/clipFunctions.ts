@@ -7,7 +7,7 @@ import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
 const devMode =
-  typeof "process" !== "undefined" && process.env && process.env.NODE_ENV !== "production";
+  typeof process !== "undefined" && process.env && process.env.NODE_ENV !== "production";
 
 /**
  * A single subject input (of multiple possible inputs) for the clipToPaths / clipToPolyTree operations
