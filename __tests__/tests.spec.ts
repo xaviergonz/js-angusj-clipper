@@ -9,8 +9,8 @@ import {
 } from "./pureJs";
 import { circlePath } from "./utils";
 
-// tslint:disable-next-line:no-console
-window.alert = (msg) => console.error("window alert: ", msg);
+// used by pureJs implementation
+globalThis.alert = (msg) => console.error("window alert: ", msg);
 
 let clipperWasm: clipperLib.ClipperLibWrapper;
 let clipperAsmJs: clipperLib.ClipperLibWrapper;

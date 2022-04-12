@@ -1,6 +1,6 @@
 {
   "name": "js-angusj-clipper",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Polygon and line clipping and offsetting library for Javascript / Typescript - a port of Angus Johnson's clipper to WebAssembly / Asm.JS",
   "main": "universal/index.js",
   "typings": "universal/index.d.ts",
@@ -40,20 +40,20 @@
   },
   "homepage": "https://github.com/xaviergonz/js-angusj-clipper#readme",
   "devDependencies": {
-    "@types/command-line-args": "^5.0.0",
-    "@types/jest": "^26.0.13",
-    "@types/node": "^14.6.3",
-    "@types/shelljs": "^0.8.8",
-    "command-line-args": "^5.1.1",
-    "jest": "^26.4.2",
-    "prettier": "^2.1.1",
+    "@types/command-line-args": "^5.2.0",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.23",
+    "@types/shelljs": "^0.8.11",
+    "command-line-args": "^5.2.1",
+    "jest": "^27.5.1",
+    "prettier": "^2.6.2",
     "rimraf": "^3.0.1",
-    "shelljs": "^0.8.3",
-    "shx": "^0.3.2",
-    "ts-jest": "^26.3.0",
-    "ts-node": "^9.0.0",
+    "shelljs": "^0.8.5",
+    "shx": "^0.3.4",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.6.3"
   }
 }

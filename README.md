@@ -28,71 +28,71 @@ Angus Johnson.
 Because sometimes performance does matter and I could not find a javascript library
 as fast or as rock solid as the C++ version of [Clipper](https://sourceforge.net/projects/polyclipping/).
 
-As an example, the results of the benchmarks included on the test suite when running on my machine (node 9.10) are:
+As an example, the results of the benchmarks included on the test suite when running on my machine (node 17.9.0) are:
 
 _Note, pureJs is [jsclipper](https://sourceforge.net/projects/jsclipper/), a pure JS port of the same library_
 
 ```
-500 boolean operations over two circles of 5000 points each
-  clipType: intersection, subjectFillType: evenOdd
-    √ wasm (432 ms)
-    √ asmJs (1002 ms)
-    √ pureJs (1183 ms)
-  clipType: union, subjectFillType: evenOdd
-    √ wasm (507 ms)
-    √ asmJs (1058 ms)
-    √ pureJs (1037 ms)
-  clipType: difference, subjectFillType: evenOdd
-    √ wasm (437 ms)
-    √ asmJs (917 ms)
-    √ pureJs (948 ms)
-  clipType: xor, subjectFillType: evenOdd
-    √ wasm (504 ms)
-    √ asmJs (1053 ms)
-    √ pureJs (1958 ms)
-10000 boolean operations over two circles of 100 points each
-  clipType: intersection, subjectFillType: evenOdd
-    √ wasm (281 ms)
-    √ asmJs (562 ms)
-    √ pureJs (333 ms)
-  clipType: union, subjectFillType: evenOdd
-    √ wasm (332 ms)
-    √ asmJs (653 ms)
-    √ pureJs (362 ms)
-  clipType: difference, subjectFillType: evenOdd
-    √ wasm (299 ms)
-    √ asmJs (570 ms)
-    √ pureJs (326 ms)
-  clipType: xor, subjectFillType: evenOdd
-    √ wasm (346 ms)
-    √ asmJs (644 ms)
-    √ pureJs (368 ms)
-100 offset operations over a circle of 5000 points
-  joinType: miter, endType: closedPolygon, delta: 5
-    √ wasm (201 ms)
-    √ asmJs (612 ms)
-    √ pureJs (1156 ms)
-  joinType: miter, endType: closedPolygon, delta: 0
-    √ wasm (59 ms)
-    √ asmJs (181 ms)
-    √ pureJs (184 ms)
-  joinType: miter, endType: closedPolygon, delta: -5
-    √ wasm (231 ms)
-    √ asmJs (565 ms)
-    √ pureJs (1209 ms)
-5000 offset operations over a circle of 100 points
-  joinType: miter, endType: closedPolygon, delta: 5
-    √ wasm (149 ms)
-    √ asmJs (280 ms)
-    √ pureJs (413 ms)
-  joinType: miter, endType: closedPolygon, delta: 0
-    √ wasm (123 ms)
-    √ asmJs (232 ms)
-    √ pureJs (248 ms)
-  joinType: miter, endType: closedPolygon, delta: -5
-    √ wasm (235 ms)
-    √ asmJs (499 ms)
-    √ pureJs (1012 ms)
+    500 boolean operations over two circles of 5000 points each
+      clipType: intersection, subjectFillType: evenOdd
+        ✓ wasm (212 ms)
+        ✓ asmJs (598 ms)
+        ✓ pureJs (573 ms)
+      clipType: union, subjectFillType: evenOdd
+        ✓ wasm (267 ms)
+        ✓ asmJs (666 ms)
+        ✓ pureJs (663 ms)
+      clipType: difference, subjectFillType: evenOdd
+        ✓ wasm (232 ms)
+        ✓ asmJs (575 ms)
+        ✓ pureJs (573 ms)
+      clipType: xor, subjectFillType: evenOdd
+        ✓ wasm (296 ms)
+        ✓ asmJs (681 ms)
+        ✓ pureJs (779 ms)
+    10000 boolean operations over two circles of 100 points each
+      clipType: intersection, subjectFillType: evenOdd
+        ✓ wasm (143 ms)
+        ✓ asmJs (347 ms)
+        ✓ pureJs (255 ms)
+      clipType: union, subjectFillType: evenOdd
+        ✓ wasm (181 ms)
+        ✓ asmJs (417 ms)
+        ✓ pureJs (265 ms)
+      clipType: difference, subjectFillType: evenOdd
+        ✓ wasm (159 ms)
+        ✓ asmJs (339 ms)
+        ✓ pureJs (239 ms)
+      clipType: xor, subjectFillType: evenOdd
+        ✓ wasm (186 ms)
+        ✓ asmJs (404 ms)
+        ✓ pureJs (262 ms)
+    100 offset operations over a circle of 5000 points
+      joinType: miter, endType: closedPolygon, delta: 5
+        ✓ wasm (129 ms)
+        ✓ asmJs (390 ms)
+        ✓ pureJs (702 ms)
+      joinType: miter, endType: closedPolygon, delta: 0
+        ✓ wasm (34 ms)
+        ✓ asmJs (140 ms)
+        ✓ pureJs (108 ms)
+      joinType: miter, endType: closedPolygon, delta: -5
+        ✓ wasm (146 ms)
+        ✓ asmJs (386 ms)
+        ✓ pureJs (770 ms)
+    5000 offset operations over a circle of 100 points
+      joinType: miter, endType: closedPolygon, delta: 5
+        ✓ wasm (74 ms)
+        ✓ asmJs (161 ms)
+        ✓ pureJs (278 ms)
+      joinType: miter, endType: closedPolygon, delta: 0
+        ✓ wasm (61 ms)
+        ✓ asmJs (138 ms)
+        ✓ pureJs (162 ms)
+      joinType: miter, endType: closedPolygon, delta: -5
+        ✓ wasm (109 ms)
+        ✓ asmJs (271 ms)
+        ✓ pureJs (659 ms)
 ```
 
 More or less, the results for **boolean operations** over moderately big polygons are:

@@ -19,12 +19,16 @@ function build(wasmMode: boolean, environment: string) {
     "--no-entry",
     "-s STRICT=1",
     "-s ALLOW_MEMORY_GROWTH=1",
-    "-s NO_EXIT_RUNTIME=1",
+    "-s EXIT_RUNTIME=0",
     "-s SINGLE_FILE=1",
     "-s INVOKE_RUN=0",
     "-s NODEJS_CATCH_EXIT=0",
     "-s NO_FILESYSTEM=1",
-    // '-s MODULARIZE=1',
+    "-s MODULARIZE=1",
+    // no speed difference
+    // "-s WASM_BIGINT=1",
+    // wasm with asmjs fallback, but does not work with SINGLE_FILE
+    // "-s WASM=2",
     ...(debug
       ? ["-s DISABLE_EXCEPTION_CATCHING=0", "-O0"]
       : [
@@ -54,27 +58,6 @@ function build(wasmMode: boolean, environment: string) {
     console.error(`build failed with error code ${returnData.code}`);
     process.exit(returnData.code);
   }
-
-  const outFile = path.join(wasmDir, output);
-  // we add this here since if we use pre-js or post-js parameter then O3 compilation fails in WASM mode
-  const fileContent = fs.readFileSync(outFile);
-  fs.writeFileSync(
-    outFile,
-    `
-function init(_moduleOverrides) {
-  var Module = {};
-  Object.keys(_moduleOverrides).forEach(function (key) {
-    Module[key] = _moduleOverrides[key];
-  });
-
-${fileContent};
-
-  return Module;
-}
-
-module.exports = { init: init };
-`
-  );
 
   shelljs.mkdir("dist", "dist/wasm");
   shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
