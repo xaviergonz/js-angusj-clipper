@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.2.1
+
+- Use direct requires so bundlers have an easier time.
+
 ## v1.2.0
 
 - Updated dependencies.
