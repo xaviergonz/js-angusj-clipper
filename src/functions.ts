@@ -63,7 +63,7 @@ export function cleanPolygons(
 const enum NodeType {
   Any,
   Open,
-  Closed
+  Closed,
 }
 
 function addPolyNodeToPaths(polynode: PolyNode, nt: NodeType, paths: ReadonlyPath[]): void {
@@ -287,7 +287,7 @@ export function scalePath(path: ReadonlyPath, scale: number): Path {
     const p = path[i];
     sol.push({
       x: Math.round(p.x * scale),
-      y: Math.round(p.y * scale)
+      y: Math.round(p.y * scale),
     });
   }
   return sol;

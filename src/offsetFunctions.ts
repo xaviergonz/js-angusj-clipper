@@ -1,8 +1,7 @@
-import { ClipperError } from "./ClipperError";
 import { ClipperOffset } from "./ClipperOffset";
 import { EndType, JoinType } from "./enums";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { Path, ReadonlyPath } from "./Path";
+import { ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
@@ -123,7 +122,7 @@ function offsetToPathsOrPolyTree(
   const filledData = {
     arcTolerance: 0.25,
     miterLimit: 2,
-    ...params
+    ...params,
   };
 
   const offset = new ClipperOffset(
@@ -139,7 +138,7 @@ function offsetToPathsOrPolyTree(
       return offset.executeToPaths(params.delta, params.cleanDistance);
     } else {
       if (params.cleanDistance !== undefined) {
-        throw new ClipperError("cleaning is not available for poly tree results");
+        return undefined; // cleaning is not available for poly tree results
       }
       return offset.executeToPolyTree(params.delta);
     }

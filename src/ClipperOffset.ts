@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { EndType, JoinType } from "./enums";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import { NativeClipperOffset } from "./native/NativeClipperOffset";
@@ -142,7 +143,7 @@ export class ClipperOffset {
    * @param joinType - Join type
    * @param endType - End type
    */
-  addPath(path: ReadonlyPath, joinType: JoinType, endType: EndType) {
+  addPath(path: ReadonlyPath, joinType: JoinType, endType: EndType): void {
     const nativePath = pathToNativePath(this._nativeLib, path);
     try {
       this._clipperOffset!.addPath(
@@ -166,7 +167,7 @@ export class ClipperOffset {
    * @param joinType - Join type
    * @param endType - End type
    */
-  addPaths(paths: ReadonlyPaths, joinType: JoinType, endType: EndType) {
+  addPaths(paths: ReadonlyPaths, joinType: JoinType, endType: EndType): void {
     const nativePaths = pathsToNativePaths(this._nativeLib, paths);
     try {
       this._clipperOffset!.addPaths(

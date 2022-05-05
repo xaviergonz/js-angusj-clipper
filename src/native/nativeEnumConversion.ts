@@ -5,7 +5,7 @@ import {
   NativeEndType,
   NativeJoinType,
   NativePolyFillType,
-  NativePolyType
+  NativePolyType,
 } from "./nativeEnums";
 
 export function polyFillTypeToNative(

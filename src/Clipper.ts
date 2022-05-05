@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ClipType, PolyFillType, PolyType } from "./enums";
 import { IntRect } from "./IntRect";
 import { NativeClipper } from "./native/NativeClipper";
@@ -5,11 +6,11 @@ import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import {
   clipTypeToNative,
   polyFillTypeToNative,
-  polyTypeToNative
+  polyTypeToNative,
 } from "./native/nativeEnumConversion";
 import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
 import { pathToNativePath } from "./native/PathToNativePath";
-import { Path, ReadonlyPath } from "./Path";
+import { ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 import { nativeFinalizationRegistry } from "./nativeFinalizationRegistry";
@@ -134,7 +135,7 @@ export class Clipper {
       reverseSolutions: false,
       strictlySimple: false,
       preserveCollinear: false,
-      ...initOptions
+      ...initOptions,
     };
 
     let nativeInitOptions = 0;
@@ -244,7 +245,7 @@ export class Clipper {
       left: nativeBounds.left,
       right: nativeBounds.right,
       top: nativeBounds.top,
-      bottom: nativeBounds.bottom
+      bottom: nativeBounds.bottom,
     };
     nativeBounds.delete();
     return rect;

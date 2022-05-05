@@ -67,7 +67,7 @@ export function pureJsTestOffset(
 export function pathToPureJs(path: clipperLib.ReadonlyPath): PureJsPath {
   return path.map((p) => ({
     X: p.x,
-    Y: p.y
+    Y: p.y,
   }));
 }
 

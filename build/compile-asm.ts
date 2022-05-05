@@ -1,6 +1,3 @@
-// tslint:disable: no-console
-// tslint:disable: no-implicit-dependencies
-
 import * as shelljs from "shelljs";
 import * as path from "path";
 import * as fs from "fs";

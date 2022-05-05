@@ -88,7 +88,7 @@ export function doubleArrayToPath(
   for (let i = 0; i < len; i++) {
     path[i] = {
       x: array[arrayI++],
-      y: array[arrayI++]
+      y: array[arrayI++],
     };
   }
 
@@ -98,7 +98,7 @@ export function doubleArrayToPath(
 
   return {
     path: path,
-    ptrEnd: arrayI
+    ptrEnd: arrayI,
   };
 }
 

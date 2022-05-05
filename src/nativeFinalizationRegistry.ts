@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NativeDeletable } from "./native/NativeDeletable";
 
 interface FinalizationRegistry {
@@ -12,14 +13,14 @@ interface FinalizationRegistry {
    * object. If provided (and not undefined), this must be an object. If not provided, the target
    * cannot be unregistered.
    */
-  register(target: object, heldValue: any, unregisterToken?: object): void;
+  register(target: any, heldValue: any, unregisterToken?: any): void;
 
   /**
    * Unregisters an object from the registry.
    * @param unregisterToken The token that was used as the unregisterToken argument when calling
    * register to register the target object.
    */
-  unregister(unregisterToken: object): void;
+  unregister(unregisterToken: any): void;
 }
 
 interface FinalizationRegistryConstructor {
@@ -29,13 +30,16 @@ interface FinalizationRegistryConstructor {
    * Creates a finalization registry with an associated cleanup callback
    * @param cleanupCallback The callback to call after an object in the registry has been reclaimed.
    */
-  new(cleanupCallback: (heldValue: any) => void): FinalizationRegistry;
+  new (cleanupCallback: (heldValue: any) => void): FinalizationRegistry;
 }
 
-declare var FinalizationRegistry: FinalizationRegistryConstructor;
+declare let FinalizationRegistry: FinalizationRegistryConstructor;
 
-export const nativeFinalizationRegistry = typeof FinalizationRegistry === "undefined" ? undefined : new FinalizationRegistry((nativeObj: NativeDeletable) => {
-  if (!nativeObj.isDeleted()) {
-    nativeObj.delete();
-  }
-});
+export const nativeFinalizationRegistry =
+  typeof FinalizationRegistry === "undefined"
+    ? undefined
+    : new FinalizationRegistry((nativeObj: NativeDeletable) => {
+        if (!nativeObj.isDeleted()) {
+          nativeObj.delete();
+        }
+      });

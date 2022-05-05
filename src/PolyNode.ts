@@ -39,7 +39,7 @@ export class PolyNode {
     return this._contour;
   }
 
-  protected _isOpen: boolean = false;
+  protected _isOpen = false;
   /**
    * Returns true when the PolyNode's Contour results from a clipping operation on an open contour (path). Only top-level PolyNodes can contain open contours.
    */
@@ -47,7 +47,7 @@ export class PolyNode {
     return this._isOpen;
   }
 
-  protected _index: number = 0;
+  protected _index = 0;
   /**
    * Index in the parent's child list, or 0 if no parent.
    */
@@ -103,8 +103,6 @@ export class PolyNode {
       return this._parent._childs[this._index + 1];
     }
   }
-
-  protected constructor() {}
 
   protected static fillFromNativePolyNode(
     pn: PolyNode,
