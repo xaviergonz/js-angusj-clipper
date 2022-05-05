@@ -18,7 +18,7 @@ import { PolyNode } from "./PolyNode";
  * open and closed paths from a polytree - openPathsFromPolyTree and closedPathsFromPolyTree.
  */
 export class PolyTree extends PolyNode {
-  protected _total: number = 0;
+  protected _total = 0;
 
   /**
    * Returns the total number of PolyNodes (polygons) contained within the PolyTree. This value is not to be confused with childs.length which returns the
@@ -33,7 +33,7 @@ export class PolyTree extends PolyNode {
    *
    * This function is equivalent to calling childs[0].
    */
-  public getFirst(): PolyNode | undefined {
+  getFirst(): PolyNode | undefined {
     if (this.childs.length > 0) {
       return this.childs[0];
     } else {

@@ -17,16 +17,13 @@ module.exports = {
   },
   plugins: ["eslint-plugin-import", "@typescript-eslint", "prettier"],
   rules: {
-    "prettier/prettier": "error",
-    "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/adjacent-overload-signatures": "error",
-    "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-assertions": "error",
     "@typescript-eslint/dot-notation": "error",
     "@typescript-eslint/explicit-member-accessibility": [
-      "off",
+      "error",
       {
-        accessibility: "explicit",
+        accessibility: "no-public",
       },
     ],
     "@typescript-eslint/no-empty-function": "error",
