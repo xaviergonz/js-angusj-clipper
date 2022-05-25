@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     node: true,
@@ -43,4 +44,12 @@ module.exports = {
     "@typescript-eslint/prefer-namespace-keyword": "error",
     "@typescript-eslint/unified-signatures": "error",
   },
+  overrides: [
+    {
+      files: "__tests__/**/*.+(ts|tsx)",
+      parserOptions: {
+        project: "./__tests__/tsconfig.json",
+      },
+    },
+  ],
 };

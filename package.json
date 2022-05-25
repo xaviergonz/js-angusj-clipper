@@ -10,7 +10,7 @@
     "test": "jest -t unit",
     "benchmark": "jest -t benchmark",
     "lint": "eslint src",
-    "build": "yarn build:universal && yarn build:web",
+    "build": "yarn build:web && yarn build:universal",
     "build:universal": "rimraf ./dist && rimraf ./universal && yarn build:ts && yarn build:asm && shx mv dist universal",
     "build:web": "rimraf ./dist && rimraf ./web && yarn build:ts && yarn build:asm --env web && shx mv dist web",
     "build:ts": "tsc -p .",
