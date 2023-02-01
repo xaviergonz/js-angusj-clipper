@@ -5,3 +5,10 @@
 /src/wasm/*.js
 /universal/
 /web/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

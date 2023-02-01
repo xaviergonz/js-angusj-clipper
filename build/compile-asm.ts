@@ -22,6 +22,8 @@ function build(wasmMode: boolean, environment: string) {
     "-s NODEJS_CATCH_EXIT=0",
     "-s NO_FILESYSTEM=1",
     "-s MODULARIZE=1",
+    "-s STRICT_JS=0", // adds "use strict" and breaks module compilation
+    "-s EXPORTED_FUNCTIONS=\"['_malloc', '_free']\"", // without this these functions are not exported
     // no speed difference
     // "-s WASM_BIGINT=1",
     // wasm with asmjs fallback, but does not work with SINGLE_FILE

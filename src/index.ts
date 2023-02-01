@@ -1,4 +1,4 @@
-import { ClipInput, ClipParams, clipToPaths, clipToPolyTree } from "./clipFunctions";
+import { ClipInput, ClipParams, clipToPaths, clipToPolyTree, SubjectInput } from "./clipFunctions";
 import { ClipperError } from "./ClipperError";
 import { hiRange } from "./constants";
 import {
@@ -39,6 +39,7 @@ export {
   ReadonlyPaths,
   ClipInput,
   ClipParams,
+  SubjectInput,
   OffsetInput,
   OffsetParams,
   ClipperError,

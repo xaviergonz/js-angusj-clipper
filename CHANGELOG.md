@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.3.0
+
+- Made it work with the latest version of emscripten
+- Now using yarn v3
+- Updated all dependencies
+- Exported the `SubjectInput` type.
+
 ## v1.2.1
 
 - Use direct requires so bundlers have an easier time.
