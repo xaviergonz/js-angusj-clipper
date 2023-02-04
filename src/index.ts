@@ -100,7 +100,7 @@ export class ClipperLibWrapper {
    * @param params - clipping operation data
    * @return {Paths} - the resulting Paths.
    */
-  clipToPaths(params: ClipParams): Paths | undefined {
+  clipToPaths(params: ClipParams): Paths {
     return clipToPaths(this.instance, params);
   }
 
@@ -127,9 +127,9 @@ export class ClipperLibWrapper {
    * - polygons may rarely share a common edge (though this is now very rare as of version 6)
    *
    * @param params - clipping operation data
-   * @return {PolyTree} - the resulting PolyTree or undefined.
+   * @return {PolyTree} - the resulting PolyTree.
    */
-  clipToPolyTree(params: ClipParams): PolyTree | undefined {
+  clipToPolyTree(params: ClipParams): PolyTree {
     return clipToPolyTree(this.instance, params);
   }
 

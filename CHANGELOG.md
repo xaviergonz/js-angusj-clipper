@@ -3,6 +3,7 @@
 ## v1.3.1
 
 - Fixed `scalePath`/`scalePaths` from reversing the path.
+- Fixed the type definitions of `clipToPaths` and `clipToPolyTree`. The did not return undefined.
 
 ## v1.3.0
 
