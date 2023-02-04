@@ -281,15 +281,19 @@ export function simplifyPolygons(
 }
 
 export function scalePath(path: ReadonlyPath, scale: number): Path {
+  const len = path.length;
+
   const sol: Path = [];
-  let i = path.length;
-  while (i--) {
+  sol.length = path.length;
+
+  for (let i = 0; i < len; i++) {
     const p = path[i];
-    sol.push({
+    sol[i] = {
       x: Math.round(p.x * scale),
       y: Math.round(p.y * scale),
-    });
+    };
   }
+
   return sol;
 }
 
@@ -305,11 +309,14 @@ export function scalePaths(paths: ReadonlyPaths, scale: number): Paths {
     return [];
   }
 
+  const len = paths.length;
+
   const sol: Paths = [];
-  let i = paths.length;
-  while (i--) {
-    const p = paths[i];
-    sol.push(scalePath(p, scale));
+  sol.length = len;
+
+  for (let i = 0; i < len; i++) {
+    sol[i] = scalePath(paths[i], scale);
   }
+
   return sol;
 }

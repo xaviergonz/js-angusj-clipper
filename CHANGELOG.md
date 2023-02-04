@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.3.1
+
+- Fixed `scalePath`/`scalePaths` from reversing the path.
+
 ## v1.3.0
 
 - Made it work with the latest version of emscripten
