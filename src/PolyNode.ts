@@ -115,7 +115,10 @@ export class PolyNode {
     pn._parent = parent;
 
     const childs = nativePolyNode.childs;
-    for (let i = 0, max = childs.size(); i < max; i++) {
+    const max = childs.size();
+    pn._childs.length = max;
+
+    for (let i = 0; i < max; i++) {
       const newChild = PolyNode.fromNativePolyNode(
         nativeLib,
         childs.get(i),
@@ -123,7 +126,7 @@ export class PolyNode {
         i,
         freeNativePolyNode
       );
-      pn._childs.push(newChild);
+      pn._childs[i] = newChild;
     }
 
     // do we need to clear the object ourselves? for now let's assume so (seems to work)
