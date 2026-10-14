@@ -5,6 +5,7 @@ import { ClipType, EndType, JoinType, PointInPolygonResult, PolyFillType } from 
 import * as functions from "./functions";
 import { IntPoint } from "./IntPoint";
 import { IntRect } from "./IntRect";
+import { NativeBridge } from "./native/NativeBridge";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import { OffsetInput, OffsetParams, offsetToPaths, offsetToPolyTree } from "./offsetFunctions";
 import { Path, ReadonlyPath } from "./Path";
@@ -44,18 +45,15 @@ export class ClipperLibWrapper {
    */
   static readonly hiRange = hiRange;
 
-  /**
-   * Native library instance.
-   */
-  readonly instance: NativeClipperLibInstance;
+  private readonly _bridge: NativeBridge;
 
   /**
    * Internal constructor. Use loadNativeClipperLibInstanceAsync instead.
    *
-   * @param instance
+   * @param nativeLib
    */
-  constructor(instance: NativeClipperLibInstance) {
-    this.instance = instance;
+  constructor(nativeLib: NativeClipperLibInstance) {
+    this._bridge = new NativeBridge(nativeLib);
   }
 
   /**
@@ -84,7 +82,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - the resulting Paths.
    */
   clipToPaths(params: ClipParams): Paths {
-    return clipToPaths(this.instance, params);
+    return clipToPaths(this._bridge, params);
   }
 
   /**
@@ -113,7 +111,7 @@ export class ClipperLibWrapper {
    * @return {PolyTree} - the resulting PolyTree.
    */
   clipToPolyTree(params: ClipParams): PolyTree {
-    return clipToPolyTree(this.instance, params);
+    return clipToPolyTree(this._bridge, params);
   }
 
   /**
@@ -134,7 +132,7 @@ export class ClipperLibWrapper {
    * @return {Paths|undefined} - the resulting Paths or undefined if failed.
    */
   offsetToPaths(params: OffsetParams): Paths | undefined {
-    return offsetToPaths(this.instance, params);
+    return offsetToPaths(this._bridge, params);
   }
 
   /**
@@ -155,7 +153,7 @@ export class ClipperLibWrapper {
    * @return {PolyTree|undefined} - the resulting PolyTree or undefined if failed.
    */
   offsetToPolyTree(params: OffsetParams): PolyTree | undefined {
-    return offsetToPolyTree(this.instance, params);
+    return offsetToPolyTree(this._bridge, params);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -188,7 +186,7 @@ export class ClipperLibWrapper {
    * @return {Path} - The cleaned path
    */
   cleanPolygon(path: ReadonlyPath, distance = 1.1415): Path {
-    return functions.cleanPolygon(this.instance, path, distance);
+    return functions.cleanPolygon(this._bridge, path, distance);
   }
 
   /**
@@ -208,7 +206,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The cleaned paths
    */
   cleanPolygons(paths: ReadonlyPaths, distance = 1.1415): Paths {
-    return functions.cleanPolygons(this.instance, paths, distance);
+    return functions.cleanPolygons(this._bridge, paths, distance);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -232,7 +230,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   minkowskiDiff(poly1: ReadonlyPath, poly2: ReadonlyPath): Paths {
-    return functions.minkowskiDiff(this.instance, poly1, poly2);
+    return functions.minkowskiDiff(this._bridge, poly1, poly2);
   }
 
   /**
@@ -245,7 +243,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   minkowskiSumPath(pattern: ReadonlyPath, path: ReadonlyPath, pathIsClosed: boolean): Paths {
-    return functions.minkowskiSumPath(this.instance, pattern, path, pathIsClosed);
+    return functions.minkowskiSumPath(this._bridge, pattern, path, pathIsClosed);
   }
 
   /**
@@ -258,7 +256,7 @@ export class ClipperLibWrapper {
    * @return {Paths}
    */
   minkowskiSumPaths(pattern: ReadonlyPath, paths: ReadonlyPaths, pathIsClosed: boolean): Paths {
-    return functions.minkowskiSumPaths(this.instance, pattern, paths, pathIsClosed);
+    return functions.minkowskiSumPaths(this._bridge, pattern, paths, pathIsClosed);
   }
 
   //noinspection JSMethodCanBeStatic
@@ -354,7 +352,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The solution
    */
   simplifyPolygon(path: ReadonlyPath, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
-    return functions.simplifyPolygon(this.instance, path, fillType);
+    return functions.simplifyPolygon(this._bridge, path, fillType);
   }
 
   /**
@@ -368,7 +366,7 @@ export class ClipperLibWrapper {
    * @return {Paths} - The solution
    */
   simplifyPolygons(paths: ReadonlyPaths, fillType: PolyFillType = PolyFillType.EvenOdd): Paths {
-    return functions.simplifyPolygons(this.instance, paths, fillType);
+    return functions.simplifyPolygons(this._bridge, paths, fillType);
   }
 
   //noinspection JSMethodCanBeStatic

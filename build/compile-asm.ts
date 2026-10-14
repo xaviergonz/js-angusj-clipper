@@ -20,8 +20,8 @@ function build(environment: string) {
   const debug = false;
 
   const options = [
-    "--bind",
     "--no-entry",
+    "-fwasm-exceptions", // native wasm exceptions, so clipper errors can be caught and reported
     "-s STRICT=1",
     "-s WASM=1",
     "-s ALLOW_MEMORY_GROWTH=1",
@@ -32,11 +32,11 @@ function build(environment: string) {
     "-s MODULARIZE=1",
     "-s STRICT_JS=0", // adds "use strict" and breaks module compilation
     "-s EXPORTED_FUNCTIONS=\"['_malloc', '_free']\"", // without this these functions are not exported
-    "-s EXPORTED_RUNTIME_METHODS=\"['HEAPF64']\"", // without this the heap views are not exported
+    "-s EXPORTED_RUNTIME_METHODS=\"['HEAPF64', 'HEAPU8']\"", // without this the heap views are not exported
     // no speed difference
     // "-s WASM_BIGINT=1",
     ...(debug
-      ? ["-s DISABLE_EXCEPTION_CATCHING=0", "-O0"]
+      ? ["-O0"]
       : [
           // "-s ASSERTIONS=0",
           // "-s PRECISE_I64_MATH=0",
@@ -59,7 +59,7 @@ function build(environment: string) {
     process.exit(returnData.code);
   }
 
-  shelljs.mkdir("dist", "dist/wasm");
+  shelljs.mkdir("-p", "dist/wasm");
   shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
 }
 

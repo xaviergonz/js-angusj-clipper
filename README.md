@@ -35,61 +35,61 @@ _Note, pureJs is [jsclipper](https://sourceforge.net/projects/jsclipper/), a pur
 ```
     500 boolean operations over two circles of 5000 points each
       clipType: intersection, subjectFillType: evenOdd
-        ✓ wasm (180 ms)
-        ✓ pureJs (565 ms)
+        ✓ wasm (183 ms)
+        ✓ pureJs (564 ms)
       clipType: union, subjectFillType: evenOdd
-        ✓ wasm (223 ms)
-        ✓ pureJs (593 ms)
+        ✓ wasm (230 ms)
+        ✓ pureJs (602 ms)
       clipType: difference, subjectFillType: evenOdd
-        ✓ wasm (192 ms)
-        ✓ pureJs (562 ms)
+        ✓ wasm (198 ms)
+        ✓ pureJs (563 ms)
       clipType: xor, subjectFillType: evenOdd
-        ✓ wasm (244 ms)
-        ✓ pureJs (645 ms)
+        ✓ wasm (249 ms)
+        ✓ pureJs (642 ms)
     10000 boolean operations over two circles of 100 points each
       clipType: intersection, subjectFillType: evenOdd
-        ✓ wasm (142 ms)
-        ✓ pureJs (246 ms)
+        ✓ wasm (93 ms)
+        ✓ pureJs (247 ms)
       clipType: union, subjectFillType: evenOdd
-        ✓ wasm (170 ms)
-        ✓ pureJs (279 ms)
+        ✓ wasm (123 ms)
+        ✓ pureJs (277 ms)
       clipType: difference, subjectFillType: evenOdd
-        ✓ wasm (149 ms)
+        ✓ wasm (103 ms)
         ✓ pureJs (253 ms)
       clipType: xor, subjectFillType: evenOdd
-        ✓ wasm (175 ms)
+        ✓ wasm (132 ms)
         ✓ pureJs (280 ms)
     100 offset operations over a circle of 5000 points
       joinType: miter, endType: closedPolygon, delta: 5
         ✓ wasm (112 ms)
-        ✓ pureJs (999 ms)
+        ✓ pureJs (997 ms)
       joinType: miter, endType: closedPolygon, delta: 0
         ✓ wasm (28 ms)
-        ✓ pureJs (141 ms)
+        ✓ pureJs (142 ms)
       joinType: miter, endType: closedPolygon, delta: -5
         ✓ wasm (128 ms)
-        ✓ pureJs (1118 ms)
+        ✓ pureJs (1116 ms)
     5000 offset operations over a circle of 100 points
       joinType: miter, endType: closedPolygon, delta: 5
-        ✓ wasm (63 ms)
-        ✓ pureJs (474 ms)
+        ✓ wasm (49 ms)
+        ✓ pureJs (475 ms)
       joinType: miter, endType: closedPolygon, delta: 0
-        ✓ wasm (58 ms)
+        ✓ wasm (45 ms)
         ✓ pureJs (242 ms)
       joinType: miter, endType: closedPolygon, delta: -5
-        ✓ wasm (98 ms)
-        ✓ pureJs (1133 ms)
+        ✓ wasm (87 ms)
+        ✓ pureJs (1132 ms)
 ```
 
 More or less, the results for **boolean operations** over moderately big polygons are:
 
 - Pure JS port of the Clipper library: **~1.0s, baseline**
-- This library (_WebAssembly_): **~0.35s**
+- This library (_WebAssembly_): **~0.36s**
 
 and for small polygons are:
 
 - Pure JS port of the Clipper library: **~1.0s, baseline**
-- This library (_WebAssembly_): **~0.6s** (due to the overhead of copying structures to/from JS/C++)
+- This library (_WebAssembly_): **~0.43s** (due to the overhead of copying structures to/from JS/C++)
 
 As for **offsetting**, the results for a moderately big polygon are:
 
@@ -99,7 +99,7 @@ As for **offsetting**, the results for a moderately big polygon are:
 and for small polygons are:
 
 - Pure JS port of the Clipper library: **~1s, baseline**
-- This library (_WebAssembly_): **~0.12s**
+- This library (_WebAssembly_): **~0.10s**
 
 ---
 

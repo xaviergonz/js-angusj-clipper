@@ -1,8 +1,15 @@
-import { Clipper } from "./Clipper";
 import { ClipperError } from "./ClipperError";
 import { ClipType, PolyFillType, PolyType } from "./enums";
-import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { Path, ReadonlyPath } from "./Path";
+import {
+  NativeBridge,
+  nativeClipType,
+  NativeInitOptions,
+  isPaths,
+  nativePathOrPathsSize,
+  nativePolyFillType,
+  nativePolyType,
+} from "./native/NativeBridge";
+import { ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
 
@@ -133,8 +140,15 @@ export interface ClipParams {
   cleanDistance?: number;
 }
 
-const addPathOrPaths = (
-  clipper: Clipper,
+interface NativeClipInput {
+  data: ReadonlyPath | ReadonlyPaths;
+  polyType: PolyType;
+  closed: boolean;
+  isPaths: boolean;
+}
+
+const collectInputs = (
+  result: NativeClipInput[],
   inputDatas: (SubjectInput | ClipInput)[] | undefined,
   polyType: PolyType
 ) => {
@@ -142,11 +156,9 @@ const addPathOrPaths = (
     return;
   }
 
-  // add each input
   for (let i = 0, maxi = inputDatas.length; i < maxi; i++) {
     const inputData = inputDatas[i];
 
-    // add the path/paths
     const pathOrPaths = inputData.data;
     if (!pathOrPaths || pathOrPaths.length <= 0) {
       continue;
@@ -155,24 +167,36 @@ const addPathOrPaths = (
     const closed =
       (inputData as SubjectInput).closed === undefined ? true : (inputData as SubjectInput).closed;
 
-    // is it a path or paths?
-    if (Array.isArray(pathOrPaths[0])) {
-      // paths
-      if (!clipper.addPaths(pathOrPaths as Paths, polyType, closed)) {
-        throw new ClipperError("invalid paths");
-      }
-    } else {
-      // path
-      if (!clipper.addPath(pathOrPaths as Path, polyType, closed)) {
-        throw new ClipperError("invalid path");
-      }
-    }
+    result.push({
+      data: pathOrPaths,
+      polyType,
+      closed,
+      isPaths: isPaths(pathOrPaths),
+    });
   }
+};
+
+const writeInputs = (bridge: NativeBridge, inputs: NativeClipInput[]): number => {
+  // nofInputs, then for each input: polyType, closed, isPaths, paths
+  let size = 1;
+  for (const input of inputs) {
+    size += 3 + nativePathOrPathsSize(input.data);
+  }
+
+  const ptr = bridge.beginInput(size);
+  bridge.writeNumber(inputs.length);
+  for (const input of inputs) {
+    bridge.writeNumber(nativePolyType[input.polyType]);
+    bridge.writeNumber(input.closed ? 1 : 0);
+    bridge.writeNumber(input.isPaths ? 1 : 0);
+    bridge.writePathOrPaths(input.data);
+  }
+  return ptr;
 };
 
 export function clipToPathsOrPolyTree(
   polyTreeMode: boolean,
-  nativeClipperLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   params: ClipParams
 ): Paths | PolyTree {
   if (devMode) {
@@ -180,45 +204,50 @@ export function clipToPathsOrPolyTree(
       throw new Error("clip to a PolyTree (not to a Path) when using open paths");
     }
   }
-
-  const clipper = new Clipper(nativeClipperLib, params);
-
-  //noinspection UnusedCatchParameterJS
-  try {
-    addPathOrPaths(clipper, params.subjectInputs, PolyType.Subject);
-    addPathOrPaths(clipper, params.clipInputs, PolyType.Clip);
-    let result;
-    const clipFillType =
-      params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
-    if (!polyTreeMode) {
-      result = clipper.executeToPaths(
-        params.clipType,
-        params.subjectFillType,
-        clipFillType,
-        params.cleanDistance
-      );
-    } else {
-      if (params.cleanDistance !== undefined) {
-        throw new ClipperError("cleaning is not available for poly tree results");
-      }
-      result = clipper.executeToPolyTee(params.clipType, params.subjectFillType, clipFillType);
-    }
-    if (result === undefined) {
-      throw new ClipperError("error while performing clipping task");
-    }
-    return result;
-  } finally {
-    clipper.dispose();
+  if (polyTreeMode && params.cleanDistance !== undefined) {
+    throw new ClipperError("cleaning is not available for poly tree results");
   }
+
+  const inputs: NativeClipInput[] = [];
+  collectInputs(inputs, params.subjectInputs, PolyType.Subject);
+  collectInputs(inputs, params.clipInputs, PolyType.Clip);
+
+  let initOptions = 0;
+  if (params.reverseSolution) {
+    initOptions |= NativeInitOptions.ReverseSolution;
+  }
+  if (params.strictlySimple) {
+    initOptions |= NativeInitOptions.StrictlySimple;
+  }
+  if (params.preserveCollinear) {
+    initOptions |= NativeInitOptions.PreserveCollinear;
+  }
+
+  const clipFillType =
+    params.clipFillType === undefined ? params.subjectFillType : params.clipFillType;
+
+  const outPtr = bridge.lib._clip(
+    writeInputs(bridge, inputs),
+    nativeClipType[params.clipType],
+    nativePolyFillType[params.subjectFillType],
+    nativePolyFillType[clipFillType],
+    initOptions,
+    polyTreeMode ? 1 : 0,
+    params.cleanDistance === undefined ? NaN : params.cleanDistance
+  );
+
+  if (!bridge.beginOutput(outPtr)) {
+    throw bridge.lastError();
+  }
+  const result = polyTreeMode ? PolyTree.fromNative(bridge) : bridge.readPaths();
+  bridge.endOutput();
+  return result;
 }
 
-export function clipToPaths(nativeClipperLib: NativeClipperLibInstance, params: ClipParams): Paths {
-  return clipToPathsOrPolyTree(false, nativeClipperLib, params) as Paths;
+export function clipToPaths(bridge: NativeBridge, params: ClipParams): Paths {
+  return clipToPathsOrPolyTree(false, bridge, params) as Paths;
 }
 
-export function clipToPolyTree(
-  nativeClipperLib: NativeClipperLibInstance,
-  params: ClipParams
-): PolyTree {
-  return clipToPathsOrPolyTree(true, nativeClipperLib, params) as PolyTree;
+export function clipToPolyTree(bridge: NativeBridge, params: ClipParams): PolyTree {
+  return clipToPathsOrPolyTree(true, bridge, params) as PolyTree;
 }

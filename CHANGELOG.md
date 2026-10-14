@@ -9,9 +9,15 @@
 - Removed the `NativeClipperLibRequestedFormat` and `NativeClipperLibLoadedFormat` enums, as well as the `ClipperLibWrapper.format` property.
 - If the WebAssembly module fails to load, `loadNativeClipperLibInstanceAsync` now rejects with the underlying error instead of a generic `ClipperError`.
 - The compiled output now targets ES2020 instead of ES5.
+- Removed the `ClipperLibWrapper.instance` property, which exposed the raw native module.
+- `ClipParams.reverseSolution` now works as documented (it was being ignored before), so solutions are returned with reversed orientation when it is set.
+- Invalid inputs that make the native library fail (for example coordinates out of range) now throw a `ClipperError` with the native error message (or make the offset functions return `undefined`) instead of aborting the WebAssembly module with a `RuntimeError`.
+- Requires support for WebAssembly exceptions (Chrome 95+, Firefox 100+, Safari 15.2+, Node 17+).
 
 ### Other changes
 
+- Rewrote the bridge between JS and WebAssembly so each operation is a single native call over a reused memory buffer, instead of many calls creating and destroying native objects. Operations over small polygons are about 1.3-1.5x faster, and the WebAssembly bundle is about 30% smaller.
+- Native memory buffers bigger than 1 MiB are now released after each operation instead of being kept around, so very big operations leave more room for later ones and the WebAssembly memory grows less (note that WebAssembly memory itself can never shrink).
 - Made it work with the latest version of emscripten.
 - Now using yarn v4.
 - Updated all dependencies.
@@ -30,7 +36,7 @@
    const clipper = await clipperLib.loadNativeClipperLibInstanceAsync();
    ```
 
-2. Remove any checks of `clipper.format` (or uses of `NativeClipperLibLoadedFormat`), the library is always the WebAssembly version now.
+2. Remove any checks of `clipper.format` (or uses of `NativeClipperLibLoadedFormat`), the library is always the WebAssembly version now. Also remove any uses of `clipper.instance`.
 
 3. If you need to support environments where WebAssembly is unavailable or disabled (for example iOS / macOS Lockdown Mode, some browser enhanced security modes, or a Content-Security-Policy without `'wasm-unsafe-eval'`), stay on v1.
 

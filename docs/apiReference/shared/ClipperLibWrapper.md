@@ -8,10 +8,6 @@ A wrapper for the Native Clipper Library instance with all the operations availa
 
     Max coordinate value (both positive and negative).
 
-* **readonly instance: NativeClipperLibInstance**
-    
-    Native library instance.
-
 * **[clipToPaths](../clipping/clipTo.md)(params: [ClipParams](../clipping/ClipParams.md)): [Paths](../shared/Paths.md) | undefined**
 * **[clipToPolyTree](../clipping/clipTo.md)(params: [ClipParams](../clipping/ClipParams.md)): [PolyTree](../shared/PolyTree.md) | undefined**
 

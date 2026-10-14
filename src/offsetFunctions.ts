@@ -1,6 +1,10 @@
-import { ClipperOffset } from "./ClipperOffset";
 import { EndType, JoinType } from "./enums";
-import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
+import {
+  NativeBridge,
+  nativeEndType,
+  nativeJoinType,
+  nativePathOrPathsSize,
+} from "./native/NativeBridge";
 import { ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyTree } from "./PolyTree";
@@ -88,77 +92,55 @@ export interface OffsetParams {
   cleanDistance?: number;
 }
 
-const addPathOrPaths = (offset: ClipperOffset, inputDatas: OffsetInput[] | undefined) => {
-  if (inputDatas === undefined) {
-    return;
+const writeInputs = (bridge: NativeBridge, inputDatas: OffsetInput[] | undefined): number => {
+  const inputs = (inputDatas ?? []).filter((input) => input.data && input.data.length > 0);
+
+  // nofInputs, then for each input: joinType, endType, paths
+  let size = 1;
+  for (const input of inputs) {
+    size += 2 + nativePathOrPathsSize(input.data);
   }
 
-  // add each input
-  for (let i = 0, maxi = inputDatas.length; i < maxi; i++) {
-    const inputData = inputDatas[i];
-
-    // add the path/paths
-    const pathOrPaths = inputData.data;
-    if (!pathOrPaths || pathOrPaths.length <= 0) {
-      continue;
-    }
-
-    // is it a path or paths?
-    if (Array.isArray(pathOrPaths[0])) {
-      // paths
-      offset.addPaths(pathOrPaths as ReadonlyPaths, inputData.joinType, inputData.endType);
-    } else {
-      // path
-      offset.addPath(pathOrPaths as ReadonlyPath, inputData.joinType, inputData.endType);
-    }
+  const ptr = bridge.beginInput(size);
+  bridge.writeNumber(inputs.length);
+  for (const input of inputs) {
+    bridge.writeNumber(nativeJoinType[input.joinType]);
+    bridge.writeNumber(nativeEndType[input.endType]);
+    bridge.writePathOrPaths(input.data);
   }
+  return ptr;
 };
 
 function offsetToPathsOrPolyTree(
   polyTreeMode: boolean,
-  nativeClipperLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   params: OffsetParams
 ): Paths | PolyTree | undefined {
-  const filledData = {
-    arcTolerance: 0.25,
-    miterLimit: 2,
-    ...params,
-  };
+  if (polyTreeMode && params.cleanDistance !== undefined) {
+    return undefined; // cleaning is not available for poly tree results
+  }
 
-  const offset = new ClipperOffset(
-    nativeClipperLib,
-    filledData.miterLimit,
-    filledData.arcTolerance
+  const outPtr = bridge.lib._offset(
+    writeInputs(bridge, params.offsetInputs),
+    params.miterLimit ?? 2,
+    params.arcTolerance ?? 0.25,
+    params.delta,
+    polyTreeMode ? 1 : 0,
+    params.cleanDistance === undefined ? NaN : params.cleanDistance
   );
 
-  //noinspection UnusedCatchParameterJS
-  try {
-    addPathOrPaths(offset, params.offsetInputs);
-    if (!polyTreeMode) {
-      return offset.executeToPaths(params.delta, params.cleanDistance);
-    } else {
-      if (params.cleanDistance !== undefined) {
-        return undefined; // cleaning is not available for poly tree results
-      }
-      return offset.executeToPolyTree(params.delta);
-    }
-  } catch {
+  if (!bridge.beginOutput(outPtr)) {
     return undefined;
-  } finally {
-    offset.dispose();
   }
+  const result = polyTreeMode ? PolyTree.fromNative(bridge) : bridge.readPaths();
+  bridge.endOutput();
+  return result;
 }
 
-export function offsetToPaths(
-  nativeClipperLib: NativeClipperLibInstance,
-  params: OffsetParams
-): Paths | undefined {
-  return offsetToPathsOrPolyTree(false, nativeClipperLib, params) as Paths | undefined;
+export function offsetToPaths(bridge: NativeBridge, params: OffsetParams): Paths | undefined {
+  return offsetToPathsOrPolyTree(false, bridge, params) as Paths | undefined;
 }
 
-export function offsetToPolyTree(
-  nativeClipperLib: NativeClipperLibInstance,
-  params: OffsetParams
-): PolyTree | undefined {
-  return offsetToPathsOrPolyTree(true, nativeClipperLib, params) as PolyTree | undefined;
+export function offsetToPolyTree(bridge: NativeBridge, params: OffsetParams): PolyTree | undefined {
+  return offsetToPathsOrPolyTree(true, bridge, params) as PolyTree | undefined;
 }

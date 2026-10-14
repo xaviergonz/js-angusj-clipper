@@ -1,5 +1,4 @@
-import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { NativePolyTree } from "./native/NativePolyTree";
+import { NativeBridge } from "./native/NativeBridge";
 import { PolyNode } from "./PolyNode";
 
 /**
@@ -47,22 +46,13 @@ export class PolyTree extends PolyNode {
 
   /**
    * Internal use.
-   * Constructs a PolyTree from a native PolyTree.
+   * Constructs a PolyTree from the native output being read by the bridge.
    */
-  static fromNativePolyTree(
-    nativeLib: NativeClipperLibInstance,
-    nativePolyTree: NativePolyTree,
-    freeNativePolyTree: boolean
-  ): PolyTree {
+  static fromNative(bridge: NativeBridge): PolyTree {
+    // encoded as: total, root node
     const pt = new PolyTree();
-    PolyNode.fillFromNativePolyNode(pt, nativeLib, nativePolyTree, undefined, 0, false); // do NOT free them, they are freed on destruction of the polytree
-
-    pt._total = nativePolyTree.total();
-
-    if (freeNativePolyTree) {
-      nativePolyTree.delete(); // this deletes all inner paths, contours etc
-    }
-
+    pt._total = bridge.readNumber();
+    PolyNode.fillFromNative(pt, bridge, undefined, 0);
     return pt;
   }
 }

@@ -1,21 +1,21 @@
 import { PointInPolygonResult, PolyFillType } from "./enums";
 import { IntPoint } from "./IntPoint";
-import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { NativeDeletable } from "./native/NativeDeletable";
-import { polyFillTypeToNative } from "./native/nativeEnumConversion";
-import { nativePathsToPaths, pathsToNativePaths } from "./native/PathsToNativePaths";
-import { nativePathToPath, pathToNativePath } from "./native/PathToNativePath";
+import {
+  NativeBridge,
+  nativePathOrPathsSize,
+  nativePathSize,
+  nativePathsSize,
+  nativePolyFillType,
+} from "./native/NativeBridge";
 import { Path, ReadonlyPath } from "./Path";
 import { Paths, ReadonlyPaths } from "./Paths";
 import { PolyNode } from "./PolyNode";
 import { PolyTree } from "./PolyTree";
 
-function tryDelete(...objs: NativeDeletable[]) {
-  for (const obj of objs) {
-    if (!obj.isDeleted()) {
-      obj.delete();
-    }
-  }
+function writePathOrPaths(bridge: NativeBridge, pathOrPaths: ReadonlyPath | ReadonlyPaths): number {
+  const ptr = bridge.beginInput(nativePathOrPathsSize(pathOrPaths));
+  bridge.writePathOrPaths(pathOrPaths);
+  return ptr;
 }
 
 export function area(path: ReadonlyPath): number {
@@ -32,32 +32,18 @@ export function area(path: ReadonlyPath): number {
   return -a * 0.5;
 }
 
-export function cleanPolygon(
-  nativeLib: NativeClipperLibInstance,
-  path: ReadonlyPath,
-  distance = 1.1415
-): Path {
-  const nativePath = pathToNativePath(nativeLib, path);
-  try {
-    nativeLib.cleanPolygon(nativePath, distance);
-    return nativePathToPath(nativeLib, nativePath, true); // frees nativePath
-  } finally {
-    tryDelete(nativePath);
-  }
+export function cleanPolygon(bridge: NativeBridge, path: ReadonlyPath, distance = 1.1415): Path {
+  const inPtr = writePathOrPaths(bridge, path);
+  return bridge.readPathsOrThrow(bridge.lib._cleanPolygons(inPtr, distance))[0];
 }
 
 export function cleanPolygons(
-  nativeLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   paths: ReadonlyPaths,
   distance = 1.1415
 ): Paths {
-  const nativePaths = pathsToNativePaths(nativeLib, paths);
-  try {
-    nativeLib.cleanPolygons(nativePaths, distance);
-    return nativePathsToPaths(nativeLib, nativePaths, true); // frees nativePath
-  } finally {
-    tryDelete(nativePaths);
-  }
+  const inPtr = writePathOrPaths(bridge, paths);
+  return bridge.readPathsOrThrow(bridge.lib._cleanPolygons(inPtr, distance));
 }
 
 const enum NodeType {
@@ -97,60 +83,38 @@ export function closedPathsFromPolyTree(polyTree: PolyTree): Paths {
 }
 
 export function minkowskiDiff(
-  nativeLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   poly1: ReadonlyPath,
   poly2: ReadonlyPath
 ): Paths {
-  const nativePath1 = pathToNativePath(nativeLib, poly1);
-  const nativePath2 = pathToNativePath(nativeLib, poly2);
-  const outNativePaths = new nativeLib.Paths();
-
-  try {
-    nativeLib.minkowskiDiff(nativePath1, nativePath2, outNativePaths);
-    tryDelete(nativePath1, nativePath2);
-    return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
-  } finally {
-    tryDelete(nativePath1, nativePath2, outNativePaths);
-  }
+  const inPtr = bridge.beginInput(nativePathSize(poly1) + nativePathSize(poly2));
+  bridge.writePath(poly1);
+  bridge.writePath(poly2);
+  return bridge.readPathsOrThrow(bridge.lib._minkowskiDiff(inPtr));
 }
 
 export function minkowskiSumPath(
-  nativeLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   pattern: ReadonlyPath,
   path: ReadonlyPath,
   pathIsClosed: boolean
 ): Paths {
-  const patternNativePath = pathToNativePath(nativeLib, pattern);
-  const nativePath = pathToNativePath(nativeLib, path);
-  const outNativePaths = new nativeLib.Paths();
-
-  try {
-    nativeLib.minkowskiSumPath(patternNativePath, nativePath, outNativePaths, pathIsClosed);
-    tryDelete(patternNativePath, nativePath);
-    return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
-  } finally {
-    tryDelete(patternNativePath, nativePath, outNativePaths);
-  }
+  const inPtr = bridge.beginInput(nativePathSize(pattern) + nativePathSize(path));
+  bridge.writePath(pattern);
+  bridge.writePath(path);
+  return bridge.readPathsOrThrow(bridge.lib._minkowskiSumPath(inPtr, pathIsClosed ? 1 : 0));
 }
 
 export function minkowskiSumPaths(
-  nativeLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   pattern: ReadonlyPath,
   paths: ReadonlyPaths,
   pathIsClosed: boolean
 ): Paths {
-  // TODO: im not sure if for this method we can reuse the input/output path
-
-  const patternNativePath = pathToNativePath(nativeLib, pattern);
-  const nativePaths = pathsToNativePaths(nativeLib, paths);
-
-  try {
-    nativeLib.minkowskiSumPaths(patternNativePath, nativePaths, nativePaths, pathIsClosed);
-    tryDelete(patternNativePath);
-    return nativePathsToPaths(nativeLib, nativePaths, true); // frees nativePaths
-  } finally {
-    tryDelete(patternNativePath, nativePaths);
-  }
+  const inPtr = bridge.beginInput(nativePathSize(pattern) + nativePathsSize(paths));
+  bridge.writePath(pattern);
+  bridge.writePaths(paths);
+  return bridge.readPathsOrThrow(bridge.lib._minkowskiSumPaths(inPtr, pathIsClosed ? 1 : 0));
 }
 
 export function openPathsFromPolyTree(polyTree: PolyTree): ReadonlyPath[] {
@@ -247,37 +211,21 @@ export function reversePaths(paths: Paths): void {
 }
 
 export function simplifyPolygon(
-  nativeLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   path: ReadonlyPath,
   fillType: PolyFillType = PolyFillType.EvenOdd
 ): Paths {
-  const nativePath = pathToNativePath(nativeLib, path);
-  const outNativePaths = new nativeLib.Paths();
-  try {
-    nativeLib.simplifyPolygon(
-      nativePath,
-      outNativePaths,
-      polyFillTypeToNative(nativeLib, fillType)
-    );
-    tryDelete(nativePath);
-    return nativePathsToPaths(nativeLib, outNativePaths, true); // frees outNativePaths
-  } finally {
-    tryDelete(nativePath, outNativePaths);
-  }
+  const inPtr = writePathOrPaths(bridge, path);
+  return bridge.readPathsOrThrow(bridge.lib._simplifyPolygons(inPtr, nativePolyFillType[fillType]));
 }
 
 export function simplifyPolygons(
-  nativeLib: NativeClipperLibInstance,
+  bridge: NativeBridge,
   paths: ReadonlyPaths,
   fillType: PolyFillType = PolyFillType.EvenOdd
 ): Paths {
-  const nativePaths = pathsToNativePaths(nativeLib, paths);
-  try {
-    nativeLib.simplifyPolygonsOverwrite(nativePaths, polyFillTypeToNative(nativeLib, fillType));
-    return nativePathsToPaths(nativeLib, nativePaths, true); // frees nativePaths
-  } finally {
-    tryDelete(nativePaths);
-  }
+  const inPtr = writePathOrPaths(bridge, paths);
+  return bridge.readPathsOrThrow(bridge.lib._simplifyPolygons(inPtr, nativePolyFillType[fillType]));
 }
 
 export function scalePath(path: ReadonlyPath, scale: number): Path {

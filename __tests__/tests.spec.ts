@@ -21,7 +21,6 @@ beforeAll(async () => {
 describe("unit tests", () => {
   test("wasm instance must be loaded", () => {
     expect(clipperWasm).toBeDefined();
-    expect(clipperWasm.instance).toBeDefined();
   });
 
   test("loading again must return the same wasm instance", async () => {
@@ -205,6 +204,100 @@ describe("unit tests", () => {
     };
     const result = clipper.clipToPolyTree(request);
     expect(result).toMatchSnapshot();
+  });
+
+  describe("errors", () => {
+    const outOfRange = [
+      { x: 0, y: 0 },
+      { x: hiRange + 2, y: 0 },
+      { x: hiRange + 2, y: 10 },
+    ];
+
+    test("out of range coordinates must throw a ClipperError when clipping", () => {
+      expect(() =>
+        clipperWasm.clipToPaths({
+          clipType: clipperLib.ClipType.Union,
+          subjectFillType: clipperLib.PolyFillType.NonZero,
+          subjectInputs: [{ data: outOfRange, closed: true }],
+        })
+      ).toThrow(new clipperLib.ClipperError("Coordinate outside allowed range"));
+    });
+
+    test("out of range coordinates must return undefined when offsetting", () => {
+      expect(
+        clipperWasm.offsetToPaths({
+          delta: 5,
+          offsetInputs: [
+            {
+              data: outOfRange,
+              joinType: clipperLib.JoinType.Miter,
+              endType: clipperLib.EndType.ClosedPolygon,
+            },
+          ],
+        })
+      ).toBeUndefined();
+    });
+
+    test("the library must keep working after an error", () => {
+      const square = [
+        { x: 0, y: 0 },
+        { x: 10, y: 0 },
+        { x: 10, y: 10 },
+        { x: 0, y: 10 },
+      ];
+      expect(() =>
+        clipperWasm.clipToPaths({
+          clipType: clipperLib.ClipType.Union,
+          subjectFillType: clipperLib.PolyFillType.NonZero,
+          subjectInputs: [{ data: outOfRange, closed: true }],
+        })
+      ).toThrow();
+      const result = clipperWasm.clipToPaths({
+        clipType: clipperLib.ClipType.Union,
+        subjectFillType: clipperLib.PolyFillType.NonZero,
+        subjectInputs: [{ data: square, closed: true }],
+      });
+      expect(result).toHaveLength(1);
+      expect(clipperWasm.area(result[0])).toBe(100);
+    });
+  });
+
+  test("reverseSolution must reverse the orientation of the solution", () => {
+    const square = [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 10, y: 10 },
+      { x: 0, y: 10 },
+    ];
+    const params = {
+      clipType: clipperLib.ClipType.Union,
+      subjectFillType: clipperLib.PolyFillType.NonZero,
+      subjectInputs: [{ data: square, closed: true }],
+    };
+    const normal = clipperWasm.clipToPaths(params);
+    const reversed = clipperWasm.clipToPaths({ ...params, reverseSolution: true });
+    expect(clipperWasm.orientation(normal[0])).toBe(true);
+    expect(clipperWasm.orientation(reversed[0])).toBe(false);
+  });
+
+  test("inputs and outputs that need the native memory to grow must work", () => {
+    // big enough to make the wasm memory grow while writing the input and while computing the output
+    const bigCircle = circlePath({ x: 0, y: 0 }, 1e9, 1_000_000);
+    const result = clipperWasm.offsetToPaths({
+      delta: 10,
+      offsetInputs: [
+        {
+          data: bigCircle,
+          joinType: clipperLib.JoinType.Miter,
+          endType: clipperLib.EndType.ClosedPolygon,
+        },
+      ],
+    })!;
+    expect(result).toHaveLength(1);
+    // offsetting merges nearly collinear points, so the result has fewer points than the input
+    expect(result[0].length).toBeGreaterThan(bigCircle.length / 2);
+    const expectedArea = Math.PI * (1e9 + 10) * (1e9 + 10);
+    expect(Math.abs(clipperWasm.area(result[0]) - expectedArea) / expectedArea).toBeLessThan(1e-6);
   });
 });
 

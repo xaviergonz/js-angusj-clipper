@@ -1,6 +1,4 @@
-import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
-import { NativePolyNode } from "./native/NativePolyNode";
-import { nativePathToPath } from "./native/PathToNativePath";
+import { NativeBridge } from "./native/NativeBridge";
 import { ReadonlyPath } from "./Path";
 
 /**
@@ -104,57 +102,27 @@ export class PolyNode {
     }
   }
 
-  protected static fillFromNativePolyNode(
+  /**
+   * Internal use.
+   * Fills a PolyNode (and its children) from the native output being read by the bridge.
+   */
+  protected static fillFromNative(
     pn: PolyNode,
-    nativeLib: NativeClipperLibInstance,
-    nativePolyNode: NativePolyNode,
+    bridge: NativeBridge,
     parent: PolyNode | undefined,
-    childIndex: number,
-    freeNativePolyNode: boolean
+    childIndex: number
   ): void {
+    // encoded as: isOpen, contour, nofChilds, childs
     pn._parent = parent;
-
-    const childs = nativePolyNode.childs;
-    const max = childs.size();
-    pn._childs.length = max;
-
-    for (let i = 0; i < max; i++) {
-      const newChild = PolyNode.fromNativePolyNode(
-        nativeLib,
-        childs.get(i),
-        pn,
-        i,
-        freeNativePolyNode
-      );
-      pn._childs[i] = newChild;
-    }
-
-    // do we need to clear the object ourselves? for now let's assume so (seems to work)
-    pn._contour = nativePathToPath(nativeLib, nativePolyNode.contour, true);
-    pn._isOpen = nativePolyNode.isOpen();
     pn._index = childIndex;
-
-    if (freeNativePolyNode) {
-      nativePolyNode.delete();
+    pn._isOpen = bridge.readNumber() !== 0;
+    pn._contour = bridge.readPath();
+    const max = bridge.readNumber();
+    pn._childs.length = max;
+    for (let i = 0; i < max; i++) {
+      const child = new PolyNode();
+      PolyNode.fillFromNative(child, bridge, pn, i);
+      pn._childs[i] = child;
     }
-  }
-
-  protected static fromNativePolyNode(
-    nativeLib: NativeClipperLibInstance,
-    nativePolyNode: NativePolyNode,
-    parent: PolyNode | undefined,
-    childIndex: number,
-    freeNativePolyNode: boolean
-  ): PolyNode {
-    const pn = new PolyNode();
-    PolyNode.fillFromNativePolyNode(
-      pn,
-      nativeLib,
-      nativePolyNode,
-      parent,
-      childIndex,
-      freeNativePolyNode
-    );
-    return pn;
   }
 }
