@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { EndType, JoinType } from "./enums";
 import { NativeClipperLibInstance } from "./native/NativeClipperLibInstance";
 import { NativeClipperOffset } from "./native/NativeClipperOffset";

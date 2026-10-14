@@ -39,35 +39,3 @@ export enum PointInPolygonResult {
   Inside = 1,
   OnBoundary = -1,
 }
-
-/**
- * Format to use when loading the native library instance.
- */
-export enum NativeClipperLibRequestedFormat {
-  /**
-   * Try to load the WebAssembly version, if it fails try to load the Asm.js version.
-   */
-  WasmWithAsmJsFallback = "wasmWithAsmJsFallback",
-  /**
-   * Load the WebAssembly version exclusively.
-   */
-  WasmOnly = "wasmOnly",
-  /**
-   * Load the Asm.js version exclusively.
-   */
-  AsmJsOnly = "asmJsOnly",
-}
-
-/**
- * The format the native library being used is in.
- */
-export enum NativeClipperLibLoadedFormat {
-  /**
-   * WebAssembly.
-   */
-  Wasm = "wasm",
-  /**
-   * Asm.js.
-   */
-  AsmJs = "asmJs",
-}

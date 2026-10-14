@@ -2,10 +2,10 @@
 
 #### _Polygon and line clipping and offsetting library for Javascript/Typescript_
 
-_a port of Angus Johnson's clipper to WebAssembly/Asm.js_
+_a port of Angus Johnson's clipper to WebAssembly_
 
 [![npm version](https://badge.fury.io/js/js-angusj-clipper.svg)](https://badge.fury.io/js/js-angusj-clipper)
-[![Build Status](https://travis-ci.org/xaviergonz/js-angusj-clipper.svg?branch=master)](https://travis-ci.org/xaviergonz/js-angusj-clipper)
+[![CI](https://github.com/xaviergonz/js-angusj-clipper/actions/workflows/ci.yml/badge.svg)](https://github.com/xaviergonz/js-angusj-clipper/actions/workflows/ci.yml)
 
 ---
 
@@ -18,7 +18,7 @@ Install it with `npm install --save js-angusj-clipper`
 ### What is this?
 
 A library to make polygon clipping (boolean operations) and offsetting **fast** on Javascript thanks
-to WebAssembly with a fallback to Asm.js, based on the excellent Polygon Clipping (also known as Clipper) library by
+to WebAssembly, based on the excellent Polygon Clipping (also known as Clipper) library by
 Angus Johnson.
 
 ---
@@ -28,96 +28,78 @@ Angus Johnson.
 Because sometimes performance does matter and I could not find a javascript library
 as fast or as rock solid as the C++ version of [Clipper](https://sourceforge.net/projects/polyclipping/).
 
-As an example, the results of the benchmarks included on the test suite when running on my machine (node 17.9.0) are:
+As an example, the results of the benchmarks included on the test suite when running on my machine (Node 26.10.0, Apple M1 Max, median of 3 runs) are:
 
 _Note, pureJs is [jsclipper](https://sourceforge.net/projects/jsclipper/), a pure JS port of the same library_
 
 ```
     500 boolean operations over two circles of 5000 points each
       clipType: intersection, subjectFillType: evenOdd
-        ✓ wasm (212 ms)
-        ✓ asmJs (598 ms)
-        ✓ pureJs (573 ms)
+        ✓ wasm (180 ms)
+        ✓ pureJs (565 ms)
       clipType: union, subjectFillType: evenOdd
-        ✓ wasm (267 ms)
-        ✓ asmJs (666 ms)
-        ✓ pureJs (663 ms)
+        ✓ wasm (223 ms)
+        ✓ pureJs (593 ms)
       clipType: difference, subjectFillType: evenOdd
-        ✓ wasm (232 ms)
-        ✓ asmJs (575 ms)
-        ✓ pureJs (573 ms)
+        ✓ wasm (192 ms)
+        ✓ pureJs (562 ms)
       clipType: xor, subjectFillType: evenOdd
-        ✓ wasm (296 ms)
-        ✓ asmJs (681 ms)
-        ✓ pureJs (779 ms)
+        ✓ wasm (244 ms)
+        ✓ pureJs (645 ms)
     10000 boolean operations over two circles of 100 points each
       clipType: intersection, subjectFillType: evenOdd
-        ✓ wasm (143 ms)
-        ✓ asmJs (347 ms)
-        ✓ pureJs (255 ms)
+        ✓ wasm (142 ms)
+        ✓ pureJs (246 ms)
       clipType: union, subjectFillType: evenOdd
-        ✓ wasm (181 ms)
-        ✓ asmJs (417 ms)
-        ✓ pureJs (265 ms)
+        ✓ wasm (170 ms)
+        ✓ pureJs (279 ms)
       clipType: difference, subjectFillType: evenOdd
-        ✓ wasm (159 ms)
-        ✓ asmJs (339 ms)
-        ✓ pureJs (239 ms)
+        ✓ wasm (149 ms)
+        ✓ pureJs (253 ms)
       clipType: xor, subjectFillType: evenOdd
-        ✓ wasm (186 ms)
-        ✓ asmJs (404 ms)
-        ✓ pureJs (262 ms)
+        ✓ wasm (175 ms)
+        ✓ pureJs (280 ms)
     100 offset operations over a circle of 5000 points
       joinType: miter, endType: closedPolygon, delta: 5
-        ✓ wasm (129 ms)
-        ✓ asmJs (390 ms)
-        ✓ pureJs (702 ms)
+        ✓ wasm (112 ms)
+        ✓ pureJs (999 ms)
       joinType: miter, endType: closedPolygon, delta: 0
-        ✓ wasm (34 ms)
-        ✓ asmJs (140 ms)
-        ✓ pureJs (108 ms)
+        ✓ wasm (28 ms)
+        ✓ pureJs (141 ms)
       joinType: miter, endType: closedPolygon, delta: -5
-        ✓ wasm (146 ms)
-        ✓ asmJs (386 ms)
-        ✓ pureJs (770 ms)
+        ✓ wasm (128 ms)
+        ✓ pureJs (1118 ms)
     5000 offset operations over a circle of 100 points
       joinType: miter, endType: closedPolygon, delta: 5
-        ✓ wasm (74 ms)
-        ✓ asmJs (161 ms)
-        ✓ pureJs (278 ms)
+        ✓ wasm (63 ms)
+        ✓ pureJs (474 ms)
       joinType: miter, endType: closedPolygon, delta: 0
-        ✓ wasm (61 ms)
-        ✓ asmJs (138 ms)
-        ✓ pureJs (162 ms)
+        ✓ wasm (58 ms)
+        ✓ pureJs (242 ms)
       joinType: miter, endType: closedPolygon, delta: -5
-        ✓ wasm (109 ms)
-        ✓ asmJs (271 ms)
-        ✓ pureJs (659 ms)
+        ✓ wasm (98 ms)
+        ✓ pureJs (1133 ms)
 ```
 
 More or less, the results for **boolean operations** over moderately big polygons are:
 
 - Pure JS port of the Clipper library: **~1.0s, baseline**
-- This library (_WebAssembly_): **~0.4s**
-- This library (_Asm.js_): **~1.0s** (mostly due to the emulation of 64-bit integer operations)
+- This library (_WebAssembly_): **~0.35s**
 
 and for small polygons are:
 
 - Pure JS port of the Clipper library: **~1.0s, baseline**
-- This library (_WebAssembly_): **~0.7s** (due to the overhead of copying structures to/from JS/C++)
-- This library (_Asm.js_): **~1.4s** (mostly due to the emulation of 64-bit integer operations + the overhead of copying structures to/from JS/C++)
+- This library (_WebAssembly_): **~0.6s** (due to the overhead of copying structures to/from JS/C++)
 
 As for **offsetting**, the results for a moderately big polygon are:
 
 - Pure JS port of the Clipper library: **~1s, baseline**
-- This library (_WebAssembly_): **~0.2s**
-- This library (_Asm.js_): **~0.5s**
+- This library (_WebAssembly_): **~0.12s**
 
 and for small polygons are:
 
 - Pure JS port of the Clipper library: **~1s, baseline**
-- This library (_WebAssembly_): **~0.2s**
-- This library (_Asm.js_): **~0.5s**
+- This library (_WebAssembly_): **~0.12s**
 
 ---
 
@@ -138,10 +120,7 @@ const clipperLib = require("js-angusj-clipper/web"); // nodejs style require
 
 async function mainAsync() {
   // create an instance of the library (usually only do this once in your app)
-  const clipper = await clipperLib.loadNativeClipperLibInstanceAsync(
-    // let it autodetect which one to use, but also available WasmOnly and AsmJsOnly
-    clipperLib.NativeClipperLibRequestedFormat.WasmWithAsmJsFallback
-  );
+  const clipper = await clipperLib.loadNativeClipperLibInstanceAsync();
 
   // create some polygons (note that they MUST be integer coordinates)
   const poly1 = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
@@ -181,3 +160,13 @@ For an in-depth description of the library see:
 - [Overview](./docs/overview/index.md)
 - [API Reference](./docs/apiReference/index.md)
 - [FAQ](./docs/faq/index.md)
+
+---
+
+## Development
+
+Building requires [Docker](https://www.docker.com/), which is used to run the emscripten compiler.
+
+- `yarn build` compiles the TypeScript sources and the native clipper library (`src/wasm/*.js` are generated and not committed)
+- `yarn test` runs the unit tests (run `yarn build` first so the native library exists)
+- `yarn ci` runs lint, build and tests, as CI does

@@ -1,15 +1,7 @@
 import { ClipInput, ClipParams, clipToPaths, clipToPolyTree, SubjectInput } from "./clipFunctions";
 import { ClipperError } from "./ClipperError";
 import { hiRange } from "./constants";
-import {
-  ClipType,
-  EndType,
-  JoinType,
-  NativeClipperLibLoadedFormat,
-  NativeClipperLibRequestedFormat,
-  PointInPolygonResult,
-  PolyFillType,
-} from "./enums";
+import { ClipType, EndType, JoinType, PointInPolygonResult, PolyFillType } from "./enums";
 import * as functions from "./functions";
 import { IntPoint } from "./IntPoint";
 import { IntRect } from "./IntRect";
@@ -26,8 +18,6 @@ export {
   EndType,
   JoinType,
   PolyFillType,
-  NativeClipperLibLoadedFormat,
-  NativeClipperLibRequestedFormat,
   PointInPolygonResult,
   PolyNode,
   PolyTree,
@@ -60,18 +50,11 @@ export class ClipperLibWrapper {
   readonly instance: NativeClipperLibInstance;
 
   /**
-   * Native library format.
-   */
-  readonly format: NativeClipperLibLoadedFormat;
-
-  /**
    * Internal constructor. Use loadNativeClipperLibInstanceAsync instead.
    *
    * @param instance
-   * @param format
    */
-  constructor(instance: NativeClipperLibInstance, format: NativeClipperLibLoadedFormat) {
-    this.format = format;
+  constructor(instance: NativeClipperLibInstance) {
     this.instance = instance;
   }
 
@@ -413,75 +396,20 @@ export class ClipperLibWrapper {
   }
 }
 
-type LibraryLoadResult = { library?: ClipperLibWrapper; error?: unknown };
-const wasmModule: LibraryLoadResult = {};
-const asmJsModule: LibraryLoadResult = {};
-
-async function loadModule(
-  result: LibraryLoadResult,
-  requireNativeModule: () => () => Promise<NativeClipperLibInstance>,
-  format: NativeClipperLibLoadedFormat
-): Promise<ClipperLibWrapper> {
-  // We tried this already, and it failed?
-  if (result.error) throw result.error;
-  // We already have a library loaded?
-  if (result.library) return result.library;
-  try {
-    const createModuleAsync = requireNativeModule();
-    const library = new ClipperLibWrapper(await createModuleAsync(), format);
-    result.library = library;
-    return library;
-  } catch (error) {
-    result.error = error;
-    throw error;
-  }
-}
-
-async function loadWasmModule(): Promise<ClipperLibWrapper> {
-  return loadModule(
-    wasmModule,
-    () => require("./wasm/clipper-wasm"),
-    NativeClipperLibLoadedFormat.Wasm
-  );
-}
-
-async function loadAsmJsModule(): Promise<ClipperLibWrapper> {
-  return loadModule(
-    asmJsModule,
-    () => require("./wasm/clipper"),
-    NativeClipperLibLoadedFormat.AsmJs
-  );
-}
+let wasmModule: Promise<ClipperLibWrapper> | undefined;
 
 /**
  * Asynchronously tries to load a new native instance of the clipper library to be shared across all method invocations.
  *
- * @param format - Format to load, either WasmThenAsmJs, WasmOnly or AsmJsOnly.
  * @return {Promise<ClipperLibWrapper>} - Promise that resolves with the wrapper instance.
  */
-export async function loadNativeClipperLibInstanceAsync(
-  format: NativeClipperLibRequestedFormat
-): Promise<ClipperLibWrapper> {
+export async function loadNativeClipperLibInstanceAsync(): Promise<ClipperLibWrapper> {
   // TODO: in the future use these methods instead https://github.com/jedisct1/libsodium.js/issues/94
-  const loaders = [];
-  if (
-    format === NativeClipperLibRequestedFormat.WasmWithAsmJsFallback ||
-    format === NativeClipperLibRequestedFormat.WasmOnly
-  ) {
-    loaders.push(loadWasmModule);
-  }
-  if (
-    format === NativeClipperLibRequestedFormat.WasmWithAsmJsFallback ||
-    format === NativeClipperLibRequestedFormat.AsmJsOnly
-  ) {
-    loaders.push(loadAsmJsModule);
-  }
-  for (const loader of loaders) {
-    try {
-      return loader();
-    } catch (error) {
-      // ignore
-    }
-  }
-  throw new ClipperError("could not load native clipper in the desired format");
+  // a failed load is cached as well, since retrying would fail the same way
+  wasmModule ??= (async () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const createModuleAsync: () => Promise<NativeClipperLibInstance> = require("./wasm/clipper-wasm");
+    return new ClipperLibWrapper(await createModuleAsync());
+  })();
+  return wasmModule;
 }

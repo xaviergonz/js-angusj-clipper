@@ -142,7 +142,7 @@ function offsetToPathsOrPolyTree(
       }
       return offset.executeToPolyTree(params.delta);
     }
-  } catch (err) {
+  } catch {
     return undefined;
   } finally {
     offset.dispose();

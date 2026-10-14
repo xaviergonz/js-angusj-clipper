@@ -13,28 +13,20 @@ import { circlePath } from "./utils";
 globalThis.alert = (msg) => console.error("window alert: ", msg);
 
 let clipperWasm: clipperLib.ClipperLibWrapper;
-let clipperAsmJs: clipperLib.ClipperLibWrapper;
 
 beforeAll(async () => {
-  clipperWasm = await clipperLib.loadNativeClipperLibInstanceAsync(
-    clipperLib.NativeClipperLibRequestedFormat.WasmOnly
-  );
-  clipperAsmJs = await clipperLib.loadNativeClipperLibInstanceAsync(
-    clipperLib.NativeClipperLibRequestedFormat.AsmJsOnly
-  );
+  clipperWasm = await clipperLib.loadNativeClipperLibInstanceAsync();
 }, 60000);
 
 describe("unit tests", () => {
   test("wasm instance must be loaded", () => {
     expect(clipperWasm).toBeDefined();
     expect(clipperWasm.instance).toBeDefined();
-    expect(clipperWasm.format).toEqual(clipperLib.NativeClipperLibLoadedFormat.Wasm);
   });
 
-  test("asmjs instance must be loaded", () => {
-    expect(clipperAsmJs).toBeDefined();
-    expect(clipperAsmJs.instance).toBeDefined();
-    expect(clipperAsmJs.format).toEqual(clipperLib.NativeClipperLibLoadedFormat.AsmJs);
+  test("loading again must return the same wasm instance", async () => {
+    const clipper = await clipperLib.loadNativeClipperLibInstanceAsync();
+    expect(clipper).toBe(clipperWasm);
   });
 
   test("pureJs instance must be loaded", () => {
@@ -74,10 +66,7 @@ describe("unit tests", () => {
           clipperLib.PolyFillType.Positive,
         ]) {
           test(`clipType: ${clipType}, fillType: ${polyFillType}`, () => {
-            const res = testPolyOperation(clipType, polyFillType, poly1, poly2, {
-              wasm: true,
-              asm: true,
-            });
+            const res = testPolyOperation(clipType, polyFillType, poly1, poly2);
 
             const pureJsRes = pureJsTestPolyOperation(
               clipType,
@@ -86,7 +75,6 @@ describe("unit tests", () => {
               pureJsPoly2
             );
 
-            expect(res.asmResult).toEqual(res.wasmResult);
             expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult!));
             expect(res.wasmResult).toMatchSnapshot();
           });
@@ -109,14 +97,10 @@ describe("unit tests", () => {
         ]) {
           for (const delta of [5, 0, -5]) {
             test(`joinType: ${joinType}, endType: ${endType}, delta: ${delta}`, () => {
-              const res = testOffset(poly1, joinType, endType, delta, {
-                wasm: true,
-                asm: true,
-              });
+              const res = testOffset(poly1, joinType, endType, delta);
 
               const pureJsRes = pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
 
-              expect(res.asmResult).toEqual(res.wasmResult);
               expect(pureJsRes).toEqual(pathsToPureJs(res.wasmResult!));
               expect(res.wasmResult).toMatchSnapshot();
             });
@@ -142,22 +126,9 @@ describe("unit tests", () => {
       { x: 0, y: 50 },
     ];
 
-    function testShouldThrow(wasm: boolean) {
-      expect(() => {
-        testPolyOperation(
-          clipType,
-          polyFillType,
-          poly1,
-          poly2,
-          { wasm: wasm, asm: !wasm },
-          false,
-          false
-        );
-      }).toThrow("clip to a PolyTree (not to a Path) when using open paths");
-    }
-
-    testShouldThrow(true);
-    testShouldThrow(false);
+    expect(() => {
+      testPolyOperation(clipType, polyFillType, poly1, poly2, false, false);
+    }).toThrow("clip to a PolyTree (not to a Path) when using open paths");
   });
 
   describe("issue #4", () => {
@@ -189,17 +160,8 @@ describe("unit tests", () => {
           subjectClosed
         );
 
-        const res = testPolyOperation(
-          clipType,
-          polyFillType,
-          poly1,
-          poly2,
-          { wasm: true, asm: true },
-          subjectClosed,
-          true
-        );
+        const res = testPolyOperation(clipType, polyFillType, poly1, poly2, subjectClosed, true);
 
-        expect(res.ptAsmResult).toEqual(res.ptWasmResult);
         const open = clipperWasm.openPathsFromPolyTree(res.ptWasmResult!);
         const closed = clipperWasm.closedPathsFromPolyTree(res.ptWasmResult!);
         if (subjectClosed) {
@@ -281,14 +243,11 @@ describe("benchmarks", () => {
           // clipperLib.PolyFillType.Positive,
         ]) {
           describe(`clipType: ${clipType}, subjectFillType: ${polyFillType}`, () => {
-            for (const mode of ["wasm", "asmJs", "pureJs"]) {
+            for (const mode of ["wasm", "pureJs"]) {
               test(`${mode}`, () => {
                 for (let i = 0; i < benchmark.ops; i++) {
-                  if (mode === "wasm" || mode === "asmJs") {
-                    testPolyOperation(clipType, polyFillType, poly1, poly2, {
-                      wasm: mode === "wasm",
-                      asm: mode === "asmJs",
-                    });
+                  if (mode === "wasm") {
+                    testPolyOperation(clipType, polyFillType, poly1, poly2);
                   } else if (mode === "pureJs") {
                     pureJsTestPolyOperation(clipType, polyFillType, pureJsPoly1, pureJsPoly2);
                   }
@@ -325,14 +284,11 @@ describe("benchmarks", () => {
         ]) {
           for (const delta of [5, 0, -5]) {
             describe(`joinType: ${joinType}, endType: ${endType}, delta: ${delta}`, () => {
-              for (const mode of ["wasm", "asmJs", "pureJs"]) {
+              for (const mode of ["wasm", "pureJs"]) {
                 test(`${mode}`, () => {
                   for (let i = 0; i < benchmark.ops; i++) {
-                    if (mode === "wasm" || mode === "asmJs") {
-                      testOffset(poly1, joinType, endType, delta, {
-                        wasm: mode === "wasm",
-                        asm: mode === "asmJs",
-                      });
+                    if (mode === "wasm") {
+                      testOffset(poly1, joinType, endType, delta);
                     } else if (mode === "pureJs") {
                       pureJsTestOffset(pureJsPoly1, joinType, endType, delta);
                     }
@@ -352,7 +308,6 @@ function testPolyOperation(
   subjectFillType: clipperLib.PolyFillType,
   subjectInput: clipperLib.Path | clipperLib.Paths,
   clipInput: clipperLib.Path | clipperLib.Paths,
-  format: { wasm: boolean; asm: boolean },
   subjectInputClosed = true,
   clipToPolyTrees = false
 ) {
@@ -366,23 +321,9 @@ function testPolyOperation(
     subjectFillType: subjectFillType,
   };
 
-  const pathResults = !clipToPolyTrees
-    ? {
-        asmResult: format.asm ? clipperAsmJs.clipToPaths(data) : undefined,
-        wasmResult: format.wasm ? clipperWasm.clipToPaths(data) : undefined,
-      }
-    : {};
-
-  const polyTreeResults = clipToPolyTrees
-    ? {
-        ptAsmResult: format.asm ? clipperAsmJs.clipToPolyTree(data) : undefined,
-        ptWasmResult: format.wasm ? clipperWasm.clipToPolyTree(data) : undefined,
-      }
-    : {};
-
   return {
-    ...pathResults,
-    ...polyTreeResults,
+    wasmResult: !clipToPolyTrees ? clipperWasm.clipToPaths(data) : undefined,
+    ptWasmResult: clipToPolyTrees ? clipperWasm.clipToPolyTree(data) : undefined,
   };
 }
 
@@ -390,8 +331,7 @@ function testOffset(
   input: clipperLib.Path | clipperLib.Paths,
   joinType: clipperLib.JoinType,
   endType: clipperLib.EndType,
-  delta: number,
-  format: { wasm: boolean; asm: boolean }
+  delta: number
 ) {
   const data: clipperLib.OffsetParams = {
     delta: delta,
@@ -405,7 +345,6 @@ function testOffset(
   };
 
   return {
-    wasmResult: format.wasm ? clipperWasm.offsetToPaths(data) : undefined,
-    asmResult: format.asm ? clipperAsmJs.offsetToPaths(data) : undefined,
+    wasmResult: clipperWasm.offsetToPaths(data),
   };
 }

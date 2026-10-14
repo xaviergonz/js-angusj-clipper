@@ -1,33 +1,40 @@
 import * as shelljs from "shelljs";
 import * as path from "path";
 import * as fs from "fs";
-import * as commandLineArgs from "command-line-args";
+import commandLineArgs from "command-line-args";
 
 const cmdLineOptions = commandLineArgs([{ name: "env", type: String, defaultValue: "universal" }]);
+
+// bump deliberately; newer emscripten versions can break the build
+const emsdkImage = "emscripten/emsdk:6.0.12";
 
 const wasmDir = path.join(__dirname, "..", "src", "wasm");
 console.log(`using "${wasmDir}" as wasm dir`);
 
-function build(wasmMode: boolean, environment: string) {
+if (shelljs.exec(`docker pull ${emsdkImage}`).code !== 0) {
+  console.error(`could not pull ${emsdkImage}`);
+  process.exit(1);
+}
+
+function build(environment: string) {
   const debug = false;
 
   const options = [
     "--bind",
     "--no-entry",
     "-s STRICT=1",
+    "-s WASM=1",
     "-s ALLOW_MEMORY_GROWTH=1",
     "-s EXIT_RUNTIME=0",
     "-s SINGLE_FILE=1",
     "-s INVOKE_RUN=0",
-    "-s NODEJS_CATCH_EXIT=0",
     "-s NO_FILESYSTEM=1",
     "-s MODULARIZE=1",
     "-s STRICT_JS=0", // adds "use strict" and breaks module compilation
     "-s EXPORTED_FUNCTIONS=\"['_malloc', '_free']\"", // without this these functions are not exported
+    "-s EXPORTED_RUNTIME_METHODS=\"['HEAPF64']\"", // without this the heap views are not exported
     // no speed difference
     // "-s WASM_BIGINT=1",
-    // wasm with asmjs fallback, but does not work with SINGLE_FILE
-    // "-s WASM=2",
     ...(debug
       ? ["-s DISABLE_EXCEPTION_CATCHING=0", "-O0"]
       : [
@@ -41,15 +48,9 @@ function build(wasmMode: boolean, environment: string) {
     options.push(`-s ENVIRONMENT=${environment}`);
   }
 
-  if (wasmMode) {
-    options.push("-s WASM=1");
-  } else {
-    options.push("-s WASM=0");
-  }
+  const output = `clipper-wasm.js`;
 
-  const output = wasmMode ? `clipper-wasm.js` : `clipper.js`;
-
-  const cmd = `docker run --rm -v ${wasmDir}:/src emscripten/emsdk em++ ${options.join(
+  const cmd = `docker run --rm -v ${wasmDir}:/src ${emsdkImage} em++ ${options.join(
     " "
   )} clipper.cpp -o ${output}`;
   const returnData = shelljs.exec(cmd);
@@ -62,7 +63,5 @@ function build(wasmMode: boolean, environment: string) {
   shelljs.cp(`src/wasm/${output}`, `dist/wasm/${output}`);
 }
 
-console.log("building asmjs version for env " + cmdLineOptions.env);
-build(false, cmdLineOptions.env);
 console.log("building wasm version for env " + cmdLineOptions.env);
-build(true, cmdLineOptions.env);
+build(cmdLineOptions.env);

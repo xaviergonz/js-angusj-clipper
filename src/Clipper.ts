@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ClipType, PolyFillType, PolyType } from "./enums";
 import { IntRect } from "./IntRect";
 import { NativeClipper } from "./native/NativeClipper";

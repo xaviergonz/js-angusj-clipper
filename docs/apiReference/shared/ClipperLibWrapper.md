@@ -12,10 +12,6 @@ A wrapper for the Native Clipper Library instance with all the operations availa
     
     Native library instance.
 
-* **readonly format: [NativeClipperLibLoadedFormat](../libInit/NativeClipperLibLoadedFormat.md)**
-
-    Native library format.
-    
 * **[clipToPaths](../clipping/clipTo.md)(params: [ClipParams](../clipping/ClipParams.md)): [Paths](../shared/Paths.md) | undefined**
 * **[clipToPolyTree](../clipping/clipTo.md)(params: [ClipParams](../clipping/ClipParams.md)): [PolyTree](../shared/PolyTree.md) | undefined**
 
